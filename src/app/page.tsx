@@ -1,17 +1,17 @@
-
+/** @format */
 
 import Image from "next/image";
 
-async function fetchApi()
-{
-  const resposne = await fetch("http://localhost:5000/api/");
-  return await resposne.json() as {
-    message: string
-  };
+type Response = {
+  message: string | null;
+};
+
+async function fetchApi() {
+  // const resposne = await fetch("http://localhost:5000/api/");
+  // return (await resposne.json()) as Response;
 }
 
-export default async function Home()
-{
+export default async function Home() {
   const messageFromElysia = await fetchApi();
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -33,7 +33,7 @@ export default async function Home()
             .
           </li>
           <li>Save and see your changes instantly.</li>
-          <li>{messageFromElysia.message}.</li>
+          {/* <li>{messageFromElysia.message}.</li> */}
         </ol>
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
