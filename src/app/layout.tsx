@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Bai_Jamjuree } from "next/font/google";
 import "@/styles/globals.css";
 import Provider from "./provider";
+import { Toaster } from "@/components/ui/toaster";
 
 const baiJamjuree = Bai_Jamjuree({
   weight: "400",
@@ -26,6 +27,7 @@ export default function GlobalLayout({
         <Provider>
           <main>{children}</main>
         </Provider>
+        <Toaster />
       </body>
     </html>
   );

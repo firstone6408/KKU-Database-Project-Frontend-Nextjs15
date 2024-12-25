@@ -1,6 +1,6 @@
 /** @format */
 
-import { navLinks } from "@/schemas/nav-links";
+import { navLinks } from "@/schemas/nav-links.d";
 import Link from "next/link";
 import {
   SidebarGroup,

@@ -1,17 +1,21 @@
 /** @format */
 
 import {
+  BadgeDollarSign,
   ChartArea,
+  ChartBarStacked,
   FileClock,
   IndentDecrease,
   IndentIncrease,
   Layers,
   LayoutDashboard,
+  Proportions,
   ReceiptText,
   UserCog,
+  Users,
 } from "lucide-react";
 
-export type NavLinkSchema = {
+export type NavLinkType = {
   title: string;
   href?: string;
   icon?: React.JSX.Element;
@@ -23,11 +27,26 @@ export type NavLinkSchema = {
 };
 
 // Menu items.
-export const navLinks: NavLinkSchema[] = [
+export const navLinks: NavLinkType[] = [
+  {
+    title: "Sale",
+    href: "/sale",
+    icon: <BadgeDollarSign />,
+  },
   {
     title: "Dashboard",
     href: "/dashboard",
     icon: <ChartArea />,
+  },
+  {
+    title: "Customer",
+    href: "/customer",
+    icon: <Users />,
+  },
+  {
+    title: "Category",
+    href: "/category",
+    icon: <ChartBarStacked />,
   },
   {
     title: "Product",
@@ -35,9 +54,9 @@ export const navLinks: NavLinkSchema[] = [
     icon: <LayoutDashboard />,
   },
   {
-    title: "User",
-    href: "/user",
-    icon: <UserCog />,
+    title: "Report",
+    href: "/report",
+    icon: <Proportions />,
   },
   {
     title: "Stock",
@@ -59,5 +78,10 @@ export const navLinks: NavLinkSchema[] = [
         icon: <IndentDecrease />,
       },
     ],
+  },
+  {
+    title: "User",
+    href: "/user",
+    icon: <UserCog />,
   },
 ];

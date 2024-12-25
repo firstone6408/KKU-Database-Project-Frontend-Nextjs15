@@ -1,10 +1,19 @@
 /** @format */
 
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { LoginForm } from "@/components/form/login";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  const session = await getServerSession(authOptions);
+
+  if (session) {
+    redirect("/");
+  }
+
   return (
-    <section className="flex items-center justify-center h-full">
+    <section>
       <LoginForm />
     </section>
   );

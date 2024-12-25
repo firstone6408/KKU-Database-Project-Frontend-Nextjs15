@@ -12,12 +12,12 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import { NavLinkSchema } from "@/schemas/nav-links";
+import { NavLinkType } from "@/schemas/nav-links.d";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 
 type StockMenuListProps = {
-  navLink: NavLinkSchema;
+  navLink: NavLinkType;
 };
 
 export default function StockMenuList({ navLink }: StockMenuListProps) {

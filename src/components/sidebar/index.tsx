@@ -13,7 +13,7 @@ import Content from "./content";
 
 export function AppSidebar() {
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" className="shadow">
       {/* logo */}
       <SidebarHeader>
         <Header />
