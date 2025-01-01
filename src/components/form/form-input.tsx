@@ -12,6 +12,7 @@ export default function FormInput({
   placeholder,
   required,
   className,
+  disabled,
 }: FormInputType) {
   return (
     <div className={`${className ?? "space-y-2"}`}>
@@ -22,6 +23,7 @@ export default function FormInput({
         defaultValue={defaultValue}
         placeholder={placeholder}
         required={required}
+        disabled={disabled}
       />
     </div>
   );

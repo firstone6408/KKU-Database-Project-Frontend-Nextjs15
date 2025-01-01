@@ -1,10 +1,10 @@
 /** @format */
 
+import { UserRole } from "@/configs/enum.config";
 import {
   BadgeDollarSign,
   ChartArea,
   ChartBarStacked,
-  FileClock,
   IndentDecrease,
   IndentIncrease,
   Layers,
@@ -19,10 +19,12 @@ export type NavLinkType = {
   title: string;
   href?: string;
   icon?: React.JSX.Element;
+  permission?: UserRole[];
   subLinks?: {
     title: string;
     href: string;
     icon?: React.JSX.Element;
+    permission?: UserRole[];
   }[];
 };
 
@@ -47,6 +49,7 @@ export const navLinks: NavLinkType[] = [
     title: "Category",
     href: "/category",
     icon: <ChartBarStacked />,
+    permission: [UserRole.ADMIN],
   },
   {
     title: "Product",
@@ -83,5 +86,6 @@ export const navLinks: NavLinkType[] = [
     title: "User",
     href: "/user",
     icon: <UserCog />,
+    permission: [UserRole.ADMIN, UserRole.MANAGER],
   },
 ];

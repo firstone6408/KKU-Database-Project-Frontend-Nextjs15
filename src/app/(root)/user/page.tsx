@@ -1,5 +1,7 @@
 /** @format */
 
+import UserContainer from "@/components/(root)/user/user-container";
+
 export default function UserPage() {
-  return <div>UserPage</div>;
+  return <UserContainer />;
 }

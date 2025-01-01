@@ -6,15 +6,17 @@ import { z } from "zod";
 export function validateFormDataWithZod<T>(
   formData: FormData,
   zodSchema: z.ZodSchema<T>
-) {
+)
+{
   const rawData = Object.fromEntries(formData);
   //console.log(rawData);
   const validatedResult = zodSchema.safeParse(rawData);
-  if (!validatedResult.success) {
+  if (!validatedResult.success)
+  {
     const errorMessage = validatedResult.error.errors.map(
       (err) => err.message
     );
-    console.log(errorMessage);
+    console.log(validatedResult.error);
     throw new Error(errorMessage.join(", "));
   }
   return validatedResult.data;
@@ -23,9 +25,11 @@ export function validateFormDataWithZod<T>(
 export function validateResponseFromServer<T>(
   axiosResponse: AxiosResponse,
   responseSchema: z.ZodSchema<T>
-) {
+)
+{
   const validatedResult = responseSchema.safeParse(axiosResponse.data);
-  if (!validatedResult.success) {
+  if (!validatedResult.success)
+  {
     const errorMessage = validatedResult.error.errors.map(
       (err) => `[${err.path}: ${err.message}]`
     );

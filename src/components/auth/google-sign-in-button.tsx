@@ -16,7 +16,10 @@ export default function GoogleSignInButton({
 
   const handleSignIn = async () => {
     try {
-      await signIn("google", { callbackUrl: "/auth/branch-sign-in" });
+      await signIn("google", {
+        callbackUrl: "/auth/branch-sign-in",
+        redirect: false,
+      });
     } catch (error) {
       toast({
         title: String(error),

@@ -11,14 +11,22 @@ import {
   SidebarMenuButton,
 } from "../ui/sidebar";
 import StockMenuList from "./sub-menu-list/stock";
+import { getSession } from "@/utils/session.utils";
 
-export default function Content() {
+export default async function Content() {
+  const user = (await getSession()).user;
+  const userRole = user.role;
+
+  const filteredNavLinks = navLinks.filter(
+    (link) => !link.permission || link.permission.includes(userRole)
+  );
+
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Menu list</SidebarGroupLabel>
       <SidebarGroupContent>
         <SidebarMenu>
-          {navLinks.map((item, index) => {
+          {filteredNavLinks.map((item, index) => {
             if (item.subLinks) {
               return <StockMenuList key={index} navLink={item} />;
             } else {

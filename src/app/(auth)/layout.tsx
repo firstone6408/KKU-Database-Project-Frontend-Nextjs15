@@ -6,8 +6,10 @@ type AuthLayoutProps = {
 
 export default function AuthLayout({ children }: AuthLayoutProps) {
   return (
-    <div className="container-custom h-screen bg-slate-200 dark:bg-slate-900 flex items-center justify-center">
-      {children}
+    <div className="h-screen bg-slate-200 dark:bg-slate-900">
+      <div className="container-custom flex items-center justify-center h-full">
+        {children}
+      </div>
     </div>
   );
 }

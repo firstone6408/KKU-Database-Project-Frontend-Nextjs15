@@ -1,7 +1,7 @@
 /** @format */
 
-import { ThemeProvider } from "@/components/provider/ThemeProvider";
-import { SessionProvider } from "@/components/provider/SessionProvider";
+import { ThemeProvider } from "@/components/provider/theme-provider";
+import { SessionProvider } from "@/components/provider/session-provider";
 import { getServerSession } from "next-auth";
 
 type ProviderProps = {

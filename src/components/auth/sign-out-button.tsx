@@ -3,19 +3,20 @@
 "use client";
 
 import { useToast } from "@/hooks/use-toast";
-import { signOut } from "next-auth/react";
 import { Button } from "../ui/button";
 import { useFormStatus } from "react-dom";
 import { Ellipsis } from "lucide-react";
+import { signOutAction } from "@/server-actions/auth";
 
-export function SignOutButton() {
+export function SignOutButton({ btnText }: { btnText?: any }) {
   const { toast } = useToast();
 
   const { pending } = useFormStatus();
 
   const handleSignOut = async () => {
     try {
-      await signOut({ callbackUrl: "/auth/login" });
+      await signOutAction();
+
       toast({
         title: "Sign out success",
       });
@@ -39,7 +40,7 @@ export function SignOutButton() {
           <Ellipsis className="animate-pulse" />
         </>
       ) : (
-        <p>Logout</p>
+        <>{btnText ? btnText : <p>Logout</p>}</>
       )}
     </Button>
   );

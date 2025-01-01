@@ -4,7 +4,8 @@ import { UserRole, UserStatus } from "@/configs/enum.config";
 import { DefaultUser, Session, User } from "next-auth";
 
 declare module "next-auth" {
-  interface Session {
+  interface Session
+  {
     user: {
       id: string;
       role: UserRole;
@@ -13,13 +14,16 @@ declare module "next-auth" {
       image?: string;
       branchId?: string;
       status: UserStatus;
+      token: string;
     };
   }
 
-  interface User extends DefaultUser {
+  interface User extends DefaultUser
+  {
     id: string;
     role: UserRole;
     status: UserStatus;
     branchId?: string;
+    token: string;
   }
 }

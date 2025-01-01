@@ -1,6 +1,6 @@
 /** @format */
 
-import { ThemeToggle } from "../dropdown/ThemeToggle";
+import { ThemeToggle } from "../dropdown/theme-toggle";
 import { SidebarTrigger } from "../ui/sidebar";
 
 export default function Header() {

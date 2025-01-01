@@ -17,8 +17,16 @@ import {
   Table,
 } from "../ui/table";
 import { SignOutButton } from "../auth/sign-out-button";
+import { BranchType } from "@/server-actions/branch";
+import Link from "next/link";
+import { Session } from "next-auth";
+import { BranchSignInButton } from "../button/branch";
 
-export default function BranchListSignInTable() {
+export default async function BranchListSignInTable(props: {
+  branches: BranchType[];
+}) {
+  const { branches } = props;
+
   return (
     <Card className="w-full max-w-[800px]">
       <CardHeader className="text-center">
@@ -35,12 +43,19 @@ export default function BranchListSignInTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell className="font-medium">ขอนแก่น</TableCell>
-              <TableCell className="text-right">
-                <Button>เข้าสู่ระบบ</Button>
-              </TableCell>
-            </TableRow>
+            {branches.length > 0 &&
+              branches.map((branch) => (
+                <TableRow key={branch.id}>
+                  <TableCell className="font-medium">
+                    {branch.name}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Button asChild>
+                      <BranchSignInButton branchId={branch.id} />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </CardContent>

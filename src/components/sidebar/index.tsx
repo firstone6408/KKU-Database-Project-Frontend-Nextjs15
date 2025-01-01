@@ -10,8 +10,10 @@ import {
 import Header from "./header";
 import Footer from "./footer";
 import Content from "./content";
+import { getSession } from "@/utils/session.utils";
 
-export function AppSidebar() {
+export async function AppSidebar() {
+  const session = await getSession();
   return (
     <Sidebar collapsible="icon" className="shadow">
       {/* logo */}
@@ -28,7 +30,7 @@ export function AppSidebar() {
 
       {/* footer */}
       <SidebarFooter>
-        <Footer />
+        <Footer session={session} />
       </SidebarFooter>
       {/* end footer */}
     </Sidebar>
