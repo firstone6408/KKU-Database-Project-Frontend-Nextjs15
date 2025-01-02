@@ -18,8 +18,10 @@ import {
 } from "../ui/dropdown-menu";
 import { ChevronsUpDown, Plus } from "lucide-react";
 import Image from "next/image";
+import { BranchType } from "@/server-actions/branch";
+import { BranchSignInButton } from "../button/branch";
 
-export default function Header() {
+export default function Header({ branches }: { branches: BranchType[] }) {
   const { isMobile } = useSidebar();
 
   return (
@@ -51,8 +53,13 @@ export default function Header() {
           <DropdownMenuLabel className="text-xs text-muted-foreground">
             <p className="text-lg">สาขาทั้งหมด</p>
           </DropdownMenuLabel>
-          <DropdownMenuItem className="p-2">ขอนแก่น</DropdownMenuItem>
-          <DropdownMenuItem className="p-2">อุบล</DropdownMenuItem>
+          {branches.length > 0 &&
+            branches.map((branch) => (
+              <DropdownMenuItem key={branch.id} className="p-2">
+                <BranchSignInButton branchId={branch.id} />
+                {branch.name}
+              </DropdownMenuItem>
+            ))}
 
           {/* bottom */}
           <DropdownMenuSeparator />

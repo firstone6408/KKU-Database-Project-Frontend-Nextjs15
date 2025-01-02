@@ -8,6 +8,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import { UserRole, UserStatus } from "@/configs/enum.config";
+import { fetchBranches } from "@/server-actions/branch";
 
 type RootLayoutProps = {
   children: React.ReactNode;
@@ -30,9 +31,11 @@ export default async function RootLayout({ children }: RootLayoutProps) {
     redirect("/auth/branch-sign-in");
   }
 
+  const branches = await fetchBranches();
+
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar branches={branches} />
       <SidebarInset>
         <div className="w-full">
           <Header />

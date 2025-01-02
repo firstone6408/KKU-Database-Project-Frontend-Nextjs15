@@ -16,7 +16,12 @@ export default function FormButton({
   const { pending } = useFormStatus();
 
   return (
-    <Button className={className} size={size} disabled={pending}>
+    <Button
+      className={className}
+      type="submit"
+      size={size}
+      disabled={pending}
+    >
       {pending ? (
         <>
           <span>Please wait</span>

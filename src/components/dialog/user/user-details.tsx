@@ -24,7 +24,7 @@ import { useState } from "react";
 import CustomerGroupsDropdown from "../../dropdown/customer-group";
 import FormButton from "../../form/form-button";
 import { usePathname } from "next/navigation";
-import { updateUser, UserType } from "@/server-actions/user";
+import { updateUserAction, UserType } from "@/server-actions/user";
 
 export function UserDetailsDialog(props: {
   btn: React.JSX.Element;
@@ -48,7 +48,7 @@ export function UserDetailsDialog(props: {
           <DialogDescription></DialogDescription>
         </DialogHeader>
         {/* content */}
-        <FormContainer action={updateUser} className="space-y-2">
+        <FormContainer action={updateUserAction} className="space-y-2">
           <div className="grid grid-cols-2 gap-2">
             <FormInput
               label="Username"
@@ -67,7 +67,11 @@ export function UserDetailsDialog(props: {
             <FormInput
               className="col-span-full"
               label="เข้าใช้งานล่าสุด"
-              defaultValue={dayjsUtils.autoFormat(user.lastLogin)}
+              defaultValue={
+                user.lastLogin
+                  ? dayjsUtils.autoFormat(user.lastLogin)
+                  : "ยังไม่ได้เข้าใช้งาน"
+              }
               disabled
             />
           </div>

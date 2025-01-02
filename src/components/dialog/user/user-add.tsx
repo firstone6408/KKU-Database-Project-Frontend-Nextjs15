@@ -24,8 +24,9 @@ import { useState } from "react";
 import CustomerGroupsDropdown from "../../dropdown/customer-group";
 import FormButton from "../../form/form-button";
 import { usePathname } from "next/navigation";
-import { updateUser, UserType } from "@/server-actions/user";
+import { addUserAction, UserType } from "@/server-actions/user";
 import FormFile from "@/components/form/form-file";
+import UserRoleDropDown from "@/components/dropdown/user-role";
 
 export function UserAddDialog(props: { btn: React.JSX.Element }) {
   const { btn } = props;
@@ -42,7 +43,7 @@ export function UserAddDialog(props: { btn: React.JSX.Element }) {
           <DialogDescription></DialogDescription>
         </DialogHeader>
         {/* content */}
-        <FormContainer action={updateUser} className="space-y-2">
+        <FormContainer action={addUserAction} className="space-y-2">
           <div className="grid grid-cols-2 gap-2">
             <FormInput
               label="Username"
@@ -50,15 +51,15 @@ export function UserAddDialog(props: { btn: React.JSX.Element }) {
               type="text"
               required
             />
-            <FormInput label="Email" name="email" type="text" required />
+            <FormInput label="Email" name="email" type="email" required />
             <FormInput label="ชื่อ" name="name" type="text" required />
-            <FormInput
-              label="เบอร์"
-              name="phoneNumber"
-              type="number"
+            <FormInput label="เบอร์" name="phoneNumber" type="number" />
+            <UserRoleDropDown
+              label="ตำแหน่ง"
+              name="role"
+              placeholder="-- เลือกตำแหน่ง --"
               required
             />
-            <FormInput label="ตำแหน่ง" name="role" required />
             <FormInput
               label="Password"
               name="password"
@@ -72,7 +73,7 @@ export function UserAddDialog(props: { btn: React.JSX.Element }) {
             />
           </div>
           <DialogFooter>
-            <Button type="button">แก้ไข</Button>
+            <Button type="submit">บันทึก</Button>
           </DialogFooter>
         </FormContainer>
         {/* end content */}

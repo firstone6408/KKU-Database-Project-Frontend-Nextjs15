@@ -114,6 +114,10 @@ export const authOptions = {
         user.role = fetchUser.role;
         user.status = fetchUser.status;
         user.token = data.token;
+        if (fetchUser.profileImage)
+        {
+          user.image = fetchUser.profileImage;
+        }
       }
       return true;
     },

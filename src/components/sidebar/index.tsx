@@ -11,14 +11,19 @@ import Header from "./header";
 import Footer from "./footer";
 import Content from "./content";
 import { getSession } from "@/utils/session.utils";
+import { BranchType } from "@/server-actions/branch";
 
-export async function AppSidebar() {
+export async function AppSidebar({
+  branches,
+}: {
+  branches: BranchType[];
+}) {
   const session = await getSession();
   return (
     <Sidebar collapsible="icon" className="shadow">
       {/* logo */}
       <SidebarHeader>
-        <Header />
+        <Header branches={branches} />
       </SidebarHeader>
       {/* end logo */}
 

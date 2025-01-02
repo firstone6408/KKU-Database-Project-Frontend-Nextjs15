@@ -5,6 +5,7 @@ import {
   BadgeDollarSign,
   ChartArea,
   ChartBarStacked,
+  FileSliders,
   IndentDecrease,
   IndentIncrease,
   Layers,
@@ -46,17 +47,6 @@ export const navLinks: NavLinkType[] = [
     icon: <Users />,
   },
   {
-    title: "Category",
-    href: "/category",
-    icon: <ChartBarStacked />,
-    permission: [UserRole.ADMIN],
-  },
-  {
-    title: "Product",
-    href: "/product",
-    icon: <LayoutDashboard />,
-  },
-  {
     title: "Report",
     href: "/report",
     icon: <Proportions />,
@@ -87,5 +77,23 @@ export const navLinks: NavLinkType[] = [
     href: "/user",
     icon: <UserCog />,
     permission: [UserRole.ADMIN, UserRole.MANAGER],
+  },
+  {
+    title: "Admin",
+    icon: <FileSliders />,
+    permission: [UserRole.ADMIN],
+    subLinks: [
+      {
+        title: "Category",
+        href: "/category",
+        icon: <ChartBarStacked />,
+        permission: [UserRole.ADMIN],
+      },
+      {
+        title: "Product",
+        href: "/product",
+        icon: <LayoutDashboard />,
+      },
+    ],
   },
 ];

@@ -1,12 +1,14 @@
 /** @format */
 
-export enum UserRole {
+export enum UserRole
+{
   ADMIN = "ADMIN",
   MANAGER = "MANAGER",
-  STAFFSTAFF = "STAFF",
+  STAFF = "STAFF",
 }
 
-export enum UserStatus {
+export enum UserStatus
+{
   ACTIVE = "ACTIVE",
   INACTIVE = "INACTIVE",
   SUSPENDED = "SUSPENDED",

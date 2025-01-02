@@ -22,7 +22,7 @@ export default function UsersListTable(props: { users: UserType[] }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>ลูกค้าทั้งหมด</CardTitle>
+        <CardTitle>ผู้ใช้ทั้งหมด</CardTitle>
       </CardHeader>
       <CardContent>
         <Table>
@@ -57,7 +57,11 @@ export default function UsersListTable(props: { users: UserType[] }) {
                   </TableCell>
                   <TableCell>{user.role}</TableCell>
                   <TableCell>
-                    {dayjsUtils.autoFormat(user.lastLogin)}
+                    {user.lastLogin ? (
+                      dayjsUtils.autoFormat(user.lastLogin)
+                    ) : (
+                      <>ยังไม่ได้เข้าใช้งาน</>
+                    )}
                   </TableCell>
                   <TableCell className="text-center">
                     <UserDetailsDialog

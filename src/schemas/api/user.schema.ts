@@ -14,7 +14,7 @@ export const fetchUserResSchema = templateResponse(
                 phoneNumber: z.string().nullable(), // nullable string
                 role: z.nativeEnum(UserRole), // ใช้ `z.nativeEnum` สำหรับ Enum
                 status: z.nativeEnum(UserStatus), // ใช้ `z.nativeEnum` สำหรับ Enum
-                lastLogin: z.string().datetime(), // ISO datetime string
+                lastLogin: z.string().datetime().nullable(), // ISO datetime string
                 branch: z.object({
                     id: z.string(),
                     name: z.string(),

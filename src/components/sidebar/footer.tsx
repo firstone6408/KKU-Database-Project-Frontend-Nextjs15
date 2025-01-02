@@ -28,6 +28,7 @@ import {
 } from "../ui/sidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { SignOutButton } from "../auth/sign-out-button";
+import { urlConfig } from "@/configs/url.config";
 
 export default function Footer(props: { session: Session }) {
   const { session } = props;
@@ -46,7 +47,10 @@ export default function Footer(props: { session: Session }) {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.image} alt={user.name} />
+                <AvatarImage
+                  src={urlConfig.showImage(user.image)}
+                  alt={user.name}
+                />
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
@@ -65,7 +69,10 @@ export default function Footer(props: { session: Session }) {
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.image} alt={user.name} />
+                  <AvatarImage
+                    src={urlConfig.showImage(user.image)}
+                    alt={user.name}
+                  />
                   <AvatarFallback className="rounded-lg">
                     CN
                   </AvatarFallback>
