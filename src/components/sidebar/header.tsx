@@ -16,13 +16,21 @@ import {
   DropdownMenuTrigger,
   DropdownMenuItem,
 } from "../ui/dropdown-menu";
-import { ChevronsUpDown, Plus } from "lucide-react";
+import { Check, ChevronsUpDown, Plus } from "lucide-react";
 import Image from "next/image";
 import { BranchType } from "@/server-actions/branch";
 import { BranchSignInButton } from "../button/branch";
+import { useSession } from "next-auth/react";
 
 export default function Header({ branches }: { branches: BranchType[] }) {
   const { isMobile } = useSidebar();
+
+  const { data: session } = useSession();
+
+  const branchUser = session
+    ? branches.find((branch) => session.user.branchId === branch.id) ||
+      null
+    : null;
 
   return (
     <SidebarMenu>
@@ -38,8 +46,11 @@ export default function Header({ branches }: { branches: BranchType[] }) {
                 className="object-cover rounded-full"
               />
             </div>
-            <SidebarHeader className="text-xl font-bold">
-              Point of sale
+            <SidebarHeader className="gap-0">
+              <h2 className="text-xl font-bold">Point of sale</h2>
+              <p>
+                สาขา: {branchUser ? branchUser.name : "ไม่ได้เลือกสาขา"}
+              </p>
             </SidebarHeader>
             <ChevronsUpDown className="ml-auto" />
           </SidebarMenuButton>
@@ -56,8 +67,12 @@ export default function Header({ branches }: { branches: BranchType[] }) {
           {branches.length > 0 &&
             branches.map((branch) => (
               <DropdownMenuItem key={branch.id} className="p-2">
-                <BranchSignInButton branchId={branch.id} />
-                {branch.name}
+                <p>{branch.name}</p>
+                {session?.user.branchId === branch.id ? (
+                  <Check />
+                ) : (
+                  <BranchSignInButton branchId={branch.id} />
+                )}
               </DropdownMenuItem>
             ))}
 

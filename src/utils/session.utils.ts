@@ -6,9 +6,11 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth";
 
-export async function getSession() {
+export async function getSession()
+{
   const session = await getServerSession(authOptions);
-  if (!session) {
+  if (!session)
+  {
     throw new Error("Unauthenticate, You must logged");
   }
   return session;

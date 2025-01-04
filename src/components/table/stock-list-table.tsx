@@ -10,21 +10,23 @@ import {
   Table,
 } from "../ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { StockType } from "@/server-actions/stock";
 import { ProductDetailsDialog } from "../dialog/product/product-details";
 import { Button } from "../ui/button";
 import { Eye } from "lucide-react";
 import Image from "next/image";
 import { urlConfig } from "@/configs/url.config";
+import { StockDetailsDialog } from "../dialog/stock/product-details";
 
-export default function ProductsListTable({
-  products,
+export default function StocksListTable({
+  stocks,
 }: {
-  products: ProductType[];
+  stocks: StockType[];
 }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>สินค้าทั้งหมด</CardTitle>
+        <CardTitle>สินค้าใน Stock ทั้งหมด</CardTitle>
       </CardHeader>
       <CardContent>
         <Table>
@@ -34,40 +36,36 @@ export default function ProductsListTable({
               <TableHead className="w-[100px]">หมวดหมู่</TableHead>
               <TableHead className="w-[100px]">รูป</TableHead>
               <TableHead className="w-[100px]">ชื่อ</TableHead>
-              <TableHead className="w-[100px]">สถาณะ</TableHead>
+              <TableHead className="w-[100px]">ราคาขาย (บาท)</TableHead>
+              <TableHead className="w-[100px]">คงเหลือ</TableHead>
               <TableHead className="w-[100px] text-center">
                 จัดการ
               </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {products.length > 0 &&
-              products.map((product) => (
-                <TableRow key={product.id}>
-                  <TableCell>{product.productCode}</TableCell>
-                  <TableCell>{product.category.name}</TableCell>
+            {stocks.length > 0 &&
+              stocks.map((stock, index) => (
+                <TableRow key={index}>
+                  <TableCell>{stock.product.productCode}</TableCell>
+                  <TableCell>{stock.product.category.name}</TableCell>
                   <TableCell>
-                    {product.image && (
+                    {stock.product.image && (
                       <Image
-                        src={urlConfig.showImage(product.image)}
+                        src={urlConfig.showImage(stock.product.image)}
                         width={60}
                         height={60}
                         className="object-cover rounded-xl border p-1"
-                        alt=""
+                        alt={stock.product.name}
                       />
                     )}
                   </TableCell>
-                  <TableCell>{product.name}</TableCell>
-                  <TableCell
-                    className={`${
-                      product.isDeleted ? "text-red-600" : "text-green-600"
-                    }`}
-                  >
-                    {product.isDeleted ? "ถูกลบ" : "ปกติ"}
-                  </TableCell>
+                  <TableCell>{stock.product.name}</TableCell>
+                  <TableCell>{stock.sellPrice}</TableCell>
+                  <TableCell>{stock.product.Stock[0].quantity}</TableCell>
                   <TableCell className="text-center">
-                    <ProductDetailsDialog
-                      product={product}
+                    <StockDetailsDialog
+                      stock={stock}
                       btn={
                         <Button>
                           <Eye />

@@ -6,6 +6,8 @@ import {
   ChartArea,
   ChartBarStacked,
   FileSliders,
+  GitBranch,
+  Home,
   IndentDecrease,
   IndentIncrease,
   Layers,
@@ -17,6 +19,7 @@ import {
 } from "lucide-react";
 
 export type NavLinkType = {
+  type?: "hidden" | "show";
   title: string;
   href?: string;
   icon?: React.JSX.Element;
@@ -32,7 +35,12 @@ export type NavLinkType = {
 // Menu items.
 export const navLinks: NavLinkType[] = [
   {
-    title: "Sale",
+    title: "หลัก",
+    href: "/",
+    icon: <Home />,
+  },
+  {
+    title: "ขาย",
     href: "/sale",
     icon: <BadgeDollarSign />,
   },
@@ -42,12 +50,12 @@ export const navLinks: NavLinkType[] = [
     icon: <ChartArea />,
   },
   {
-    title: "Customer",
+    title: "ลูกค้า",
     href: "/customer",
     icon: <Users />,
   },
   {
-    title: "Report",
+    title: "รายงาน",
     href: "/report",
     icon: <Proportions />,
   },
@@ -56,24 +64,24 @@ export const navLinks: NavLinkType[] = [
     icon: <Layers />,
     subLinks: [
       {
-        title: "All",
-        href: "/stock/in-history",
+        title: "Stock ทั้งหมด",
+        href: "/stock",
         icon: <ReceiptText />,
       },
       {
-        title: "Stock In",
+        title: "Stock นำเข้า",
         href: "/stock/in-history",
         icon: <IndentIncrease />,
       },
       {
-        title: "Stock Out",
+        title: "Stock นำออก",
         href: "/stock/out-history",
         icon: <IndentDecrease />,
       },
     ],
   },
   {
-    title: "User",
+    title: "ผู้ใช้",
     href: "/user",
     icon: <UserCog />,
     permission: [UserRole.ADMIN, UserRole.MANAGER],
@@ -84,15 +92,22 @@ export const navLinks: NavLinkType[] = [
     permission: [UserRole.ADMIN],
     subLinks: [
       {
-        title: "Category",
+        title: "สาขา",
+        href: "/branch",
+        icon: <GitBranch />,
+        permission: [UserRole.ADMIN],
+      },
+      {
+        title: "หมวดหมู่",
         href: "/category",
         icon: <ChartBarStacked />,
         permission: [UserRole.ADMIN],
       },
       {
-        title: "Product",
+        title: "สินค้า",
         href: "/product",
         icon: <LayoutDashboard />,
+        permission: [UserRole.ADMIN],
       },
     ],
   },

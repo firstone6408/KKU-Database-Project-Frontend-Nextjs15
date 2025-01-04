@@ -1,6 +1,6 @@
 import { urlConfig } from "@/configs/url.config";
 import { fetchProductsResSchema } from "@/schemas/api/product.schema";
-import { UpdateProductFormDataSchema } from "@/schemas/server-action/product.schema";
+import { AddProductFormDataSchema, UpdateProductFormDataSchema } from "@/schemas/server-action/product.schema";
 import { withApiHandling } from "@/utils/api.utils"
 import { buildHeaders } from "@/utils/httpHeaders";
 import { renderFail } from "@/utils/server-action-render.utils";
@@ -54,6 +54,48 @@ export async function updateProduct(prevState: any, formData: FormData)
 
         const { error } = await withApiHandling(async () =>
             axios.put(`${urlConfig.KKU_API_URL}/products/${id}`,
+                payload,
+                { headers: buildHeaders({ token: user.token, uploadHeaders: true }) }
+            )
+        );
+        //"ไม่สามารถทำการบันทึกได้ เนื่องจากชื่อหรือรหัส มีอยู่ในระบบแล้ว"
+        if (error.status === "error")
+        {
+            console.log(error.errorMessage)
+            return renderFail({ error: error.errorMessage });
+        }
+    }
+    catch (error)
+    {
+        return renderFail({ error });
+    }
+
+    redirect(_pathname);
+}
+
+export async function addProduct(prevState: any, formData: FormData)
+{
+    let _pathname = "/product";
+    try
+    {
+        const user = (await getSession()).user;
+
+        const validateData = validateFormDataWithZod(formData, AddProductFormDataSchema);
+
+        const { pathname, image, ...restData } = validateData;
+        pathname && (_pathname = pathname);
+
+        const payload: any = { ...restData };
+
+        if (image && image.size > 0)
+        {
+            payload.image = image;
+        }
+
+        // console.log(payload)
+
+        const { error } = await withApiHandling(async () =>
+            axios.post(`${urlConfig.KKU_API_URL}/products`,
                 payload,
                 { headers: buildHeaders({ token: user.token, uploadHeaders: true }) }
             )

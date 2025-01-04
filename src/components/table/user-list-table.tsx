@@ -11,7 +11,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { UserType } from "@/server-actions/user";
 import { Button } from "../ui/button";
-import { Eye, UserPlus } from "lucide-react";
+import { Eye } from "lucide-react";
 import { dayjsUtils } from "@/utils/date.utils";
 import { UserStatus } from "@/configs/enum.config";
 import { UserDetailsDialog } from "../dialog/user/user-details";

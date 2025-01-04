@@ -88,6 +88,6 @@
 
 @layer utilities {
   .container-custom {
-    @apply px-3 md:container md:mx-auto;
+    @apply px-1 md:container md:mx-auto;
   }
 }

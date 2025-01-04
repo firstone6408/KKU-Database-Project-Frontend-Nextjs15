@@ -21,6 +21,7 @@ export default async function CustomerContainer() {
           }
         />
       </div>
+
       <CustomersListTable customers={customers} />
     </div>
   );

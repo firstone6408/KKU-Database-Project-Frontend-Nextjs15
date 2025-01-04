@@ -16,7 +16,7 @@ export type FormInputType = {
   name?: string;
   type?: React.HTMLInputTypeAttribute;
   label?: string;
-  defaultValue?: string | null;
+  defaultValue?: string | null | number;
   placeholder?: string;
   required?: boolean;
   className?: string;
