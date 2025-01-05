@@ -114,3 +114,21 @@ export async function addProduct(prevState: any, formData: FormData)
 
     redirect(_pathname);
 }
+
+export async function fetchUnstockedProductsByBranch()
+{
+    const user = (await getSession()).user;
+
+    const { result, error } = await withApiHandling(async () =>
+        axios.get(`${urlConfig.KKU_API_URL}/products/branch/${user.branchId}/unstocked-products`,
+            { headers: buildHeaders({ token: user.token }) }
+        ), { option: { validateResponse: fetchProductsResSchema } }
+    );
+
+    if (error.status === "error")
+    {
+        throw new Error(error.errorMessage);
+    }
+
+    return result.payload.data
+}

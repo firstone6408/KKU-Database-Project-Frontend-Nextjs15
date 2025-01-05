@@ -1,6 +1,5 @@
 /** @format */
 
-import { ProductType } from "@/server-actions/product";
 import {
   TableHeader,
   TableRow,
@@ -11,17 +10,22 @@ import {
 } from "../ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { StockType } from "@/server-actions/stock";
-import { ProductDetailsDialog } from "../dialog/product/product-details";
 import { Button } from "../ui/button";
-import { Eye } from "lucide-react";
+import { Eye, Pen, Plus } from "lucide-react";
 import Image from "next/image";
 import { urlConfig } from "@/configs/url.config";
-import { StockDetailsDialog } from "../dialog/stock/product-details";
+import { StockDetailsDialog } from "../dialog/stock/stock-details";
+import { StockInHistoryAddDialog } from "../dialog/stock-in/stock-in-add";
+import { Session } from "next-auth";
+import { AdjustPriceDialog } from "../dialog/product-sale-branch/adjust-price";
+import { UserRole } from "@/configs/enum.config";
 
 export default function StocksListTable({
   stocks,
+  session,
 }: {
   stocks: StockType[];
+  session: Session;
 }) {
   return (
     <Card>
@@ -36,9 +40,11 @@ export default function StocksListTable({
               <TableHead className="w-[100px]">หมวดหมู่</TableHead>
               <TableHead className="w-[100px]">รูป</TableHead>
               <TableHead className="w-[100px]">ชื่อ</TableHead>
-              <TableHead className="w-[100px]">ราคาขาย (บาท)</TableHead>
-              <TableHead className="w-[100px]">คงเหลือ</TableHead>
-              <TableHead className="w-[100px] text-center">
+              <TableHead className="w-[100px] text-end">
+                ราคาขาย (บาท)
+              </TableHead>
+              <TableHead className="w-[100px] text-end">คงเหลือ</TableHead>
+              <TableHead className="w-[150px] text-center">
                 จัดการ
               </TableHead>
             </TableRow>
@@ -61,9 +67,13 @@ export default function StocksListTable({
                     )}
                   </TableCell>
                   <TableCell>{stock.product.name}</TableCell>
-                  <TableCell>{stock.sellPrice}</TableCell>
-                  <TableCell>{stock.product.Stock[0].quantity}</TableCell>
-                  <TableCell className="text-center">
+                  <TableCell className="text-end">
+                    {stock.sellPrice}
+                  </TableCell>
+                  <TableCell className="text-end">
+                    {stock.product.Stock[0].quantity}
+                  </TableCell>
+                  <TableCell className="text-center space-x-2">
                     <StockDetailsDialog
                       stock={stock}
                       btn={
@@ -72,6 +82,24 @@ export default function StocksListTable({
                         </Button>
                       }
                     />
+                    <StockInHistoryAddDialog
+                      stock={stock}
+                      btn={
+                        <Button variant={"outline"}>
+                          <Plus />
+                        </Button>
+                      }
+                    />
+                    {session.user.role === UserRole.ADMIN && (
+                      <AdjustPriceDialog
+                        stock={stock}
+                        btn={
+                          <Button variant={"outline"}>
+                            <Pen />
+                          </Button>
+                        }
+                      />
+                    )}
                   </TableCell>
                 </TableRow>
               ))}

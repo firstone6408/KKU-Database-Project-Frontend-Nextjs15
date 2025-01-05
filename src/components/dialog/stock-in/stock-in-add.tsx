@@ -6,39 +6,50 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import FormContainer from "../../form/form-container";
-import { updateProduct } from "@/server-actions/product";
+import { usePathname } from "next/navigation";
+import FormButton from "@/components/form/form-button";
 import FormInput from "@/components/form/form-input";
-import FormTextArea from "@/components/form/form-textarea";
-import { dayjsUtils } from "@/utils/date.utils";
-import { urlConfig } from "@/configs/url.config";
+import { addStockInHistoryAction } from "@/server-actions/stock-in-history";
 import FormImage from "@/components/form/form-image";
+import { urlConfig } from "@/configs/url.config";
 import { StockType } from "@/server-actions/stock";
+import FormTextArea from "@/components/form/form-textarea";
 
-export function StockDetailsDialog(props: {
+export function StockInHistoryAddDialog(props: {
+  btn: any;
   stock: StockType;
-  btn: React.JSX.Element;
 }) {
   const { btn, stock } = props;
+  const pathname = usePathname();
 
   return (
     <Dialog>
       <DialogTrigger asChild>{btn}</DialogTrigger>
       <DialogContent className="">
         <DialogHeader>
-          <DialogTitle>รายละเอียดสินค้า</DialogTitle>
+          <DialogTitle>เพิ่ม Stock</DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>
         {/* content */}
-        <FormContainer action={updateProduct} className="space-y-2">
+        <FormContainer
+          action={addStockInHistoryAction}
+          className="space-y-2"
+        >
           <div className="grid grid-cols-2 gap-2">
+            <input type="hidden" name="pathname" defaultValue={pathname} />
+            <input
+              type="hidden"
+              name="productId"
+              defaultValue={stock.product.id}
+            />
             <FormInput
               label="รหัส"
-              name="productCode"
               defaultValue={stock.product.productCode}
               disabled
             />
@@ -49,18 +60,9 @@ export function StockDetailsDialog(props: {
             />
             <FormInput
               label="ชื่อ"
-              name="name"
               defaultValue={stock.product.name}
               disabled
               className="col-span-full"
-            />
-            <FormTextArea
-              label="คำอธิบาย"
-              name="description"
-              defaultValue={stock.product.description}
-              disabled
-              className="col-span-full"
-              rows={5}
             />
             <FormImage
               label="รูปปสินค้า"
@@ -81,16 +83,33 @@ export function StockDetailsDialog(props: {
               disabled
             />
             <FormInput
-              label="วันที่สร้าง"
-              defaultValue={dayjsUtils.autoFormat(stock.createdAt)}
-              disabled
+              label="รหัสนำเข้า"
+              name="refCode"
+              required
+              className="col-span-full"
             />
             <FormInput
-              label="แก้ไขล่าสุด"
-              defaultValue={dayjsUtils.autoFormat(stock.updatedAt)}
-              disabled
+              label="ราคาค้นทุน"
+              name="costPrice"
+              type="number"
+              required
+            />
+            <FormInput
+              label="จำนวน"
+              name="quantity"
+              type="number"
+              required
+            />
+            <FormTextArea
+              label="หมายเหตุ"
+              name="note"
+              className="col-span-full"
+              rows={4}
             />
           </div>
+          <DialogFooter>
+            <FormButton btnText="บันทึก" />
+          </DialogFooter>
         </FormContainer>
         {/* end content */}
       </DialogContent>

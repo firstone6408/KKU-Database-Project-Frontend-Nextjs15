@@ -2,7 +2,7 @@
 
 import { Skeleton } from "../ui/skeleton";
 
-export default function CustomerLoadingSkeleton() {
+export default function TableLoadingSkeleton() {
   return (
     <div>
       <Skeleton className="w-full h-[100%]">
