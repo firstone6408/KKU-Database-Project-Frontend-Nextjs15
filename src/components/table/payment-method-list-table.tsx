@@ -1,6 +1,6 @@
 /** @format */
 
-import { CategoryType } from "@/server-actions/category";
+import { PaymentMethodType } from "@/server-actions/payment-method";
 import { Button } from "../ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
 import {
@@ -11,14 +11,14 @@ import {
   TableCell,
   Table,
 } from "../ui/table";
-import { CategoryDetailsDialog } from "../dialog/category/category-details";
-import { Eye } from "lucide-react";
+import { PaymentMethodAddDialog } from "../dialog/payment-method/payment-method-add";
+import { Pen } from "lucide-react";
 
-export default function CategoriesListTable(props: {
-  categories: CategoryType[];
+export default function PaymentMethodsListTable({
+  paymentMethods,
+}: {
+  paymentMethods: PaymentMethodType[];
 }) {
-  const { categories } = props;
-
   return (
     <Card>
       <CardHeader>
@@ -28,7 +28,7 @@ export default function CategoriesListTable(props: {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[100px]">รหัส</TableHead>
+              <TableHead className="w-[20px] text-end">ลำดับ</TableHead>
               <TableHead className="w-[100px]">ชื่อ</TableHead>
               <TableHead className="w-[100px] text-center">
                 จัดการ
@@ -36,19 +36,19 @@ export default function CategoriesListTable(props: {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {categories.length > 0 &&
-              categories.map((category) => (
-                <TableRow key={category.id}>
-                  <TableCell>{category.categoryCode}</TableCell>
-                  <TableCell>{category.name}</TableCell>
+            {paymentMethods.length > 0 &&
+              paymentMethods.map((paymentMethod, index) => (
+                <TableRow key={paymentMethod.id}>
+                  <TableCell className="text-end">{index + 1}</TableCell>
+                  <TableCell>{paymentMethod.name}</TableCell>
                   <TableCell className="text-center">
-                    <CategoryDetailsDialog
-                      category={category}
+                    <PaymentMethodAddDialog
                       btn={
                         <Button>
-                          <Eye />
+                          <Pen />
                         </Button>
                       }
+                      paymentMethod={paymentMethod}
                     />
                   </TableCell>
                 </TableRow>
