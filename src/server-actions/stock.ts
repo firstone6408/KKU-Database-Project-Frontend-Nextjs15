@@ -14,7 +14,7 @@ import {
 import axios from "axios";
 import { redirect } from "next/navigation";
 
-export async function fetchStocks() {
+export async function fetchStockProducts() {
   const user = (await getSession()).user;
 
   //console.log(user);
@@ -34,7 +34,9 @@ export async function fetchStocks() {
 
   return result.payload.data;
 }
-export type StockType = Awaited<ReturnType<typeof fetchStocks>>[number];
+export type StockProductType = Awaited<
+  ReturnType<typeof fetchStockProducts>
+>[number];
 
 export async function addStock(prev: any, formData: FormData) {
   let _pathname = "/stock";

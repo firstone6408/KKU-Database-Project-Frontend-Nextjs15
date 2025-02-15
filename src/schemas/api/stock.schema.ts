@@ -35,11 +35,16 @@ export const ProductSchema = z.object({
   category: CategorySchema,
 });
 
-export const StockItem = z.object({
+export const ProductSaleBranchSchema = z.object({
   sellPrice: z.number(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
-  product: ProductSchema.extend({ Stock: z.array(StockSchema) }),
+});
+
+export const StockItem = ProductSchema.extend({
+  category: CategorySchema,
+  Stock: z.array(StockSchema),
+  ProductSaleBranch: z.array(ProductSaleBranchSchema),
 });
 
 export const fetchStocksResSchema = templateResponse(z.array(StockItem));

@@ -9,7 +9,7 @@ import {
   Table,
 } from "../ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { StockType } from "@/server-actions/stock";
+import { StockProductType } from "@/server-actions/stock";
 import { Button } from "../ui/button";
 import { DollarSign, Eye, Pen, Plus } from "lucide-react";
 import Image from "next/image";
@@ -20,10 +20,10 @@ import { AdjustPriceDialog } from "../dialog/product-sale-branch/adjust-price";
 import { UserRole } from "@/configs/enum.config";
 
 export default function StocksListTable({
-  stocks,
+  stockProducts,
   session,
 }: {
-  stocks: StockType[];
+  stockProducts: StockProductType[];
   session: Session;
 }) {
   return (
@@ -49,34 +49,36 @@ export default function StocksListTable({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {stocks.length > 0 &&
-              stocks.map((stock, index) => (
+            {stockProducts.length > 0 &&
+              stockProducts.map((product, index) => (
                 <TableRow key={index}>
-                  <TableCell>{stock.product.productCode}</TableCell>
-                  <TableCell>{stock.product.category.name}</TableCell>
+                  <TableCell>{product.productCode}</TableCell>
+                  <TableCell>{product.category.name}</TableCell>
                   <TableCell>
-                    {stock.product.image && (
+                    {product.image && (
                       <Image
-                        src={urlConfig.showImage(stock.product.image)}
+                        src={urlConfig.showImage(product.image)}
                         width={60}
                         height={60}
                         className="object-cover rounded-xl border p-1"
-                        alt={stock.product.name}
+                        alt={product.name}
                       />
                     )}
                   </TableCell>
-                  <TableCell>{stock.product.name}</TableCell>
+                  <TableCell>{product.name}</TableCell>
                   <TableCell className="text-end">
-                    {stock.sellPrice}
+                    {product.ProductSaleBranch.length > 0
+                      ? product.ProductSaleBranch[0].sellPrice
+                      : "ยังไม่ได้กำหนดราคา"}
                   </TableCell>
                   <TableCell className="text-end">
-                    {stock.product.Stock.length > 0
-                      ? stock.product.Stock[0].quantity
+                    {product.Stock.length > 0
+                      ? product.Stock[0].quantity
                       : "ไม่มีสินค้า"}
                   </TableCell>
                   <TableCell className="text-center space-x-2">
                     <StockDetailsDialog
-                      stock={stock}
+                      stockProduct={product}
                       btn={
                         <Button>
                           <Eye />
@@ -85,7 +87,7 @@ export default function StocksListTable({
                     />
                     {session.user.role === UserRole.ADMIN && (
                       <AdjustPriceDialog
-                        stock={stock}
+                        stockProduct={product}
                         btn={
                           <Button variant={"outline"}>
                             <DollarSign />

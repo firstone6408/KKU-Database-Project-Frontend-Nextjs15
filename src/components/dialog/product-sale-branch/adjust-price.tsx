@@ -15,11 +15,15 @@ import FormContainer from "../../form/form-container";
 import { usePathname } from "next/navigation";
 import FormButton from "@/components/form/form-button";
 import FormInput from "@/components/form/form-input";
-import { StockType } from "@/server-actions/stock";
+import { StockProductType } from "@/server-actions/stock";
 import { updatePriceAction } from "@/server-actions/product-sale-branch";
+import { dayjsUtils } from "@/utils/date.utils";
 
-export function AdjustPriceDialog(props: { btn: any; stock: StockType }) {
-  const { btn, stock } = props;
+export function AdjustPriceDialog(props: {
+  btn: any;
+  stockProduct: StockProductType;
+}) {
+  const { btn, stockProduct: product } = props;
   const pathname = usePathname();
 
   return (
@@ -37,27 +41,55 @@ export function AdjustPriceDialog(props: { btn: any; stock: StockType }) {
             <input
               type="hidden"
               name="productId"
-              defaultValue={stock.product.id}
+              defaultValue={product.id}
             />
             <FormInput
               label="รหัส"
-              defaultValue={stock.product.productCode}
+              defaultValue={product.productCode}
               disabled
             />
             <FormInput
               label="หมวดหมู่"
-              defaultValue={stock.product.category.name}
+              defaultValue={product.category.name}
               disabled
             />
             <FormInput
               label="ชื่อ"
-              defaultValue={stock.product.name}
+              defaultValue={product.name}
               disabled
               className="col-span-full"
             />
             <FormInput
+              label="วันที่เริ่ม"
+              defaultValue={
+                product.ProductSaleBranch.length > 0
+                  ? dayjsUtils.autoFormat(
+                      product.ProductSaleBranch[0].createdAt
+                    )
+                  : "ยังไม่ได้กำหนดราคา"
+              }
+              disabled
+              className="col-span-1"
+            />
+            <FormInput
+              label="วันที่แก้ไขล่าสุด"
+              defaultValue={
+                product.ProductSaleBranch.length > 0
+                  ? dayjsUtils.autoFormat(
+                      product.ProductSaleBranch[0].updatedAt
+                    )
+                  : "ยังไม่ได้กำหนดราคา"
+              }
+              disabled
+              className="col-span-1"
+            />
+            <FormInput
               label="ราคาขาย (บาท) (เดิม)"
-              defaultValue={stock.sellPrice}
+              defaultValue={
+                product.ProductSaleBranch.length > 0
+                  ? product.ProductSaleBranch[0].sellPrice
+                  : "ยังไม่ได้กำหนดราคา"
+              }
               disabled
             />
             <FormInput

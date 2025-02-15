@@ -1,7 +1,7 @@
 /** @format */
 
 import StocksListTable from "@/components/table/stock-list-table";
-import { fetchStocks } from "@/server-actions/stock";
+import { fetchStockProducts } from "@/server-actions/stock";
 import StockSearch from "./stock-search";
 import { Button } from "@/components/ui/button";
 import { getSession } from "@/utils/session.utils";
@@ -10,9 +10,9 @@ import Link from "next/link";
 import { Plus } from "lucide-react";
 
 export default async function StockContainer() {
-  const stocks = await fetchStocks();
+  const stockProducts = await fetchStockProducts();
   const session = await getSession();
-  //console.log(stocks);
+  //console.log(stockProducts);
   return (
     <>
       <div className="flex justify-between items-center p-2">
@@ -24,7 +24,7 @@ export default async function StockContainer() {
           </Button>
         )}
       </div>
-      <StocksListTable stocks={stocks} session={session} />
+      <StocksListTable stockProducts={stockProducts} session={session} />
     </>
   );
 }
