@@ -2,14 +2,14 @@
 
 export type FormContainerType = {
   children: React.ReactNode;
-  action: (
+  action?: (
     prevState: any,
     formData: FormData
   ) => Promise<{ ok: boolean; message: string }>;
   className?: string;
   options?: {
-    afterSubmit: () => any
-  }
+    afterSubmit: () => any;
+  };
 };
 
 export type FormInputType = {
@@ -30,18 +30,18 @@ export type FormFileType = {
   required?: boolean;
   disabled?: boolean;
   accept?: string;
-}
+};
 
 export type GoogleSignInButtonType = {
   className?: string;
   btnText?: string;
   variant?:
-  | "default"
-  | "destructive"
-  | "outline"
-  | "secondary"
-  | "ghost"
-  | "link"
-  | null
-  | undefined;
+    | "default"
+    | "destructive"
+    | "outline"
+    | "secondary"
+    | "ghost"
+    | "link"
+    | null
+    | undefined;
 };

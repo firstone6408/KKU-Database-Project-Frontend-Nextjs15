@@ -48,11 +48,41 @@ export function StockDetailsDialog(props: {
               disabled
             />
             <FormInput
+              label="Barcode"
+              name="barcode"
+              defaultValue={stock.product.barcode}
+              disabled
+              className="col-span-full"
+            />
+            <FormInput
               label="ชื่อ"
               name="name"
               defaultValue={stock.product.name}
               disabled
               className="col-span-full"
+            />
+            <FormInput
+              label="รุ่น"
+              name="model"
+              defaultValue={stock.product.model}
+              disabled
+              className="col-span-full"
+            />
+            <FormInput
+              label="ขนาด"
+              name="size"
+              defaultValue={stock.product.size}
+              disabled
+              className="col-span-1"
+            />
+            <FormInput
+              label="หน่วย"
+              name="unit"
+              defaultValue={
+                stock.product.unit === "METER" ? "เมตร" : "ชิ้น"
+              }
+              disabled
+              className="col-span-1"
             />
             <FormTextArea
               label="คำอธิบาย"
@@ -77,7 +107,11 @@ export function StockDetailsDialog(props: {
             />
             <FormInput
               label="จำนวนคงเหลือ"
-              defaultValue={stock.product.Stock[0].quantity}
+              defaultValue={
+                stock.product.Stock.length > 0
+                  ? stock.product.Stock[0].quantity
+                  : "ไม่มีสินค้า"
+              }
               disabled
             />
             <FormInput

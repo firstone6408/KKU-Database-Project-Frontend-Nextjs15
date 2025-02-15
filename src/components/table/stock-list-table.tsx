@@ -11,11 +11,10 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { StockType } from "@/server-actions/stock";
 import { Button } from "../ui/button";
-import { Eye, Pen, Plus } from "lucide-react";
+import { DollarSign, Eye, Pen, Plus } from "lucide-react";
 import Image from "next/image";
 import { urlConfig } from "@/configs/url.config";
 import { StockDetailsDialog } from "../dialog/stock/stock-details";
-import { StockInHistoryAddDialog } from "../dialog/stock-in/stock-in-add";
 import { Session } from "next-auth";
 import { AdjustPriceDialog } from "../dialog/product-sale-branch/adjust-price";
 import { UserRole } from "@/configs/enum.config";
@@ -71,7 +70,9 @@ export default function StocksListTable({
                     {stock.sellPrice}
                   </TableCell>
                   <TableCell className="text-end">
-                    {stock.product.Stock[0].quantity}
+                    {stock.product.Stock.length > 0
+                      ? stock.product.Stock[0].quantity
+                      : "ไม่มีสินค้า"}
                   </TableCell>
                   <TableCell className="text-center space-x-2">
                     <StockDetailsDialog
@@ -82,20 +83,12 @@ export default function StocksListTable({
                         </Button>
                       }
                     />
-                    <StockInHistoryAddDialog
-                      stock={stock}
-                      btn={
-                        <Button variant={"outline"}>
-                          <Plus />
-                        </Button>
-                      }
-                    />
                     {session.user.role === UserRole.ADMIN && (
                       <AdjustPriceDialog
                         stock={stock}
                         btn={
                           <Button variant={"outline"}>
-                            <Pen />
+                            <DollarSign />
                           </Button>
                         }
                       />

@@ -11,7 +11,7 @@ export default function FormButton({
 }: {
   className?: string;
   size?: "default" | "sm" | "lg" | "icon" | null | undefined;
-  btnText: string;
+  btnText: any;
 }) {
   const { pending } = useFormStatus();
 

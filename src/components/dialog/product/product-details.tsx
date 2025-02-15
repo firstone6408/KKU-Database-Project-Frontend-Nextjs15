@@ -26,6 +26,7 @@ import FormButton from "@/components/form/form-button";
 import Image from "next/image";
 import { urlConfig } from "@/configs/url.config";
 import FormImage from "@/components/form/form-image";
+import ProductUnitDropdown from "@/components/dropdown/product-unit";
 
 export function ProductDetailsDialog(props: {
   product: ProductType;
@@ -43,13 +44,13 @@ export function ProductDetailsDialog(props: {
   return (
     <Dialog>
       <DialogTrigger asChild>{btn}</DialogTrigger>
-      <DialogContent className="">
+      <DialogContent className="dialog-container dialog-lg">
         <DialogHeader>
           <DialogTitle>รายละเอียดสินค้า</DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>
         {/* content */}
-        <FormContainer action={updateProduct} className="space-y-2">
+        <FormContainer action={updateProduct} className="space-y-2 ">
           <div className="grid grid-cols-2 gap-2">
             <input type="hidden" name="id" defaultValue={product.id} />
             <input type="hidden" name="pathname" defaultValue={pathname} />
@@ -68,12 +69,44 @@ export function ProductDetailsDialog(props: {
               disabled={isEdit}
             />
             <FormInput
+              label="Barcode"
+              name="barcode"
+              defaultValue={product.barcode}
+              required
+              disabled={isEdit}
+              className="col-span-full"
+            />
+            <FormInput
               label="ชื่อ"
               name="name"
               defaultValue={product.name}
               required
               disabled={isEdit}
               className="col-span-full"
+            />
+            <FormInput
+              label="รุ่น"
+              name="model"
+              defaultValue={product.model}
+              required
+              disabled={isEdit}
+              className="col-span-full"
+            />
+            <FormInput
+              label="ขนาด"
+              name="size"
+              defaultValue={product.size}
+              required
+              disabled={isEdit}
+              className="col-span-1"
+            />
+            <ProductUnitDropdown
+              label="หน่วย"
+              name="unit"
+              defaultValue={product.unit}
+              required
+              disabled={isEdit}
+              className="col-span-1"
             />
             <FormTextArea
               label="คำอธิบาย"
@@ -97,7 +130,7 @@ export function ProductDetailsDialog(props: {
               disabled={isEdit}
             />
             <FormCheckbox
-              label="สถาณะ"
+              label="สถาณะ (การลบ)"
               name="isDeleted"
               defaultChecked={product.isDeleted}
               disabled={isEdit}

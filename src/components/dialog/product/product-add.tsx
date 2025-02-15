@@ -19,6 +19,7 @@ import CategoryDropDown from "@/components/dropdown/category";
 import FormTextArea from "@/components/form/form-textarea";
 import FormFile from "@/components/form/form-file";
 import FormButton from "@/components/form/form-button";
+import ProductUnitDropdown from "@/components/dropdown/product-unit";
 
 export function ProductAddDialog(props: { btn: React.JSX.Element }) {
   const { btn } = props;
@@ -27,7 +28,7 @@ export function ProductAddDialog(props: { btn: React.JSX.Element }) {
   return (
     <Dialog>
       <DialogTrigger asChild>{btn}</DialogTrigger>
-      <DialogContent className="">
+      <DialogContent className="dialog-container dialog-xl">
         <DialogHeader>
           <DialogTitle>เพิ่มสินค้า</DialogTitle>
           <DialogDescription></DialogDescription>
@@ -43,10 +44,34 @@ export function ProductAddDialog(props: { btn: React.JSX.Element }) {
               required
             />
             <FormInput
+              label="Barcode"
+              name="barcode"
+              required
+              className="col-span-full"
+            />
+            <FormInput
               label="ชื่อ"
               name="name"
               required
               className="col-span-full"
+            />
+            <FormInput
+              label="รุ่น"
+              name="model"
+              required
+              className="col-span-full"
+            />
+            <FormInput
+              label="ขนาด"
+              name="size"
+              required
+              className="col-span-1"
+            />
+            <ProductUnitDropdown
+              label="หน่วย"
+              name="unit"
+              className="col-span-1"
+              required
             />
             <FormTextArea
               label="คำอธิบาย"

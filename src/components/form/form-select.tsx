@@ -19,6 +19,7 @@ type KeyValueProps = {
 type FormSelectProps<T> = FormInputType & {
   setKeyValue: (item: T) => KeyValueProps;
   items: T[];
+  onChange?: (value: any) => void;
 };
 
 export default function FormSelect<T>({
@@ -32,6 +33,7 @@ export default function FormSelect<T>({
   disabled,
   setKeyValue,
   items,
+  onChange,
 }: FormSelectProps<T>) {
   return (
     <div className={`${className ? className : "space-y-2"}`}>
@@ -43,6 +45,7 @@ export default function FormSelect<T>({
         name={name}
         required={required}
         disabled={disabled}
+        onValueChange={(value) => onChange?.(value)}
       >
         <SelectTrigger>
           <SelectValue placeholder={placeholder} />

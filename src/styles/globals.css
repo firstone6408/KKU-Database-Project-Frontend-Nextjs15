@@ -90,4 +90,28 @@
   .container-custom {
     @apply px-1 md:container md:mx-auto;
   }
+
+  .dialog-container {
+    @apply max-h-[95vh] overflow-y-auto;
+  }
+
+  .dialog-md {
+    @apply max-w-[70vh];
+  }
+
+  .dialog-lg {
+    @apply max-w-[85vh];
+  }
+
+  .dialog-xl {
+    @apply max-w-[100vh];
+  }
+
+  .dialog-2xl {
+    @apply max-w-[120vh];
+  }
+
+  .dialog-3xl {
+    @apply max-w-[140vh];
+  }
 }

@@ -70,15 +70,21 @@ export const navLinks: NavLinkType[] = [
         icon: <ReceiptText />,
       },
       {
+        title: "เพิ่มสินค้าเข้าStock",
+        href: "/stock/add",
+        icon: <ReceiptText />,
+        permission: [UserRole.ADMIN, UserRole.MANAGER, UserRole.STAFF],
+      },
+      {
         title: "Stock นำเข้า",
         href: "/stock/in-history",
         icon: <IndentIncrease />,
       },
-      {
-        title: "Stock นำออก",
-        href: "/stock/out-history",
-        icon: <IndentDecrease />,
-      },
+      // {
+      //   title: "Stock นำออก",
+      //   href: "/stock/out-history",
+      //   icon: <IndentDecrease />,
+      // },
     ],
   },
   {

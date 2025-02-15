@@ -7,7 +7,7 @@ import StockInHistorySearch from "./stock-in-search";
 export default async function StockInContainer() {
   const stockInHistories = await fetchStockInHistories();
 
-  //console.log(stockInHistories);
+  console.log(stockInHistories);
   return (
     <>
       <div className="flex justify-between items-center p-2">

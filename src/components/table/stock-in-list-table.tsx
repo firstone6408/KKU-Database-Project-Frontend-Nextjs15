@@ -11,6 +11,9 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { dayjsUtils } from "@/utils/date.utils";
 import { StockInHistoryType } from "@/server-actions/stock-in-history";
+import { Eye } from "lucide-react";
+import { StockInHistoryDetailsDialog } from "../dialog/stock-in/stock-in-details";
+import { Button } from "../ui/button";
 
 export default function StockInHistoriesListTable({
   stockInHistories,
@@ -27,43 +30,55 @@ export default function StockInHistoriesListTable({
           <TableHeader>
             <TableRow>
               <TableHead className="w-[50px] text-end">ลำดับ</TableHead>
-              <TableHead className="w-[60px] text-end">
-                รหัสนำเข้า
-              </TableHead>
-              <TableHead className="w-[100px]">หมวดหมู่</TableHead>
-              <TableHead className="w-[100px]">ชื่อ</TableHead>
+              <TableHead className="w-[60px]">รหัสนำเข้า</TableHead>
+              <TableHead className="w-[100px]">ผู้จัดจำหน่าย</TableHead>
               <TableHead className="w-[20px]">ประเภท</TableHead>
-              <TableHead className="w-[100px] text-end">
-                ต้นทุน(บาท)
+              <TableHead className="w-[70px] text-end">
+                จำนวนสินค้า
               </TableHead>
-              <TableHead className="w-[100px] text-end">จำนวน</TableHead>
-              <TableHead className="w-[100px]">วันที่</TableHead>
+              <TableHead className="w-[80px] text-end">
+                จำนวนเงินทั้งหมด
+              </TableHead>
+              <TableHead className="w-[100px]">นำเข้าโดย</TableHead>
+              <TableHead className="w-[110px]">วันที่</TableHead>
+              <TableHead className="w-[70px] text-center">
+                Option
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {stockInHistories.length > 0 &&
+            {stockInHistories.length > 0 ? (
               stockInHistories.map((stockIn, index) => (
-                <TableRow key={stockIn.refCode}>
+                <TableRow key={stockIn.id}>
                   <TableCell className="text-end">{index + 1}</TableCell>
-                  <TableCell className="text-end">
-                    {stockIn.refCode}
-                  </TableCell>
-                  <TableCell>
-                    {stockIn.stock.product.category.name}
-                  </TableCell>
-                  <TableCell>{stockIn.stock.product.name}</TableCell>
+                  <TableCell>{stockIn.refCode}</TableCell>
+                  <TableCell>{stockIn.distributor}</TableCell>
                   <TableCell>{stockIn.type}</TableCell>
                   <TableCell className="text-end">
-                    {stockIn.costPrice}
+                    {stockIn.StockInItem.length.toLocaleString()}
                   </TableCell>
                   <TableCell className="text-end">
-                    {stockIn.quantity}
+                    {stockIn.totalPrice.toLocaleString()}
                   </TableCell>
+                  <TableCell>{stockIn.user.name}</TableCell>
                   <TableCell>
                     {dayjsUtils.autoFormat(stockIn.createdAt)}
                   </TableCell>
+                  <TableCell className="flex justify-center">
+                    <StockInHistoryDetailsDialog
+                      btn={
+                        <Button>
+                          <Eye />
+                        </Button>
+                      }
+                      stockIn={stockIn}
+                    />
+                  </TableCell>
                 </TableRow>
-              ))}
+              ))
+            ) : (
+              <p className="text-red-700">** ไม่มีการนำเข้า **</p>
+            )}
           </TableBody>
         </Table>
       </CardContent>
