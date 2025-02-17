@@ -13,6 +13,8 @@ export default function FormTextArea({
   className,
   disabled,
   rows,
+  value,
+  onChange,
 }: FormInputType & { rows?: number }) {
   return (
     <div className={`${className ?? "space-y-2"}`}>
@@ -24,6 +26,7 @@ export default function FormTextArea({
         required={required}
         disabled={disabled}
         rows={rows ?? 2}
+        {...(value !== undefined ? { value, onChange } : {})}
       />
     </div>
   );

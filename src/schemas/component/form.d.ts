@@ -16,11 +16,15 @@ export type FormInputType = {
   name?: string;
   type?: React.HTMLInputTypeAttribute;
   label?: string;
-  defaultValue?: string | null | number;
+  defaultValue?: any;
   placeholder?: string;
   required?: boolean;
   className?: string;
   disabled?: boolean;
+  value?: any;
+  onChange?: (params: any) => void;
+  onBlur?: any;
+  onWheel?: (params?: any) => void | any;
 };
 
 export type FormFileType = {

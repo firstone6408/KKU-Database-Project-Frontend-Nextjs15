@@ -88,7 +88,7 @@
 
 @layer utilities {
   .container-custom {
-    @apply px-1 md:container md:mx-auto;
+    @apply px-1 md:px-2;
   }
 
   .dialog-container {

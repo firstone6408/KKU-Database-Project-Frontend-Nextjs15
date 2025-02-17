@@ -48,7 +48,9 @@ export default function FormSelect<T>({
         onValueChange={(value) => onChange?.(value)}
       >
         <SelectTrigger>
-          <SelectValue placeholder={placeholder} />
+          <SelectValue
+            placeholder={placeholder ? placeholder : "-- เลือก --"}
+          />
         </SelectTrigger>
         <SelectContent>
           {items &&

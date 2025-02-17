@@ -40,6 +40,7 @@ export function ProductAddDialog(props: { btn: React.JSX.Element }) {
             <FormInput label="รหัส" name="productCode" required />
             <CategoryDropDown
               label="หมวดหมู่"
+              placeholder="-- เลือก --"
               name="categoryId"
               required
             />

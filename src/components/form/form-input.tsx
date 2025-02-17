@@ -13,6 +13,10 @@ export default function FormInput({
   required,
   className,
   disabled,
+  value,
+  onChange,
+  onBlur,
+  onWheel,
 }: FormInputType) {
   return (
     <div className={`${className ?? "space-y-2"}`}>
@@ -24,6 +28,9 @@ export default function FormInput({
         placeholder={placeholder}
         required={required}
         disabled={disabled}
+        {...(value !== undefined ? { value, onChange } : {})}
+        onBlur={onBlur}
+        onWheel={onWheel}
       />
     </div>
   );

@@ -23,13 +23,28 @@ export enum StockOutType {
 }
 
 export enum OrderStatus {
-  PENDING = "PENDING",
-  COMPLETED = "COMPLETED",
-  CANCELLED = "CANCELLED",
-  REFUNDED = "REFUNDED",
+  PENDING = "PENDING", // รอดำเนินการ
+  COMPLETED = "COMPLETED", // สำเร็จ
+  DEPOSITED = "DEPOSITED", // จ่ายมัดจำแล้ว แต่ยังไม่จ่ายครบ
+  CANCELLED = "CANCELLED", // ยกเลิก
+  REFUNDED = "REFUNDED", // คืนของ
+  CREDIT_USED = "CREDIT_USED", // ใช้เครดิตในการชำระเงิน (เครดิตของร้านหรือยอดค้าง)
 }
 
 export enum ProductUnit {
   METER = "METER",
   PIECE = "PIECE",
+}
+
+export enum DeliveryType {
+  STANDARD = "STANDARD",
+  EXPRESS = "EXPRESS",
+}
+
+export enum DeliveryStatus {
+  PENDING = "PENDING", // รอดำเนินการจัดส่ง (ยังไม่เริ่มจัดส่ง)
+  IN_TRANSIT = "IN_TRANSIT", // อยู่ระหว่างการจัดส่ง (กำลังเดินทาง)
+  DELIVERED = "DELIVERED", // ส่งถึงลูกค้าแล้ว
+  CANCELED = "CANCELED", // ยกเลิกการจัดส่ง
+  DELAYED = "DELAYED", // การจัดส่งล่าช้า
 }

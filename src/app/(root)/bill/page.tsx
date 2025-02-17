@@ -1,13 +1,13 @@
 /** @format */
 
-import StockAddContainer from "@/components/(root)/stock-add/stock-add-container";
+import BillContainer from "@/components/(root)/bill/bill-container";
 import TableLoadingSkeleton from "@/components/skeleton/customer-loading";
 import { Suspense } from "react";
 
-export default function AddStockPage() {
+export default function BillPage() {
   return (
     <Suspense fallback={<TableLoadingSkeleton />}>
-      <StockAddContainer />
+      <BillContainer />
     </Suspense>
   );
 }

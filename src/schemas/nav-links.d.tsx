@@ -9,7 +9,6 @@ import {
   GitBranch,
   HandCoins,
   Home,
-  IndentDecrease,
   IndentIncrease,
   Layers,
   LayoutDashboard,
@@ -30,6 +29,7 @@ export type NavLinkType = {
     href: string;
     icon?: React.JSX.Element;
     permission?: UserRole[];
+    type?: "hidden" | "show";
   }[];
 };
 
@@ -41,9 +41,15 @@ export const navLinks: NavLinkType[] = [
     icon: <Home />,
   },
   {
-    title: "ขาย",
-    href: "/sale",
+    title: "บิล",
+    href: "/bill",
     icon: <BadgeDollarSign />,
+  },
+  {
+    title: "ขาย",
+    href: "/bill/sale",
+    icon: <BadgeDollarSign />,
+    type: "hidden",
   },
   {
     title: "Dashboard",
@@ -74,6 +80,7 @@ export const navLinks: NavLinkType[] = [
         href: "/stock/add",
         icon: <ReceiptText />,
         permission: [UserRole.ADMIN, UserRole.MANAGER, UserRole.STAFF],
+        type: "hidden",
       },
       {
         title: "Stock นำเข้า",

@@ -38,16 +38,21 @@ export default function StockMenuList({ navLink }: StockMenuListProps) {
           <CollapsibleContent>
             <SidebarMenuSub>
               {navLink.subLinks.length > 0 &&
-                navLink.subLinks.map((item, index) => (
-                  <SidebarMenuSubItem key={index}>
-                    <SidebarMenuSubButton asChild>
-                      <Link href={item.href}>
-                        {item.icon}
-                        <span>{item.title}</span>
-                      </Link>
-                    </SidebarMenuSubButton>
-                  </SidebarMenuSubItem>
-                ))}
+                navLink.subLinks.map((item, index) => {
+                  if (item.type && item.type === "hidden") {
+                    return;
+                  }
+                  return (
+                    <SidebarMenuSubItem key={index}>
+                      <SidebarMenuSubButton asChild>
+                        <Link href={item.href}>
+                          {item.icon}
+                          <span>{item.title}</span>
+                        </Link>
+                      </SidebarMenuSubButton>
+                    </SidebarMenuSubItem>
+                  );
+                })}
             </SidebarMenuSub>
           </CollapsibleContent>
         </SidebarMenuItem>

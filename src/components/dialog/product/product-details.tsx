@@ -23,7 +23,6 @@ import FormCheckbox from "@/components/form/form-checkbox";
 import { dayjsUtils } from "@/utils/date.utils";
 import FormFile from "@/components/form/form-file";
 import FormButton from "@/components/form/form-button";
-import Image from "next/image";
 import { urlConfig } from "@/configs/url.config";
 import FormImage from "@/components/form/form-image";
 import ProductUnitDropdown from "@/components/dropdown/product-unit";
@@ -64,6 +63,7 @@ export function ProductDetailsDialog(props: {
             <CategoryDropDown
               label="หมวดหมู่"
               name="categoryId"
+              placeholder="-- เลือก --"
               defaultValue={product.category.id}
               required
               disabled={isEdit}

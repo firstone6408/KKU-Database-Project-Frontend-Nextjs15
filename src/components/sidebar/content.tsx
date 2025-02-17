@@ -30,6 +30,9 @@ export default async function Content() {
             if (item.subLinks) {
               return <StockMenuList key={index} navLink={item} />;
             } else {
+              if (item.type && item.type === "hidden") {
+                return;
+              }
               return (
                 <SidebarMenuItem key={index}>
                   <SidebarMenuButton asChild>

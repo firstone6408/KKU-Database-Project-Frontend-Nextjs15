@@ -3,8 +3,7 @@
 import { AxiosError, AxiosResponse } from "axios";
 import { z } from "zod";
 
-export function templateResponse<T>(zodSchema: z.ZodSchema<T>)
-{
+export function templateResponse<T>(zodSchema: z.ZodSchema<T>) {
   return z.object({
     ok: z.boolean(),
     message: z.string(),
@@ -14,15 +13,12 @@ export function templateResponse<T>(zodSchema: z.ZodSchema<T>)
   });
 }
 
-
 function validateResponseFromServer<T>(
   axiosResponse: AxiosResponse<any>,
   responseSchema: z.ZodSchema<T>
-)
-{
+) {
   const validatedResult = responseSchema.safeParse(axiosResponse.data);
-  if (!validatedResult.success)
-  {
+  if (!validatedResult.success) {
     const errorMessage = validatedResult.error.errors.map(
       (err) => `[${err.path}: ${err.message}]`
     );
@@ -40,8 +36,8 @@ type WithApiHandlingResType<T> = {
     status: "success" | "error";
     errorMessage: string;
   };
-  result: T
-}
+  result: T;
+};
 /**
  * A utility function to handle API requests with optional response validation.
  *
@@ -49,14 +45,14 @@ type WithApiHandlingResType<T> = {
  * @param requestFn - A function that performs the API request and returns a Promise.
  * @param config - Optional configuration for the request.
  * @param config.option.validateResponse - A Zod schema to validate the API response.
- * 
+ *
  * @returns {Promise<WithApiHandlingResType<T>>} - Returns an object containing the result and error information.
  *
  * @example
  * ```typescript
  * import axios from "axios";
  * import { z } from "zod";
- * 
+ *
  * const fetchCustomersSchema = z.object({
  *   customers: z.array(
  *     z.object({
@@ -65,14 +61,14 @@ type WithApiHandlingResType<T> = {
  *     })
  *   ),
  * });
- * 
+ *
  * async function fetchCustomers() {
  *   return await withApiHandling(
  *     () => axios.get("https://example.com/api/customers"),
  *     { option: { validateResponse: fetchCustomersSchema } }
  *   );
  * }
- * 
+ *
  * async function exampleUsage() {
  *   const { result, error } = await fetchCustomers();
  *   if (error.status === "error") {
@@ -83,38 +79,36 @@ type WithApiHandlingResType<T> = {
  * }
  * ```
  */
-export async function withApiHandling<T>(requestFn: () => Promise<any>, config?: {
-  option?: {
-    validateResponse?: z.ZodSchema<T>
+export async function withApiHandling<T>(
+  requestFn: () => Promise<any>,
+  config?: {
+    option?: {
+      validateResponse?: z.ZodSchema<T>;
+    };
   }
-}): Promise<WithApiHandlingResType<T>>
-{
+): Promise<WithApiHandlingResType<T>> {
   let status: WithApiHandlingResType<T>["error"]["status"] = "success";
   let errorMessage = "No error";
   let result;
-  try
-  {
+  try {
     result = await requestFn();
-    if (config)
-    {
+    if (config) {
       const { option } = config;
-      if (option?.validateResponse)
-      {
-        result = validateResponseFromServer(result, option.validateResponse);
+      if (option?.validateResponse) {
+        result = validateResponseFromServer(
+          result,
+          option.validateResponse
+        );
       }
     }
-  } catch (error: any)
-  {
+  } catch (error: any) {
     status = "error";
-    if (error instanceof AxiosError)
-    {
+    if (error instanceof AxiosError) {
       errorMessage = error.response?.data.message || "Unknown Axios error";
-    }
-    else
-    {
+    } else {
       errorMessage = String(error);
     }
   }
 
-  return { result, error: { status: status, errorMessage: errorMessage } };
+  return { result, error: { status, errorMessage } };
 }

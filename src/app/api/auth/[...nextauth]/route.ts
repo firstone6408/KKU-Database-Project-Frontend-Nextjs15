@@ -24,10 +24,8 @@ export const authOptions = {
         },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req)
-      {
-        if (!credentials)
-        {
+      async authorize(credentials, req) {
+        if (!credentials) {
           return null;
         }
 
@@ -78,28 +76,24 @@ export const authOptions = {
       user: User;
       account: Account | null;
       profile?: Profile;
-    })
-    {
+    }) {
       // console.log("Account:", account);
       //  console.log("Profile:", profile);
 
-      if (account?.provider === "google")
-      {
+      if (account?.provider === "google") {
         const payload = {
           email: profile?.email,
         };
 
         let response;
 
-        try
-        {
+        try {
           // TODO ต้องไปทำ api เพิ่ม
           response = await axios.post(
             `${urlConfig.KKU_API_URL}/auth/login/provider`,
             payload
           );
-        } catch (error)
-        {
+        } catch (error) {
           throw new Error("Email not found");
         }
 
@@ -114,8 +108,7 @@ export const authOptions = {
         user.role = fetchUser.role;
         user.status = fetchUser.status;
         user.token = data.token;
-        if (fetchUser.profileImage)
-        {
+        if (fetchUser.profileImage) {
           user.image = fetchUser.profileImage;
         }
       }
@@ -126,17 +119,15 @@ export const authOptions = {
       token,
       user,
       trigger,
-      session
+      session,
     }: {
       token: JWT;
       user: User;
-      trigger?: "signIn" | "signUp" | "update"
+      trigger?: "signIn" | "signUp" | "update";
       session?: any;
-    })
-    {
+    }) {
       // เก็บข้อมูลที่ return จาก authorize ลงใน token
-      if (user)
-      {
+      if (user) {
         token.id = user.id;
         token.name = user.name;
         token.role = user.role;
@@ -146,19 +137,15 @@ export const authOptions = {
       }
 
       // update branch id
-      if (trigger === "update" && session)
-      {
+      if (trigger === "update" && session) {
         token.branchId = session.branchId;
       }
 
-
       return token;
     },
-    async session({ session, token }: { session: Session; token: any })
-    {
+    async session({ session, token }: { session: Session; token: any }) {
       // เพิ่มข้อมูลที่คุณต้องการใน session
-      if (token)
-      {
+      if (token) {
         session.user.id = token.id;
         session.user.name = token.name;
         session.user.role = token.role;

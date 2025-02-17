@@ -38,6 +38,25 @@ export type StockProductType = Awaited<
   ReturnType<typeof fetchStockProducts>
 >[number];
 
+export async function fetchStockProductsAvailable() {
+  const user = (await getSession()).user;
+
+  const { result, error } = await withApiHandling(
+    async () =>
+      axios.get(
+        `${urlConfig.KKU_API_URL}/products/branch/${user.branchId}/available`,
+        { headers: buildHeaders({ token: user.token }) }
+      ),
+    { option: { validateResponse: fetchStocksResSchema } }
+  );
+
+  if (error.status === "error") {
+    throw new Error(error.errorMessage);
+  }
+
+  return result.payload.data;
+}
+
 export async function addStock(prev: any, formData: FormData) {
   let _pathname = "/stock";
   try {
