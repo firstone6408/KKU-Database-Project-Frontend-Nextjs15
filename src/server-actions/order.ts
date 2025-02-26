@@ -163,15 +163,11 @@ export async function orderConfirmAction(
 
     let payload: any = {
       orderId: data.orderId,
-      orderItems: data.orderItems,
+      orderItems: JSON.stringify(data.orderItems),
       note: data.note,
       paymentMethodId: data.paymentMethodId,
       discount: data.discount,
     };
-
-    if (data.slipImage && data.slipImage.size > 0) {
-      payload.slipImage = data.slipImage;
-    }
 
     if (data.orderType === OrderTypeType.CREDIT_USED && data.credit) {
       //payload.orderStatus = OrderStatusType.PENDING;
@@ -194,7 +190,7 @@ export async function orderConfirmAction(
       payload.credit = data.credit;
       payload.deposit = data.deposit;
     } else if (data.orderType === OrderTypeType.FULL_PAYMENT) {
-      payload.orderStatus = OrderStatusType.COMPLETED;
+      // payload.orderStatus = OrderStatusType.COMPLETED;
       payload.orderType = OrderTypeType.FULL_PAYMENT;
       payload.amountRecevied = data.amountRecevied;
       payload.change = data.change;
@@ -202,11 +198,15 @@ export async function orderConfirmAction(
       throw new Error("เกิดข้อผิดพลาดบางอย่าง");
     }
 
+    if (data.slipImage && data.slipImage.size > 0) {
+      payload.slipImage = data.slipImage;
+    }
+
     console.log("Payload:", payload);
 
     const { error } = await withApiHandling(async () =>
       axios.put(`${urlConfig.KKU_API_URL}/orders/confirm`, payload, {
-        headers: buildHeaders({ token: user.token }),
+        headers: buildHeaders({ token: user.token, uploadHeaders: true }),
       })
     );
 

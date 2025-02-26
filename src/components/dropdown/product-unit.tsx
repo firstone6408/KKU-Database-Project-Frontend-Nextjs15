@@ -4,7 +4,7 @@
 
 import FormSelect from "../form/form-select";
 import { FormInputType } from "@/schemas/component/form";
-import { ProductUnit } from "@/configs/enum.config";
+import { ProductUnitType } from "@/configs/enum.config";
 
 export default function ProductUnitDropdown({
   name,
@@ -16,7 +16,7 @@ export default function ProductUnitDropdown({
   className,
   disabled,
 }: FormInputType) {
-  const productUnit = Object.values(ProductUnit);
+  const productUnit = Object.values(ProductUnitType);
 
   return (
     <FormSelect

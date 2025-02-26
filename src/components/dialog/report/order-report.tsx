@@ -1,5 +1,6 @@
 /** @format */
 
+import FormImage from "@/components/form/form-image";
 import FormInput from "@/components/form/form-input";
 import FormTextArea from "@/components/form/form-textarea";
 import OrderReportListTable from "@/components/table/order-report-list-table";
@@ -12,6 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { urlConfig } from "@/configs/url.config";
 import { OrderType } from "@/server-actions/order";
 import { dayjsUtils } from "@/utils/date.utils";
 import { orderUtils } from "@/utils/order.util";
@@ -157,6 +159,15 @@ export function OrderReportDialog(props: {
                 : "-- ไม่มี --"
             }
             disabled
+          />
+
+          <FormImage
+            label="หลักฐานการชำระ"
+            className="row-span-3 flex flex-col items-center gap-2"
+            weight={150}
+            height={150}
+            src={urlConfig.showImage(order.PaymentOrder?.slipImage)}
+            alt={`Slip-${order.orderCode}`}
           />
           <FormInput
             className="col-span-1"
