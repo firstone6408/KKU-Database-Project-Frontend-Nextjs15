@@ -1,7 +1,7 @@
 /** @format */
 
 import { BillCreateDialog } from "@/components/dialog/bill/bill-create";
-import BillsListTable from "@/components/table/bill-list-table";
+import OrderListTable from "@/components/table/order-list-table";
 import { Button } from "@/components/ui/button";
 import { fetchOrderByUser } from "@/server-actions/order";
 import { Plus } from "lucide-react";
@@ -19,7 +19,7 @@ export default async function BillContainer() {
           }
         />
       </div>
-      <BillsListTable orders={orders} />
+      <OrderListTable orders={orders} />
     </>
   );
 }

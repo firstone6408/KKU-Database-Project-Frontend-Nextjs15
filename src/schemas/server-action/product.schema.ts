@@ -1,6 +1,6 @@
 /** @format */
 
-import { ProductUnit } from "@/configs/enum.config";
+import { ProductUnitType } from "@/configs/enum.config";
 import { z } from "zod";
 
 export const UpdateProductFormDataSchema = z.object({
@@ -13,7 +13,7 @@ export const UpdateProductFormDataSchema = z.object({
   description: z.string().optional(),
   categoryId: z.string().uuid("หมวดหมู่ไม่ถูกต้อง"),
   image: z.instanceof(File).optional(),
-  unit: z.nativeEnum(ProductUnit),
+  unit: z.nativeEnum(ProductUnitType),
   isDeleted: z.preprocess(
     (val) => (val === "true" ? true : val === "false" ? false : val),
     z.boolean().default(false)
@@ -30,6 +30,6 @@ export const AddProductFormDataSchema = z.object({
   description: z.string().optional(),
   categoryId: z.string().uuid("หมวดหมู่ไม่ถูกต้อง"),
   image: z.instanceof(File).optional(),
-  unit: z.nativeEnum(ProductUnit),
+  unit: z.nativeEnum(ProductUnitType),
   pathname: z.string().optional(),
 });

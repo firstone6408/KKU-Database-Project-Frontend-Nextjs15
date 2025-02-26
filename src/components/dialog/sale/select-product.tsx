@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { StockProductType } from "@/server-actions/stock";
 import useOrderStore from "@/stores/order.store";
+import { saleUtils } from "@/utils/sale.util";
 import { useEffect, useState } from "react";
 
 type ErrorsType = {
@@ -61,6 +62,9 @@ export default function SelectProductDialog(props: {
     if (!quantity || quantity <= 0) {
       newErrors.quantity = "กรุณากรอกจำนวนสินค้าที่มากกว่า 0";
     }
+    if (quantity > product.Stock[0].quantity) {
+      newErrors.quantity = "ไม่สามารถซื้อสินค้ามากกว่าจำนวนใน Stock";
+    }
     if (!sellPrice || sellPrice <= 0) {
       newErrors.sellPrice = "กรุณากรอกราคาขายที่มากกว่า 0";
     }
@@ -97,7 +101,19 @@ export default function SelectProductDialog(props: {
       <DialogTrigger asChild>{btn}</DialogTrigger>
       <DialogContent className="dialog-container dialog-md">
         <DialogHeader>
-          <DialogTitle>เลือก "{product.name}"</DialogTitle>
+          <DialogTitle className="flex justify-between items-center">
+            <p>
+              เลือก "
+              {saleUtils.productNameFormatter({
+                categoryName: product.category.name,
+                name: product.name,
+                model: product.model,
+                size: product.size,
+              })}
+              "
+            </p>
+            <p>ยอดคงเหลือ: {product.Stock[0].quantity}</p>
+          </DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>
         {/* content */}

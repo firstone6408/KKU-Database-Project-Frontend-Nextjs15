@@ -5,6 +5,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "../ui/card";
@@ -47,12 +48,16 @@ export default function ProductSaleCard({
           <CardHeader className="text-center space-y-2">
             <CardDescription>{product.category.name}</CardDescription>
             <CardTitle>
-              {saleUtils.productNameFormatter(
-                product.name,
-                product.model,
-                product.size
-              )}
+              {saleUtils.productNameFormatter({
+                categoryName: product.category.name,
+                name: product.name,
+                model: product.model,
+                size: product.size,
+              })}
             </CardTitle>
+          </CardHeader>
+          <CardFooter className="flex justify-between">
+            <p>คงเหลือ: {product.Stock[0].quantity}</p>
             <p className="space-x-1 text-orange-600 font-semibold">
               <span>ราคา</span>
               <span>
@@ -60,7 +65,7 @@ export default function ProductSaleCard({
               </span>
               <span>บาท</span>
             </p>
-          </CardHeader>
+          </CardFooter>
         </Card>
       }
     />

@@ -9,6 +9,7 @@ import {
   GitBranch,
   HandCoins,
   Home,
+  IndentDecrease,
   IndentIncrease,
   Layers,
   LayoutDashboard,
@@ -87,11 +88,11 @@ export const navLinks: NavLinkType[] = [
         href: "/stock/in-history",
         icon: <IndentIncrease />,
       },
-      // {
-      //   title: "Stock นำออก",
-      //   href: "/stock/out-history",
-      //   icon: <IndentDecrease />,
-      // },
+      {
+        title: "Stock นำออก",
+        href: "/stock/out-history",
+        icon: <IndentDecrease />,
+      },
     ],
   },
   {

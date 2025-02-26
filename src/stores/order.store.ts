@@ -3,7 +3,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { storeConfig } from "@/configs/store.config";
-import { OrderStatus } from "@/configs/enum.config";
+import { OrderStatusType, OrderTypeType } from "@/configs/enum.config";
 import { storeUtils } from "@/utils/store.utils";
 import { StockProductType } from "@/server-actions/stock";
 
@@ -15,10 +15,11 @@ export type OrderListType = {
     quantity: number;
     productId: string;
   }[];
-  orderStatus: OrderStatus;
+  orderStatus: OrderStatusType;
+  orderType?: OrderTypeType;
   note?: string;
   paymentMethodId?: string;
-  amountReceived?: number;
+  amountRecevied?: number;
   change?: number;
   slipImage?: File;
   credit?: number;
@@ -50,16 +51,7 @@ type orderState = {
   ) => void;
   updateOrderListDetailsByOrderId: (
     identity: IdentityOrderType,
-    data: {
-      note?: string;
-      paymentMethodId?: string;
-      amountReceived?: number;
-      change?: number;
-      slipImage?: File;
-      credit?: number;
-      deposit?: number;
-      discount?: number;
-    }
+    data: Omit<OrderListType, "orderId" | "orderItems" | "orderStatus">
   ) => void;
 };
 
@@ -84,7 +76,7 @@ const orderStore = (
         data: [
           {
             orderId,
-            orderStatus: OrderStatus.PENDING,
+            orderStatus: OrderStatusType.PENDING,
             orderItems: [],
           },
         ],
@@ -102,7 +94,7 @@ const orderStore = (
       // ถ้าไม่มี, เพิ่ม order ใหม่เข้าไป
       orderListByOwner.data.push({
         orderId,
-        orderStatus: OrderStatus.PENDING,
+        orderStatus: OrderStatusType.PENDING,
         orderItems: [],
       });
 
@@ -232,6 +224,8 @@ const orderStore = (
     const owner = storeUtils.ownerFormatter(userId); // หาชื่อเจ้าของรายการจาก userId
     const orderList = get().orderList;
 
+    //console.log(data);
+
     // หา index ของ order ที่ตรงกับ orderId และ owner
     const orderListByOwnerIndex = orderList.findIndex(
       (order) => order.owner === owner
@@ -251,13 +245,14 @@ const orderStore = (
         updatedOrder.note = data.note ?? updatedOrder.note;
         updatedOrder.paymentMethodId =
           data.paymentMethodId ?? updatedOrder.paymentMethodId;
-        updatedOrder.amountReceived =
-          data.amountReceived ?? updatedOrder.amountReceived;
+        updatedOrder.amountRecevied =
+          data.amountRecevied ?? updatedOrder.amountRecevied;
         updatedOrder.change = data.change ?? updatedOrder.change;
         updatedOrder.slipImage = data.slipImage ?? updatedOrder.slipImage;
         updatedOrder.credit = data.credit ?? updatedOrder.credit;
         updatedOrder.deposit = data.deposit ?? updatedOrder.deposit;
         updatedOrder.discount = data.discount ?? updatedOrder.discount;
+        updatedOrder.orderType = data.orderType ?? updatedOrder.orderType;
 
         // อัปเดต orderList ใน state
         orderList[orderListByOwnerIndex].data[orderIndex] = updatedOrder;

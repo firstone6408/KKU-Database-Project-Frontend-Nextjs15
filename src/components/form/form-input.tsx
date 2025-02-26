@@ -19,7 +19,7 @@ export default function FormInput({
   onWheel,
 }: FormInputType) {
   return (
-    <div className={`${className ?? "space-y-2"}`}>
+    <div className={`${className} space-y-2`}>
       <Label htmlFor={name}>{label}</Label>
       <Input
         type={type}

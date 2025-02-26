@@ -1,6 +1,6 @@
 /** @format */
 
-import { ProductUnit } from "@/configs/enum.config";
+import { ProductUnitType } from "@/configs/enum.config";
 import { templateResponse } from "@/utils/api.utils";
 import { object, z } from "zod";
 
@@ -21,7 +21,7 @@ export const fetchProductsResSchema = templateResponse(
       name: z.string(),
       model: z.string().nullable(),
       size: z.string().nullable(),
-      unit: z.nativeEnum(ProductUnit),
+      unit: z.nativeEnum(ProductUnitType),
       description: z.string().nullable(),
       image: z.string().nullable(), // หรือ z.string().optional() หาก image เป็นค่า optional
       isDeleted: z.boolean(),

@@ -1,6 +1,6 @@
 /** @format */
 
-import { ProductUnit, StockInType } from "@/configs/enum.config";
+import { ProductUnitType, StockInType } from "@/configs/enum.config";
 import { templateResponse } from "@/utils/api.utils";
 import { z } from "zod";
 
@@ -24,7 +24,7 @@ export const ProductSchema = z.object({
   name: z.string(),
   model: z.string(),
   size: z.string(),
-  unit: z.nativeEnum(ProductUnit),
+  unit: z.nativeEnum(ProductUnitType),
   description: z.string().nullable(),
   image: z.string().nullable(),
   isDeleted: z.boolean(),

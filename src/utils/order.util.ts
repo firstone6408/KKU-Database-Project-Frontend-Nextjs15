@@ -1,24 +1,40 @@
 /** @format */
 
-import { OrderStatus } from "@/configs/enum.config";
+import { OrderStatusType, OrderTypeType } from "@/configs/enum.config";
 
 export const orderUtils = {
-  orderStatusFormatter: function (orderStatus: OrderStatus, lang = "th") {
-    switch (orderStatus) {
-      case OrderStatus.PENDING:
-        return "รอดำเนินการ";
-      case OrderStatus.CANCELLED:
-        return "ยกเลิกรายการ";
-      case OrderStatus.COMPLETED:
-        return "สำเร็จ";
-      case OrderStatus.CREDIT_USED:
+  orderTypeFormatter: function (orderType: OrderTypeType, lang = "th") {
+    switch (orderType) {
+      case OrderTypeType.FULL_PAYMENT:
+        return "บิลจ่ายปกติ";
+      case OrderTypeType.CREDIT_USED:
         return "บิลเครดิต";
-      case OrderStatus.DEPOSITED:
+      case OrderTypeType.DEPOSITED:
         return "บิลมัดจำ";
-      case OrderStatus.REFUNDED:
-        return "คืนของ";
+      case OrderTypeType.DEPOSITED_CREDIT_USED:
+        return "บิลมัดจำกับเครดิต";
       default:
-        break;
+        return "-ไม่มี-";
+    }
+  },
+
+  orderStatusFormatter: function (
+    orderStatus: OrderStatusType,
+    lang = "th"
+  ) {
+    switch (orderStatus) {
+      case OrderStatusType.REFUNDED:
+        return "คืนของ";
+      case OrderStatusType.COMPLETED:
+        return "สำเร็จ";
+      case OrderStatusType.PENDING:
+        return "รอดำเนินการ";
+      case OrderStatusType.CANCELLED:
+        return "ยกเลิกรายการ";
+      case OrderStatusType.DELIVERING:
+        return "กำลังขนส่ง";
+      default:
+        return "-ไม่มี-";
     }
   },
 };

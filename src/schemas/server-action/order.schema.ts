@@ -1,6 +1,6 @@
 /** @format */
 
-import { OrderStatus } from "@/configs/enum.config";
+import { OrderTypeType } from "@/configs/enum.config";
 import { z } from "zod";
 
 export const CreateOrderFormDataSchema = z.object({
@@ -8,17 +8,26 @@ export const CreateOrderFormDataSchema = z.object({
   orderCode: z.string(),
 });
 
+export const RemoveOrderFormDataSchema = z.object({
+  _pathname: z.string().optional(),
+  orderId: z.string().uuid(),
+});
+
 export const OrderConfirmFormDataSchema = z.object({
   orderId: z.string().uuid(),
-  orderItems: z.array(
-    z.object({
-      productId: z.string().uuid(),
-      quantity: z.number(),
-      sellPrice: z.number(),
-    })
-  ),
-  orderStatus: z.nativeEnum(OrderStatus),
-  amountReceived: z
+  orderItems: z
+    .array(
+      z.object({
+        productId: z.string().uuid(),
+        quantity: z.number(),
+        sellPrice: z.number(),
+      })
+    )
+    .refine((items) => items.length > 0, {
+      message: "ต้องมีรายการสินค้าอย่างน้อย 1 รายการ",
+    }),
+  orderType: z.nativeEnum(OrderTypeType),
+  amountRecevied: z
     .string()
     .transform((val) => (isNaN(Number(val)) ? 0 : Number(val)))
     .optional(),
@@ -28,12 +37,30 @@ export const OrderConfirmFormDataSchema = z.object({
     .optional(),
   deposit: z
     .string()
-    .transform((val) => (isNaN(Number(val)) ? 0 : Number(val)))
-    .optional(),
+    .transform((val) => (isNaN(Number(val)) ? undefined : Number(val)))
+    .optional()
+    .refine(
+      (val) => {
+        // ตรวจสอบว่าเครดิตต้องมากกว่า 0 ถ้าค่ามี
+        return val === undefined || val > 0;
+      },
+      {
+        message: "ต้องมีมัดจำอย่างน้อย 1 บาท",
+      }
+    ),
   credit: z
     .string()
-    .transform((val) => (isNaN(Number(val)) ? 0 : Number(val)))
-    .optional(),
+    .transform((val) => (isNaN(Number(val)) ? undefined : Number(val)))
+    .optional()
+    .refine(
+      (val) => {
+        // ตรวจสอบว่าเครดิตต้องมากกว่า 0 ถ้าค่ามี
+        return val === undefined || val > 0;
+      },
+      {
+        message: "เครดิตต้องมากกว่า 0 วัน",
+      }
+    ),
   discount: z
     .string()
     .transform((val) => (isNaN(Number(val)) ? 0 : Number(val)))

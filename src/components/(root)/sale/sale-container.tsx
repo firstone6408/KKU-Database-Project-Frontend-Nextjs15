@@ -31,7 +31,7 @@ export default async function SaleContainer({
             รายการสินค้า
           </h2>
           <SaleProductsSearch />
-          <div className="overflow-y-auto h-[30rem]">
+          <div className="overflow-y-auto">
             <SaleProductsList
               orderId={orderId}
               stockProducts={stockProducts}
@@ -45,7 +45,7 @@ export default async function SaleContainer({
         <section className="col-span-2 p-2">
           <div className="bg-slate-50 dark:bg-zinc-900 rounded-lg border shadow p-2">
             <h2 className="font-bold text-xl py-3 text-center">
-              {`รายการคำสั่งซื้อ #${orderCode}`}
+              {`ใบสั่งซื้อ #${orderCode}`}
             </h2>
             <div className="overflow-y-auto h-[rem]">
               <SaleOrderDetails

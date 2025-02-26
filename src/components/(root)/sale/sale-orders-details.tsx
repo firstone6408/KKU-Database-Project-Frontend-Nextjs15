@@ -4,22 +4,34 @@
 
 import { useEffect, useState } from "react";
 import OrderSaleCard from "@/components/card/order-sale";
-import OrderStatusDropdown from "@/components/dropdown/order";
-import { PaymentMethodDropdown } from "@/components/dropdown/payment";
 import FormButton from "@/components/form/form-button";
 import FormContainer from "@/components/form/form-container";
-import FormFile from "@/components/form/form-file";
 import FormInput from "@/components/form/form-input";
 import FormTextArea from "@/components/form/form-textarea";
 import { CustomerType } from "@/server-actions/customer";
 import { orderConfirmAction } from "@/server-actions/order";
 import { storeUtils } from "@/utils/store.utils";
 import useOrderStore from "@/stores/order.store";
+import { SaleOrdersDetailsForm } from "@/components/form/sale/sale-orders-details";
+import OrderTypeDropdown from "@/components/dropdown/order";
+import { OrderTypeType } from "@/configs/enum.config";
 
 type SaleOrdersListProps = {
   customer: CustomerType;
   orderId: string;
   userId: string;
+};
+
+export type SaleOrderDetailsFormDataType = {
+  paymentMethodId: string;
+  amountRecevied: number;
+  change: number;
+  slipImage: File | undefined;
+  credit: number;
+  deposit: number;
+  discount: number;
+  note: string;
+  orderType: OrderTypeType;
 };
 
 export default function SaleOrderDetails({
@@ -31,22 +43,29 @@ export default function SaleOrderDetails({
   const updateOrderListDetailsByOrderId = useOrderStore(
     (state) => state.updateOrderListDetailsByOrderId
   );
+  const [orderType, setOrderType] = useState<OrderTypeType>(
+    orderData?.orderType ?? OrderTypeType.FULL_PAYMENT
+  );
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<SaleOrderDetailsFormDataType>({
     paymentMethodId: orderData?.paymentMethodId ?? "",
-    amountReceived: orderData?.amountReceived ?? 0,
+    amountRecevied: orderData?.amountRecevied ?? 0,
     change: orderData?.change ?? 0,
     slipImage: orderData?.slipImage ?? undefined,
     credit: orderData?.credit ?? 0,
     deposit: orderData?.deposit ?? 0,
     discount: orderData?.discount ?? 0,
     note: orderData?.note ?? "",
+    orderType: orderData?.orderType ?? OrderTypeType.FULL_PAYMENT,
   });
 
   useEffect(() => {
     const interval = setInterval(() => {
       // console.log(formData);
-      updateOrderListDetailsByOrderId({ userId, orderId }, formData);
+      updateOrderListDetailsByOrderId(
+        { userId, orderId },
+        { ...formData }
+      );
     }, 1000); // อัปเดตทุกๆ 3 วินาที
 
     return () => clearInterval(interval); // clear เมื่อ component unmount
@@ -60,51 +79,69 @@ export default function SaleOrderDetails({
       [name]: type === "number" ? Number(value) : value, // แปลงเป็นตัวเลขถ้าเป็น input type number
     }));
 
-    console.log(name, value);
+    //console.log(name, value);
   };
 
-  const calculateTotalPrice = () => {
+  const [totalPrice, setTotalPrice] = useState<number>(0);
+  const [totalAmount, setTotalAmount] = useState<number>(0);
+
+  useEffect(() => {
+    setTotalAmount(calculateTotalPrice());
+  }, [orderData]);
+
+  useEffect(() => {
+    setTotalPrice(calculateTotalPrice({ isCalculateBalance: true }));
+  }, [orderData, formData]);
+
+  const calculateTotalPrice = (params?: {
+    isCalculateBalance: boolean;
+  }) => {
     if (!orderData) return 0;
 
-    // ใช้ reduce ในการคำนวณ total price
-    let totalPrice: number = orderData.orderItems.reduce(
-      (accumulator, item) => {
-        // สมมุติว่าแต่ละ item มี property `sellPrice` และ `quantity`
-        return accumulator + item.sellPrice * item.quantity;
-      },
+    let total = orderData.orderItems.reduce(
+      (acc, item) => acc + item.sellPrice * item.quantity,
       0
     );
 
-    if (orderData.deposit) totalPrice -= orderData.deposit;
-    if (orderData.discount) totalPrice -= orderData.discount;
-    if (orderData.change) totalPrice -= orderData.change;
+    if (params) {
+      const { isCalculateBalance } = params;
 
-    return totalPrice;
+      if (isCalculateBalance) {
+        total -= formData.deposit ?? 0;
+        total -= formData.discount ?? 0;
+        total -= formData.change ?? 0;
+        total -= formData.amountRecevied ?? 0;
+      }
+    }
+
+    return total >= 0 ? total : 0;
   };
 
   return (
     <div className="space-y-5 p-1">
       {/* Customer Details */}
-      <h2 className="font-semibold">ลูกค้า</h2>
-      <FormInput label="ชื่อ" defaultValue={customer.name} disabled />
-      <div className="grid grid-cols-2 gap-2">
-        <FormInput
-          label="กลุ่มลูกค้า"
-          defaultValue={customer.customerGroup?.name}
-          disabled
-        />
-        <FormInput
-          label="เบอร์"
-          defaultValue={customer.phoneNumber}
+      <div>
+        <h2 className="font-semibold">ลูกค้า</h2>
+        <FormInput label="ชื่อ" defaultValue={customer.name} disabled />
+        <div className="grid grid-cols-2 gap-2">
+          <FormInput
+            label="กลุ่มลูกค้า"
+            defaultValue={customer.customerGroup?.name}
+            disabled
+          />
+          <FormInput
+            label="เบอร์"
+            defaultValue={customer.phoneNumber}
+            disabled
+          />
+        </div>
+        <FormTextArea
+          label="ที่อยู่"
+          defaultValue={customer.address}
+          rows={4}
           disabled
         />
       </div>
-      <FormTextArea
-        label="ที่อยู่"
-        defaultValue={customer.address}
-        rows={4}
-        disabled
-      />
       {/* End Customer Details */}
 
       <hr className="border" />
@@ -139,93 +176,40 @@ export default function SaleOrderDetails({
           {/* status */}
           <div>
             <h2 className="font-semibold">รายละเอียด</h2>
-            <FormContainer
-              action={orderConfirmAction}
-              className="space-y-2"
-            >
-              <input
-                name="orderId"
-                type="hidden"
-                defaultValue={orderId}
-                required
+            <div className="space-y-2">
+              <OrderTypeDropdown
+                name="orderType"
+                label="ตัวเลือกการชำระเงิน"
+                setOrderType={setOrderType}
+                defaultValue={
+                  orderData.orderType ?? OrderTypeType.FULL_PAYMENT
+                }
+                setOnChangeForm={setFormData}
               />
-              <input
-                name="orderItems"
-                type="hidden"
-                defaultValue={JSON.stringify(orderData.orderItems)}
-                required
-              />
-              <OrderStatusDropdown
-                name="orderStatus"
-                label="สถานะบิล"
-                defaultValue={orderData.orderStatus}
-                required
-              />
+
               <FormInput
-                value={formData.amountReceived}
-                onChange={handleChange}
-                name="amountReceived"
+                value={totalAmount}
                 type="number"
-                label="จำนวนเงินรวม"
-                onWheel={(event) => event.target.blur()}
-              />
-              <FormInput
-                value={formData.change}
-                onChange={handleChange}
-                name="change"
-                type="number"
-                label="เงินทอน"
-                onWheel={(event) => event.target.blur()}
-              />
-              <FormInput
-                value={formData.deposit}
-                onChange={handleChange}
-                name="deposit"
-                type="number"
-                label="เงินมัดจำ"
-                onWheel={(event) => event.target.blur()}
-              />
-              <FormInput
-                value={formData.credit}
-                onChange={handleChange}
-                name="credit"
-                type="number"
-                label="เครดิต"
-                onWheel={(event) => event.target.blur()}
-              />
-              <FormInput
-                value={formData.discount}
-                onChange={handleChange}
-                name="discount"
-                type="number"
-                label="ส่วนลด"
-                onWheel={(event) => event.target.blur()}
-              />
-              <PaymentMethodDropdown
-                name="paymentMethodId"
-                label="การจ่ายเงิน"
-                required
-              />
-              <FormFile
-                name="slipImage"
-                label="หลักฐานการชำระเงิน (รูปภาพ)"
-                accept="image/*"
-              />
-              <FormTextArea
-                value={formData.note}
-                onChange={handleChange}
-                name="note"
-                type="text"
-                label="หมายเหตุ"
-                rows={4}
-              />
-              <FormInput
-                label="ยอดคงเหลือ"
-                defaultValue={calculateTotalPrice()}
+                label="จำนวนเงินทั้งหมด"
                 disabled
               />
-              <FormButton className="w-full" btnText={<>บันทึก</>} />
-            </FormContainer>
+
+              <FormContainer
+                action={orderConfirmAction}
+                className="space-y-2"
+              >
+                <SaleOrdersDetailsForm
+                  formData={formData}
+                  handleChange={handleChange}
+                  orderType={orderType ?? OrderTypeType.FULL_PAYMENT}
+                  orderData={orderData}
+                  orderId={orderId}
+                  totalPrice={totalPrice}
+                  setFormData={setFormData}
+                />
+                <FormButton className="w-full" btnText={<>บันทึก</>} />
+              </FormContainer>
+            </div>
           </div>
           {/* end status */}
         </>

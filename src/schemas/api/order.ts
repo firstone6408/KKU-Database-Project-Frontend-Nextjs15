@@ -1,8 +1,9 @@
 /** @format */
 
 import {
-  OrderStatus,
-  ProductUnit,
+  OrderStatusType,
+  OrderTypeType,
+  ProductUnitType,
   StockOutType,
 } from "@/configs/enum.config";
 import { templateResponse } from "@/utils/api.utils";
@@ -16,7 +17,8 @@ export const OrderSchema = z.object({
   userId: z.string(),
   orderCode: z.string(),
   totalPrice: z.number().nullable(),
-  status: z.nativeEnum(OrderStatus),
+  status: z.nativeEnum(OrderStatusType),
+  type: z.nativeEnum(OrderTypeType).nullable(),
   note: z.string().nullable(),
   customerId: z.string(),
 
@@ -29,6 +31,12 @@ export const OrderSchema = z.object({
     updatedAt: z.string().datetime(),
     customerCode: z.string(),
     customerGroupId: z.string(),
+    customerGroup: z.object({
+      id: z.string().uuid(),
+      name: z.string(),
+      createdAt: z.string().datetime(),
+      updatedAt: z.string().datetime(),
+    }),
     branchId: z.string(),
     userId: z.string(),
   }),
@@ -50,6 +58,8 @@ export const OrderSchema = z.object({
           id: z.string(),
           name: z.string(),
           categoryCode: z.string(),
+          createdAt: z.string().datetime(),
+          updatedAt: z.string().datetime(),
         }),
         id: z.string(),
         name: z.string(),
@@ -63,7 +73,7 @@ export const OrderSchema = z.object({
         image: z.string().nullable(),
         isDeleted: z.boolean(),
         deletedAt: z.string().datetime().nullable(),
-        unit: z.nativeEnum(ProductUnit),
+        unit: z.nativeEnum(ProductUnitType),
         categoryId: z.string(),
       }),
       sellPrice: z.number(),
@@ -82,6 +92,13 @@ export const OrderSchema = z.object({
       credit: z.number().nullable(),
       discount: z.number().nullable(),
       paymentMethodId: z.string(),
+      paymentMethod: z.object({
+        id: z.string().uuid(),
+        name: z.string(),
+        createdAt: z.string().datetime(),
+        updatedAt: z.string().datetime(),
+      }),
+      paidAt: z.string().datetime().nullable(),
     })
     .nullable(),
 });

@@ -17,7 +17,7 @@ export default function FormTextArea({
   onChange,
 }: FormInputType & { rows?: number }) {
   return (
-    <div className={`${className ?? "space-y-2"}`}>
+    <div className={`${className ?? ""} space-y-2`}>
       <Label htmlFor={name}>{label}</Label>
       <Textarea
         name={name}

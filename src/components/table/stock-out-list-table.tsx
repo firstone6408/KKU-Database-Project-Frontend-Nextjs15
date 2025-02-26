@@ -9,13 +9,16 @@ import {
   Table,
 } from "../ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { StockOutHistoryType } from "@/server-actions/stock-out-history";
 import { dayjsUtils } from "@/utils/date.utils";
+import { OrderType } from "@/server-actions/order";
+import { Button } from "../ui/button";
+import { Eye } from "lucide-react";
+import { OrderReportDialog } from "../dialog/report/order-report";
 
 export default function StockOutHistoriesListTable({
   stockOutHistories,
 }: {
-  stockOutHistories: StockOutHistoryType[];
+  stockOutHistories: OrderType[];
 }) {
   return (
     <Card>
@@ -27,12 +30,15 @@ export default function StockOutHistoriesListTable({
           <TableHeader>
             <TableRow>
               <TableHead className="w-[50px] text-end">ลำดับ</TableHead>
-              <TableHead className="w-[70px]">รหัสสินค้า</TableHead>
-              <TableHead className="w-[100px]">หมวดหมู่</TableHead>
-              <TableHead className="w-[100px]">ชื่อ</TableHead>
-              <TableHead className="w-[100px]">ประเภท</TableHead>
-              <TableHead className="w-[100px] text-end">จำนวน</TableHead>
+              <TableHead className="w-[70px]">รหัสใบสั่งซื้อ</TableHead>
+              <TableHead className="w-[100px]">ผู้ใช้</TableHead>
               <TableHead className="w-[100px]">วันที่</TableHead>
+              <TableHead className="w-[70px] text-end">
+                จำนวนเงิน (บาท)
+              </TableHead>
+              <TableHead className="w-[50px] text-center">
+                Options
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -40,19 +46,24 @@ export default function StockOutHistoriesListTable({
               stockOutHistories.map((stockOut, index) => (
                 <TableRow key={stockOut.id}>
                   <TableCell className="text-end">{index + 1}</TableCell>
-                  <TableCell>
-                    {stockOut.stock.product.productCode}
-                  </TableCell>
-                  <TableCell>
-                    {stockOut.stock.product.category.name}
-                  </TableCell>
-                  <TableCell>{stockOut.stock.product.name}</TableCell>
-                  <TableCell>{stockOut.type}</TableCell>
-                  <TableCell className="text-end">
-                    {stockOut.quantity}
-                  </TableCell>
+                  <TableCell>{stockOut.orderCode}</TableCell>
+                  <TableCell>{stockOut.user.username}</TableCell>
                   <TableCell>
                     {dayjsUtils.autoFormat(stockOut.createdAt)}
+                  </TableCell>
+                  <TableCell className="text-end">
+                    {stockOut.totalPrice?.toLocaleString()}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <OrderReportDialog
+                      btn={
+                        <Button>
+                          <Eye />
+                        </Button>
+                      }
+                      order={stockOut}
+                      title="รายละเอียดประวัตินำออก"
+                    />
                   </TableCell>
                 </TableRow>
               ))}

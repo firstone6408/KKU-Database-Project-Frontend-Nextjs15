@@ -13,10 +13,11 @@ import {
 import { dayjsUtils } from "@/utils/date.utils";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { Eye } from "lucide-react";
+import { Eye, Trash2 } from "lucide-react";
 import { saleUtils } from "@/utils/sale.util";
+import { RemoveOrderButton } from "../button/order";
 
-export default async function BillsListTable(props: {
+export default async function OrderListTable(props: {
   orders: OrderType[];
 }) {
   const { orders } = props;
@@ -55,7 +56,7 @@ export default async function BillsListTable(props: {
                         {dayjsUtils.autoFormat(order.createdAt)}
                       </TableCell>
                       <TableCell>{order.status}</TableCell>
-                      <TableCell className="text-center">
+                      <TableCell className="text-center flex justify-center items-center gap-2">
                         <Button asChild>
                           <Link
                             href={saleUtils.orderSaleSearchParamsFormat({
@@ -67,6 +68,11 @@ export default async function BillsListTable(props: {
                             <Eye />
                           </Link>
                         </Button>
+                        <RemoveOrderButton
+                          orderId={order.id}
+                          btn={<Trash2 />}
+                          name="orderId"
+                        />
                       </TableCell>
                     </TableRow>
                   );

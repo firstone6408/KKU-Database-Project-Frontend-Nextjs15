@@ -1,17 +1,18 @@
 /** @format */
 
-import { ProductUnit } from "@/configs/enum.config";
+import { ProductUnitType } from "@/configs/enum.config";
 
 export const saleUtils = {
-  productNameFormatter: function (
-    name: string,
-    model: string,
-    size: string
-  ) {
-    return `${name} ${size} ${model}`;
+  productNameFormatter: function (product: {
+    categoryName?: string | null;
+    name?: string | null;
+    model?: string | null;
+    size?: string | null;
+  }) {
+    return `${product.categoryName} ${product.name} ${product.size} ${product.model}`;
   },
 
-  productUnitFormatter: function (unit: ProductUnit) {
+  productUnitFormatter: function (unit: ProductUnitType) {
     switch (unit) {
       case "METER":
         return "เมตร";
