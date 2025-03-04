@@ -135,7 +135,7 @@ export function OrderReportDialog(props: {
           {/* Payment Details */}
           <h1 className="font-semibold text-lg col-span-full">การชำระ</h1>
           <FormInput
-            className="col-span-1"
+            className="col-span-2"
             label="จำนวนเงินทั้งหมด (บาท)"
             defaultValue={order.totalPrice?.toLocaleString()}
             disabled
@@ -151,7 +151,7 @@ export function OrderReportDialog(props: {
             disabled
           />
           <FormInput
-            className="col-span-1"
+            className="col-span-2"
             label="เงินทอน (บาท)"
             defaultValue={
               order.PaymentOrder?.change
@@ -160,15 +160,50 @@ export function OrderReportDialog(props: {
             }
             disabled
           />
-
-          <FormImage
-            label="หลักฐานการชำระ"
-            className="row-span-3 flex flex-col items-center gap-2"
-            weight={150}
-            height={150}
-            src={urlConfig.showImage(order.PaymentOrder?.slipImage)}
-            alt={`Slip-${order.orderCode}`}
+          <FormInput
+            className="col-span-1"
+            label="ค่าส่ง (บาท)"
+            defaultValue={
+              order.Delivery
+                ? order.Delivery.fee.toLocaleString()
+                : "-- ไม่มี --"
+            }
+            disabled
           />
+
+          <div className="col-span-full my-2">
+            <hr className="my-2" />
+            <h2 className="font-semibold text-lg">หลักฐานการชำระเงิน</h2>
+            <div className="flex items-end justify-evenly">
+              {order.PaymentOrder &&
+              order.PaymentOrder?.PaymentOrderSlip.length > 0 ? (
+                order.PaymentOrder?.PaymentOrderSlip.map((slip) => (
+                  <div
+                    className="flex flex-col items-center gap-2"
+                    key={slip.id}
+                  >
+                    <FormImage
+                      className=""
+                      weight={150}
+                      height={150}
+                      src={urlConfig.showImage(slip.imageUrl)}
+                      alt={`Slip-${order.orderCode}`}
+                    />
+                    <p className="text-sm">
+                      เมื่อ: {dayjsUtils.autoFormat(slip.createdAt)}
+                    </p>
+                  </div>
+                ))
+              ) : (
+                <p className="text-center text-red-500">
+                  -- ไม่มีหลักฐานการชำระเงิน --
+                </p>
+              )}
+            </div>
+
+            <hr className="my-2" />
+          </div>
+
           <FormInput
             className="col-span-1"
             label="ส่วนลด (บาท)"

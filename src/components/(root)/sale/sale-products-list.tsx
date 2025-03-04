@@ -17,14 +17,18 @@ export default function SaleProductsList({
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
       {stockProducts.length > 0 ? (
-        stockProducts.map((product, index) => (
-          <ProductSaleCard
-            key={index}
-            product={product}
-            orderId={orderId}
-            userId={userId}
-          />
-        ))
+        stockProducts.map((product, index) => {
+          if (product.Stock[0].quantity > 0) {
+            return (
+              <ProductSaleCard
+                key={index}
+                product={product}
+                orderId={orderId}
+                userId={userId}
+              />
+            );
+          }
+        })
       ) : (
         <p>** ไม่มีสินค้า **</p>
       )}

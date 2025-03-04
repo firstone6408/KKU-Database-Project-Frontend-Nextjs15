@@ -114,4 +114,12 @@
   .dialog-3xl {
     @apply max-w-[140vh];
   }
+
+  .dialog-4xl {
+    @apply max-w-[160vh];
+  }
+
+  .dialog-5xl {
+    @apply max-w-[180vh];
+  }
 }

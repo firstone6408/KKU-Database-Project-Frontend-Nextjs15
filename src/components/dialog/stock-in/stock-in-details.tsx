@@ -8,23 +8,14 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import FormContainer from "../../form/form-container";
-import { usePathname } from "next/navigation";
-import FormButton from "@/components/form/form-button";
 import FormInput from "@/components/form/form-input";
-import {
-  addStockInHistoryAction,
-  StockInHistoryType,
-} from "@/server-actions/stock-in-history";
-import FormImage from "@/components/form/form-image";
-import { urlConfig } from "@/configs/url.config";
+import { StockInHistoryType } from "@/server-actions/stock-in-history";
 import FormTextArea from "@/components/form/form-textarea";
-import StockInHistoriesListTable from "@/components/table/stock-in-list-table";
 import StockInHistoriesDetailsTable from "@/components/table/stock-in-details-table";
 import { dayjsUtils } from "@/utils/date.utils";
 
@@ -55,11 +46,18 @@ export function StockInHistoryDetailsDialog(props: {
               defaultValue={stockIn.distributor}
               disabled
             />
-            <FormInput
-              label="ประเภท"
-              defaultValue={stockIn.type}
-              disabled
-            />
+            <div className="grid grid-cols-2 gap-2">
+              <FormInput
+                label="สถาณะ"
+                defaultValue={stockIn.isCanceled ? "ยกเลิก" : "ปกติ"}
+                disabled
+              />
+              <FormInput
+                label="ประเภท"
+                defaultValue={stockIn.type}
+                disabled
+              />
+            </div>
             <FormInput
               label="นำเข้าวันที่"
               defaultValue={dayjsUtils.autoFormat(stockIn.createdAt)}
@@ -80,6 +78,7 @@ export function StockInHistoryDetailsDialog(props: {
                 />
               </div>
             </div>
+
             <FormTextArea
               label="รายละเอียด"
               defaultValue={stockIn.note}
@@ -87,6 +86,40 @@ export function StockInHistoryDetailsDialog(props: {
               rows={4}
               disabled
             />
+            {stockIn.isCanceled && (
+              <div className="col-span-full py-2">
+                <h2 className="font-semibold text-red-500">
+                  รายละเอียดการยกเลิก
+                </h2>
+                <div className="grid grid-cols-2 gap-2">
+                  <FormInput
+                    label="ชื่อ"
+                    defaultValue={stockIn.user.name}
+                    disabled
+                  />
+                  <FormInput
+                    label="Email"
+                    defaultValue={stockIn.user.email}
+                    disabled
+                  />
+                  <FormInput
+                    className="col-span-full"
+                    label="วันที่ยกเลิก"
+                    defaultValue={dayjsUtils.autoFormat(
+                      stockIn.canceledAt
+                    )}
+                    disabled
+                  />
+                  <FormTextArea
+                    className="col-span-full"
+                    rows={4}
+                    label="เหตุผล"
+                    defaultValue={stockIn.cancelNote}
+                    disabled
+                  />
+                </div>
+              </div>
+            )}
             <div className="col-span-full space-y-2">
               <StockInHistoriesDetailsTable stockInHistories={stockIn} />
               <div className="flex justify-end">

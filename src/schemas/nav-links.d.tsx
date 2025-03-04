@@ -3,6 +3,7 @@
 import { UserRole } from "@/configs/enum.config";
 import {
   BadgeDollarSign,
+  CarFront,
   ChartArea,
   ChartBarStacked,
   FileSliders,
@@ -45,31 +46,46 @@ export const navLinks: NavLinkType[] = [
     title: "บิล",
     href: "/bill",
     icon: <BadgeDollarSign />,
+    permission: [UserRole.ADMIN, UserRole.MANAGER, UserRole.STAFF],
   },
   {
-    title: "ขาย",
-    href: "/bill/sale",
-    icon: <BadgeDollarSign />,
-    type: "hidden",
+    title: "ขนส่ง",
+    href: "/delivery",
+    icon: <CarFront />,
+    permission: [
+      UserRole.ADMIN,
+      UserRole.MANAGER,
+      UserRole.STAFF,
+      UserRole.TRANSPORTER,
+    ],
   },
-  {
-    title: "Dashboard",
-    href: "/dashboard",
-    icon: <ChartArea />,
-  },
+  // {
+  //   title: "ขาย",
+  //   href: "/bill/sale",
+  //   icon: <BadgeDollarSign />,
+  //   type: "hidden",
+  // },
+  // {
+  //   title: "Dashboard",
+  //   href: "/dashboard",
+  //   icon: <ChartArea />,
+  // },
   {
     title: "ลูกค้า",
     href: "/customer",
     icon: <Users />,
+    permission: [UserRole.ADMIN, UserRole.MANAGER, UserRole.STAFF],
   },
   {
     title: "รายงาน",
     href: "/report",
     icon: <Proportions />,
+    permission: [UserRole.ADMIN, UserRole.MANAGER, UserRole.STAFF],
   },
   {
     title: "Stock",
     icon: <Layers />,
+    permission: [UserRole.ADMIN, UserRole.MANAGER, UserRole.STAFF],
     subLinks: [
       {
         title: "Stock ทั้งหมด",

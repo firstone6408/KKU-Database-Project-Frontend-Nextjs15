@@ -79,6 +79,11 @@ export const fetchStockInHistoriesResSchema = templateResponse(
       branchId: z.string().uuid(),
       user: UserSchema,
       StockInItem: z.array(stockInItems),
+      isCanceled: z.boolean(),
+      cancelNote: z.string().nullable(),
+      canceledBy: z.string().uuid().nullable(),
+      canceledAt: z.string().datetime().nullable(),
+      canceledByUser: UserSchema.nullable(),
     })
   )
 );

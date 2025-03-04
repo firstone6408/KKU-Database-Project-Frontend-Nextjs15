@@ -1,6 +1,8 @@
 /** @format */
 
 import {
+  DeliveryStatusType,
+  DeliveryType,
   OrderStatusType,
   OrderTypeType,
   ProductUnitType,
@@ -88,7 +90,6 @@ export const OrderSchema = z.object({
       amountRecevied: z.number().nullable(),
       change: z.number().nullable(),
       deposit: z.number().nullable(),
-      slipImage: z.string().nullable(),
       credit: z.number().nullable(),
       discount: z.number().nullable(),
       paymentMethodId: z.string(),
@@ -99,6 +100,31 @@ export const OrderSchema = z.object({
         updatedAt: z.string().datetime(),
       }),
       paidAt: z.string().datetime().nullable(),
+      PaymentOrderSlip: z.array(
+        z.object({
+          id: z.string().uuid(),
+          imageUrl: z.string(),
+          paymentOrderId: z.string().uuid(),
+          createdAt: z.string().datetime(),
+        })
+      ),
+    })
+    .nullable(),
+  Delivery: z
+    .object({
+      address: z.string(),
+      completedAt: z.string().datetime().nullable(),
+      distance: z.number(),
+      fee: z.number(),
+      lat: z.number(),
+      lng: z.number(),
+      note: z.string().nullable(),
+      orderId: z.string(),
+      sendDate: z.string().datetime(),
+      status: z.nativeEnum(DeliveryStatusType),
+      trackNumber: z.string(),
+      type: z.nativeEnum(DeliveryType),
+      updatedAt: z.string(),
     })
     .nullable(),
 });

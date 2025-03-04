@@ -39,3 +39,9 @@ export const AddStockFormDataSchema = z.object({
     })
   ),
 });
+
+export const CancelStockInHistoryFormDataSchema = z.object({
+  stockInHistoryId: z.string().uuid(),
+  pathname: z.string().optional(),
+  cancelNote: z.string(),
+});

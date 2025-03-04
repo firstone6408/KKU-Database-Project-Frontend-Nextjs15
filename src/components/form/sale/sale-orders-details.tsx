@@ -6,7 +6,6 @@ import FormInput from "../form-input";
 import FormFile from "../form-file";
 import FormTextArea from "../form-textarea";
 import { PaymentMethodDropdown } from "@/components/dropdown/payment";
-import OrderStatusDropdown from "@/components/dropdown/order";
 import { SaleOrderDetailsFormDataType } from "@/components/(root)/sale/sale-orders-details";
 import { OrderListType } from "@/stores/order.store";
 import { OrderTypeType } from "@/configs/enum.config";

@@ -1,13 +1,13 @@
 /** @format */
 
-import ReportContainer from "@/components/(root)/report/report-container";
+import DeliveryContainer from "@/components/(root)/delivery/delivery-container";
 import TableLoadingSkeleton from "@/components/skeleton/customer-loading";
 import { Suspense } from "react";
 
-export default function ReportPage() {
+export default function DeliveryPage() {
   return (
     <Suspense fallback={<TableLoadingSkeleton />}>
-      <ReportContainer />
+      <DeliveryContainer />
     </Suspense>
   );
 }

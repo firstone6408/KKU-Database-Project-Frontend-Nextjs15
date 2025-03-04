@@ -30,7 +30,6 @@ export default function StockOutHistoriesListTable({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[50px] text-end">ลำดับ</TableHead>
               <TableHead className="w-[70px]">รหัสใบสั่งซื้อ</TableHead>
               <TableHead className="w-[100px]">ผู้ใช้</TableHead>
               <TableHead className="w-[100px]">วันที่</TableHead>
@@ -44,13 +43,10 @@ export default function StockOutHistoriesListTable({
           </TableHeader>
           <TableBody>
             {stockOutHistories.length > 0 &&
-              stockOutHistories.map((stockOut, index) => {
+              stockOutHistories.map((stockOut) => {
                 if (stockOut.status !== OrderStatusType.PENDING)
                   return (
                     <TableRow key={stockOut.id}>
-                      <TableCell className="text-end">
-                        {index + 1}
-                      </TableCell>
                       <TableCell>{stockOut.orderCode}</TableCell>
                       <TableCell>{stockOut.user.username}</TableCell>
                       <TableCell>

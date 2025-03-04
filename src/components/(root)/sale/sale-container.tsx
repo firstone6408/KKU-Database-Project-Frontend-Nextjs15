@@ -50,7 +50,10 @@ export default async function SaleContainer({
             <div className="overflow-y-auto h-[rem]">
               <SaleOrderDetails
                 customer={customer}
-                orderId={orderId}
+                order={{
+                  orderId: orderId,
+                  orderCode: orderCode,
+                }}
                 userId={user.id}
               />
             </div>

@@ -69,3 +69,9 @@ export const OrderConfirmFormDataSchema = z.object({
   slipImage: z.instanceof(File).optional(),
   note: z.string().optional(),
 });
+
+export const PayReportFormDataSchema = z.object({
+  pathname: z.string().optional(),
+  orderId: z.string().uuid(),
+  slipImage: z.instanceof(File),
+});

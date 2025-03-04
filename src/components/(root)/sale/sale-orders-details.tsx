@@ -15,10 +15,16 @@ import useOrderStore from "@/stores/order.store";
 import { SaleOrdersDetailsForm } from "@/components/form/sale/sale-orders-details";
 import OrderTypeDropdown from "@/components/dropdown/order";
 import { OrderTypeType } from "@/configs/enum.config";
+import { DeliveryCreateDialog } from "@/components/dialog/delivery/delivery-create";
+import { Button } from "@/components/ui/button";
+import { Car } from "lucide-react";
 
 type SaleOrdersListProps = {
   customer: CustomerType;
-  orderId: string;
+  order: {
+    orderId: string;
+    orderCode: string;
+  };
   userId: string;
 };
 
@@ -36,9 +42,11 @@ export type SaleOrderDetailsFormDataType = {
 
 export default function SaleOrderDetails({
   customer,
-  orderId,
+  order,
   userId,
 }: SaleOrdersListProps) {
+  const { orderId, orderCode } = order;
+
   const orderData = storeUtils.getUserListByOwner({ orderId, userId });
   const updateOrderListDetailsByOrderId = useOrderStore(
     (state) => state.updateOrderListDetailsByOrderId
@@ -209,6 +217,16 @@ export default function SaleOrderDetails({
                 />
                 <FormButton className="w-full" btnText={<>บันทึก</>} />
               </FormContainer>
+              <DeliveryCreateDialog
+                order={{ orderId: orderId, orderCode: orderCode }}
+                customer={customer}
+                btn={
+                  <Button className="w-full" variant={"outline"}>
+                    <Car />
+                    <p>ขนส่ง</p>
+                  </Button>
+                }
+              />
             </div>
           </div>
           {/* end status */}

@@ -1,9 +1,12 @@
 /** @format */
 
+"use server";
+
 import { urlConfig } from "@/configs/url.config";
 import { fetchStockInHistoriesResSchema } from "@/schemas/api/stock.schema";
 import {
   AddStockInHistoryFormDataSchema,
+  CancelStockInHistoryFormDataSchema,
   FirstAddStockInHistoryFormDataSchema,
 } from "@/schemas/server-action/stock.schema";
 import { withApiHandling } from "@/utils/api.utils";
@@ -108,6 +111,49 @@ export async function firstAddStockInHistoryAction(
       axios.post(`${urlConfig.KKU_API_URL}/stocks/add`, payloadAdd, {
         headers: buildHeaders({ token: user.token }),
       })
+    );
+
+    if (error.status === "error") {
+      throw new Error(error.errorMessage);
+    }
+  } catch (error) {
+    return renderFail({ error });
+  }
+
+  redirect(_pathname);
+}
+
+export async function cancelStockInHistoryAction(
+  prevState: any,
+  formData: FormData
+) {
+  let _pathname = "/stock/in-history";
+  try {
+    const validated = validateFormDataWithZod(
+      formData,
+      CancelStockInHistoryFormDataSchema
+    );
+
+    const { pathname, stockInHistoryId, cancelNote } = validated;
+
+    const user = (await getSession()).user;
+
+    pathname && (_pathname = pathname);
+
+    const payload = {
+      cancelNote: cancelNote,
+    };
+
+    // console.log("Validated:", validated);
+
+    const { error } = await withApiHandling(async () =>
+      axios.patch(
+        `${urlConfig.KKU_API_URL}/stock-histories/cancel/branch/${user.branchId}/${stockInHistoryId}`,
+        payload,
+        {
+          headers: buildHeaders({ token: user.token }),
+        }
+      )
     );
 
     if (error.status === "error") {

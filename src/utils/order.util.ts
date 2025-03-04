@@ -3,7 +3,10 @@
 import { OrderStatusType, OrderTypeType } from "@/configs/enum.config";
 
 export const orderUtils = {
-  orderTypeFormatter: function (orderType: OrderTypeType, lang = "th") {
+  orderTypeFormatter: function (
+    orderType: OrderTypeType | null,
+    lang = "th"
+  ) {
     switch (orderType) {
       case OrderTypeType.FULL_PAYMENT:
         return "บิลจ่ายปกติ";
@@ -14,7 +17,7 @@ export const orderUtils = {
       case OrderTypeType.DEPOSITED_CREDIT_USED:
         return "บิลมัดจำกับเครดิต";
       default:
-        return "-ไม่มี-";
+        return "-- ไม่มี --";
     }
   },
 
@@ -33,8 +36,10 @@ export const orderUtils = {
         return "ยกเลิกรายการ";
       case OrderStatusType.DELIVERING:
         return "กำลังขนส่ง";
+      case OrderStatusType.UNPAID:
+        return "ค้างชำระ";
       default:
-        return "-ไม่มี-";
+        return "-- ไม่มี --";
     }
   },
 };

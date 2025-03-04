@@ -1,7 +1,5 @@
 /** @format */
 
-"use client";
-
 import { CustomerType } from "@/server-actions/customer";
 import { Check, Plus } from "lucide-react";
 import {

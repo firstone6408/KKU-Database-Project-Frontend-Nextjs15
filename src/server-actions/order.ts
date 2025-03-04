@@ -1,11 +1,14 @@
 /** @format */
 
+"use server";
+
 import { OrderStatusType, OrderTypeType } from "@/configs/enum.config";
 import { urlConfig } from "@/configs/url.config";
 import { OrdersSchemaResSchema } from "@/schemas/api/order";
 import {
   CreateOrderFormDataSchema,
   OrderConfirmFormDataSchema,
+  PayReportFormDataSchema,
   RemoveOrderFormDataSchema,
 } from "@/schemas/server-action/order.schema";
 import { withApiHandling } from "@/utils/api.utils";
@@ -218,4 +221,39 @@ export async function orderConfirmAction(
   }
 
   redirect("/bill");
+}
+
+export async function payOrderAction(prevState: any, formData: FormData) {
+  let _pathname = "/report";
+  try {
+    const validated = validateFormDataWithZod(
+      formData,
+      PayReportFormDataSchema
+    );
+
+    validated.pathname && (_pathname = validated.pathname);
+
+    const payloadFormData = new FormData();
+    payloadFormData.append("orderId", validated.orderId);
+    payloadFormData.append("slipImage", validated.slipImage);
+
+    if (validated.slipImage.size <= 0) {
+      throw new Error("กรุณาใส่ภาพ");
+    }
+
+    const user = (await getSession()).user;
+
+    const { error } = await withApiHandling(async () =>
+      axios.put(`${urlConfig.KKU_API_URL}/orders/pay`, payloadFormData, {
+        headers: buildHeaders({ token: user.token }),
+      })
+    );
+
+    if (error.status === "error") {
+      throw new Error(error.errorMessage);
+    }
+  } catch (error) {
+    return renderFail({ error });
+  }
+  redirect(_pathname);
 }
