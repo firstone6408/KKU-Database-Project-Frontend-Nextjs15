@@ -138,7 +138,7 @@ export default function DeliveryListTable(props: {
                   </TableRow>
                 ))
               ) : (
-                <p></p>
+                <p>-- ไม่มีรายการ --</p>
               )}
             </TableBody>
           </Table>

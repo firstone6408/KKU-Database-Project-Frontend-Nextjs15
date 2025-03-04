@@ -2,6 +2,7 @@
 
 "use server";
 
+import { StockInHistoryPageSearchParams } from "@/app/(root)/stock/in-history/page";
 import { urlConfig } from "@/configs/url.config";
 import { fetchStockInHistoriesResSchema } from "@/schemas/api/stock.schema";
 import {
@@ -11,19 +12,26 @@ import {
 } from "@/schemas/server-action/stock.schema";
 import { withApiHandling } from "@/utils/api.utils";
 import { buildHeaders } from "@/utils/httpHeaders";
+import { paramUtils } from "@/utils/params.utils";
 import { renderFail } from "@/utils/server-action-render.utils";
 import { getSession } from "@/utils/session.utils";
 import { validateFormDataWithZod } from "@/utils/validate.utils";
 import axios from "axios";
 import { redirect } from "next/navigation";
 
-export async function fetchStockInHistories() {
+export async function fetchStockInHistories(data?: {
+  searchParams: StockInHistoryPageSearchParams;
+}) {
   const user = (await getSession()).user;
 
   const { error, result } = await withApiHandling(
     async () =>
       axios.get(
-        `${urlConfig.KKU_API_URL}/stock-histories/in/branch/${user.branchId}`,
+        `${urlConfig.KKU_API_URL}/stock-histories/in/branch/${
+          user.branchId
+        }${paramUtils.searchParamsFormatToString(
+          data?.searchParams || {}
+        )}`,
         { headers: buildHeaders({ token: user.token }) }
       ),
     { option: { validateResponse: fetchStockInHistoriesResSchema } }

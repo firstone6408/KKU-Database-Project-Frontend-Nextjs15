@@ -28,8 +28,13 @@ export function BillCreateDialog(props: { btn: any }) {
 
   const [customerId, setCustomerId] = useState<string>();
 
+  const [orderName, setOrderName] = useState<string>("");
+
+  // useEffect(() => console.log("Order name:", orderName), [orderName]);
+
   useEffect(() => {
     fetchData();
+    setOrderName("");
   }, []);
 
   const fetchData = async () => {
@@ -64,13 +69,26 @@ export function BillCreateDialog(props: { btn: any }) {
             name="customerId"
             defaultValue={customerId}
           />
+          <input
+            type="hidden"
+            name="orderCode"
+            defaultValue={orderName}
+            required
+          />
 
-          <FormInput label="รหัสบืล" name="orderCode" required />
+          <FormInput
+            label="รหัสบืล"
+            defaultValue={
+              orderName === "" ? "-- เลือกลูกค้า --" : orderName
+            }
+            disabled
+          />
           <div className="h-[30rem] overflow-y-auto">
             <CustomersListSetTable
               customers={customers}
               customerId={customerId}
               setCustomerId={setCustomerId}
+              setOrderName={setOrderName}
             />
           </div>
           <DialogFooter>

@@ -13,7 +13,7 @@ import { orderConfirmAction } from "@/server-actions/order";
 import { storeUtils } from "@/utils/store.utils";
 import useOrderStore from "@/stores/order.store";
 import { SaleOrdersDetailsForm } from "@/components/form/sale/sale-orders-details";
-import OrderTypeDropdown from "@/components/dropdown/order";
+import { OrderTypeDropdown } from "@/components/dropdown/order";
 import { OrderTypeType } from "@/configs/enum.config";
 import { DeliveryCreateDialog } from "@/components/dialog/delivery/delivery-create";
 import { Button } from "@/components/ui/button";

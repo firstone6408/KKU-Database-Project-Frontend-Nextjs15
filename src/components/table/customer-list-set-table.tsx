@@ -17,12 +17,40 @@ export default function CustomersListSetTable(props: {
   customers: CustomerType[];
   customerId?: string;
   setCustomerId: (customerId: string) => void;
+  setOrderName?: (value: string) => void;
 }) {
-  const { customers, setCustomerId, customerId } = props;
+  const { customers, setCustomerId, customerId, setOrderName } = props;
 
   const handleClick = (customer: CustomerType) => {
-    // console.log(customer);
     setCustomerId(customer.id);
+
+    if (setOrderName) {
+      // รับวันที่และเวลาในฟอร์แมตเลขล้วน (YYYYMMDDHHmmss) พร้อม msec ที่ไม่ซ้ำ
+      const currentDateTime = new Date();
+      const year = currentDateTime.getFullYear();
+      const month = (currentDateTime.getMonth() + 1)
+        .toString()
+        .padStart(2, "0");
+      const day = currentDateTime.getDate().toString().padStart(2, "0");
+      const hour = currentDateTime.getHours().toString().padStart(2, "0");
+      const minute = currentDateTime
+        .getMinutes()
+        .toString()
+        .padStart(2, "0");
+      const second = currentDateTime
+        .getSeconds()
+        .toString()
+        .padStart(2, "0");
+      const millisecond = currentDateTime
+        .getMilliseconds()
+        .toString()
+        .padStart(3, "0");
+
+      // สร้าง order name โดยใช้ Date.now() เพื่อให้ไม่ซ้ำกัน
+      setOrderName(
+        `${customer.customerCode}-${year}${month}${day}${hour}${minute}${second}${millisecond}`
+      );
+    }
   };
 
   return (

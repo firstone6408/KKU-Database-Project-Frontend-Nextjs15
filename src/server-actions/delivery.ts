@@ -15,6 +15,7 @@ import {
 } from "@/schemas/server-action/delivery.schema";
 import { withApiHandling } from "@/utils/api.utils";
 import { buildHeaders } from "@/utils/httpHeaders";
+import { paramUtils } from "@/utils/params.utils";
 import { renderFail } from "@/utils/server-action-render.utils";
 import { getSession } from "@/utils/session.utils";
 import {
@@ -49,7 +50,16 @@ export async function createDelivery(value: CreateDeliveryFormDataType) {
   }
 }
 
-export async function fetchDeliveries() {
+export async function fetchDeliveries(data?: {
+  searchParams: {
+    trackNumber: string;
+    type: string;
+    distStart: string;
+    distEnd: string;
+    startDate: string;
+    endDate: string;
+  };
+}) {
   const user = (await getSession()).user;
 
   // console.log(user.branchId);
@@ -57,7 +67,11 @@ export async function fetchDeliveries() {
   const { error, result } = await withApiHandling(
     async () =>
       axios.get(
-        `${urlConfig.KKU_API_URL}/deliveries/branch/${user.branchId}`,
+        `${urlConfig.KKU_API_URL}/deliveries/branch/${
+          user.branchId
+        }${paramUtils.searchParamsFormatToString(
+          data?.searchParams || {}
+        )}`,
         { headers: buildHeaders({ token: user.token }) }
       ),
     {

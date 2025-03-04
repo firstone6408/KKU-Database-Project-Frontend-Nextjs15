@@ -1,10 +1,12 @@
 /** @format */
 
+import { StockPageSearchParams } from "@/app/(root)/stock/page";
 import { urlConfig } from "@/configs/url.config";
 import { fetchStocksResSchema } from "@/schemas/api/stock.schema";
 import { AddStockFormDataSchema } from "@/schemas/server-action/stock.schema";
 import { withApiHandling } from "@/utils/api.utils";
 import { buildHeaders } from "@/utils/httpHeaders";
+import { paramUtils } from "@/utils/params.utils";
 import { renderFail } from "@/utils/server-action-render.utils";
 import { getSession } from "@/utils/session.utils";
 import {
@@ -14,7 +16,9 @@ import {
 import axios from "axios";
 import { redirect } from "next/navigation";
 
-export async function fetchStockProducts() {
+export async function fetchStockProducts(data?: {
+  searchParams: StockPageSearchParams;
+}) {
   const user = (await getSession()).user;
 
   //console.log(user);
@@ -22,7 +26,11 @@ export async function fetchStockProducts() {
   const { result, error } = await withApiHandling(
     async () =>
       axios.get(
-        `${urlConfig.KKU_API_URL}/products/branch/${user.branchId}`,
+        `${urlConfig.KKU_API_URL}/products/branch/${
+          user.branchId
+        }${paramUtils.searchParamsFormatToString(
+          data?.searchParams || {}
+        )}`,
         { headers: buildHeaders({ token: user.token }) }
       ),
     { option: { validateResponse: fetchStocksResSchema } }

@@ -2,6 +2,7 @@
 
 "use server";
 
+import { ReportPageSearchParams } from "@/app/(root)/report/page";
 import { OrderStatusType, OrderTypeType } from "@/configs/enum.config";
 import { urlConfig } from "@/configs/url.config";
 import { OrdersSchemaResSchema } from "@/schemas/api/order";
@@ -13,6 +14,7 @@ import {
 } from "@/schemas/server-action/order.schema";
 import { withApiHandling } from "@/utils/api.utils";
 import { buildHeaders } from "@/utils/httpHeaders";
+import { paramUtils } from "@/utils/params.utils";
 import { renderFail } from "@/utils/server-action-render.utils";
 import { getSession } from "@/utils/session.utils";
 import {
@@ -48,13 +50,19 @@ export type OrderType = Awaited<
   ReturnType<typeof fetchOrderByUser>
 >[number];
 
-export async function fetchOrdersByBranchId() {
+export async function fetchOrdersByBranchId(data?: {
+  searchParams: ReportPageSearchParams;
+}) {
   const user = (await getSession()).user;
 
   const { result, error } = await withApiHandling(
     async () =>
       axios.get(
-        `${urlConfig.KKU_API_URL}/orders/branch/${user.branchId}`,
+        `${urlConfig.KKU_API_URL}/orders/branch/${
+          user.branchId
+        }${paramUtils.searchParamsFormatToString(
+          data?.searchParams || {}
+        )}`,
         {
           headers: buildHeaders({ token: user.token }),
         }

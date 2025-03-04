@@ -135,6 +135,12 @@ export const navLinks: NavLinkType[] = [
         permission: [UserRole.ADMIN],
       },
       {
+        title: "กลุ่มลูกค้า",
+        href: "/customer/group",
+        icon: <Users />,
+        permission: [UserRole.ADMIN],
+      },
+      {
         title: "สินค้า",
         href: "/product",
         icon: <LayoutDashboard />,

@@ -1,5 +1,8 @@
 /** @format */
 
+"use server";
+
+import { CustomerPageSearchPaParams } from "@/app/(root)/customer/page";
 import { urlConfig } from "@/configs/url.config";
 import {
   fetchCustomerGroupsResSchema,
@@ -8,23 +11,31 @@ import {
 } from "@/schemas/api/customer";
 import {
   AddCustomerFormDataSchema,
+  CreateOrUpdateCustomerGroupFormDataSchema,
   UpdateCustomerFormDataSchema,
 } from "@/schemas/server-action/customer.schema";
 import { withApiHandling } from "@/utils/api.utils";
 import { buildHeaders } from "@/utils/httpHeaders";
+import { paramUtils } from "@/utils/params.utils";
 import { renderFail } from "@/utils/server-action-render.utils";
 import { getSession } from "@/utils/session.utils";
 import { validateFormDataWithZod } from "@/utils/validate.utils";
-import axios from "axios";
+import axios, { Axios } from "axios";
 import { redirect } from "next/navigation";
 
-export async function fetchCustomers() {
+export async function fetchCustomers(data?: {
+  searchParams: CustomerPageSearchPaParams;
+}) {
   const user = (await getSession()).user;
   // console.log("User:", user)
   const { result, error } = await withApiHandling(
     () =>
       axios.get(
-        `${urlConfig.KKU_API_URL}/customers/branch/${user.branchId}/`,
+        `${urlConfig.KKU_API_URL}/customers/branch/${
+          user.branchId
+        }${paramUtils.searchParamsFormatToString(
+          data?.searchParams || {}
+        )} `,
         { headers: buildHeaders({ token: user.token }) }
       ),
     { option: { validateResponse: fetchCustomersResSchema } }
@@ -46,22 +57,6 @@ export async function fetchCustomerByCustomerId(customerId: string) {
   );
   return result.payload.data;
 }
-
-export async function fetchCustomerGroups() {
-  const user = (await getSession()).user;
-
-  const { result } = await withApiHandling(
-    () =>
-      axios.get(`${urlConfig.KKU_API_URL}/customer-groups`, {
-        headers: buildHeaders({ token: user.token }),
-      }),
-    { option: { validateResponse: fetchCustomerGroupsResSchema } }
-  );
-  return result.payload.data;
-}
-export type CustomerGroupType = Awaited<
-  ReturnType<typeof fetchCustomerGroups>
->[number];
 
 export async function updateCustomerAction(
   prevState: any,
@@ -125,4 +120,61 @@ export async function addCustomerAction(
   }
 
   redirect("/customer");
+}
+
+export async function fetchCustomerGroups() {
+  const user = (await getSession()).user;
+
+  const { result } = await withApiHandling(
+    () =>
+      axios.get(`${urlConfig.KKU_API_URL}/customer-groups`, {
+        headers: buildHeaders({ token: user.token }),
+      }),
+    { option: { validateResponse: fetchCustomerGroupsResSchema } }
+  );
+  return result.payload.data;
+}
+export type CustomerGroupType = Awaited<
+  ReturnType<typeof fetchCustomerGroups>
+>[number];
+
+export async function createOrUpdateCustomerGroup(
+  prevState: any,
+  formData: FormData
+) {
+  let _pathname = "/customer/group";
+  try {
+    const validated = validateFormDataWithZod(
+      formData,
+      CreateOrUpdateCustomerGroupFormDataSchema
+    );
+
+    validated.pathname && (_pathname = validated.pathname);
+
+    const user = (await getSession()).user;
+
+    let myAxis: Axios;
+    if (validated.id) {
+      myAxis = await axios.put(
+        `${urlConfig.KKU_API_URL}/customer-groups/${validated.id}`,
+        { name: validated.name },
+        { headers: buildHeaders({ token: user.token }) }
+      );
+    } else {
+      myAxis = await axios.post(
+        `${urlConfig.KKU_API_URL}/customer-groups`,
+        { name: validated.name },
+        { headers: buildHeaders({ token: user.token }) }
+      );
+    }
+
+    const { error } = await withApiHandling(async () => myAxis);
+
+    if (error.status === "error") {
+      throw new Error(error.errorMessage);
+    }
+  } catch (error) {
+    return renderFail({ error });
+  }
+  redirect(_pathname);
 }

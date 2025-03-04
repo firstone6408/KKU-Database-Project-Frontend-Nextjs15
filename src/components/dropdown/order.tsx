@@ -4,10 +4,10 @@
 
 import FormSelect from "../form/form-select";
 import { FormInputType } from "@/schemas/component/form";
-import { OrderTypeType } from "@/configs/enum.config";
+import { OrderStatusType, OrderTypeType } from "@/configs/enum.config";
 import { orderUtils } from "@/utils/order.util";
 
-export default function OrderTypeDropdown({
+export function OrderTypeDropdown({
   name,
   type,
   label,
@@ -51,6 +51,38 @@ export default function OrderTypeDropdown({
           }));
         }
       }}
+    />
+  );
+}
+
+export function OrderStatusDropdown({
+  name,
+  type,
+  label,
+  defaultValue,
+  placeholder,
+  required,
+  className,
+  disabled,
+}: FormInputType) {
+  const orderStatus = Object.values(OrderStatusType);
+
+  return (
+    <FormSelect
+      name={name}
+      type={type}
+      label={label}
+      defaultValue={defaultValue}
+      placeholder={placeholder}
+      required={required}
+      className={className}
+      disabled={disabled}
+      items={orderStatus}
+      setKeyValue={(item) => ({
+        key: item,
+        value: item,
+        label: `${orderUtils.orderStatusFormatter(item)}`,
+      })}
     />
   );
 }
