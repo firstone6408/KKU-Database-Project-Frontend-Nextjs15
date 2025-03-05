@@ -23,7 +23,7 @@ export default async function Content() {
 
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Menu list</SidebarGroupLabel>
+      <SidebarGroupLabel>เมนูทั้งหมด</SidebarGroupLabel>
       <SidebarGroupContent>
         <SidebarMenu>
           {filteredNavLinks.map((item, index) => {
@@ -37,8 +37,8 @@ export default async function Content() {
                 <SidebarMenuItem key={index}>
                   <SidebarMenuButton asChild>
                     <Link href={item.href ?? ""}>
-                      {item.icon}
-                      <span>{item.title}</span>
+                      <span className="sidebar-icon">{item.icon}</span>
+                      <span className="sidebar-text">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

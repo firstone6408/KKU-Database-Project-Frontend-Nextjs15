@@ -34,6 +34,7 @@ export default function FormSelect<T>({
   setKeyValue,
   items,
   onChange,
+  value,
 }: FormSelectProps<T>) {
   return (
     <div className={`${className ? className : "space-y-2"}`}>
@@ -43,6 +44,7 @@ export default function FormSelect<T>({
       <Select
         defaultValue={defaultValue}
         name={name}
+        value={value}
         required={required}
         disabled={disabled}
         onValueChange={(value) => onChange?.(value)}

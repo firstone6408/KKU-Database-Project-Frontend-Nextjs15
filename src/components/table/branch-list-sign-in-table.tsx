@@ -18,9 +18,8 @@ import {
 } from "../ui/table";
 import { SignOutButton } from "../auth/sign-out-button";
 import { BranchType } from "@/server-actions/branch";
-import Link from "next/link";
-import { Session } from "next-auth";
 import { BranchSignInButton } from "../button/branch";
+import { tableUtils } from "@/utils/table.utils";
 
 export default async function BranchListSignInTable(props: {
   branches: BranchType[];
@@ -43,19 +42,20 @@ export default async function BranchListSignInTable(props: {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {branches.length > 0 &&
-              branches.map((branch) => (
-                <TableRow key={branch.id}>
-                  <TableCell className="font-medium">
-                    {branch.name}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <Button asChild>
-                      <BranchSignInButton branchId={branch.id} />
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
+            {branches.length > 0
+              ? branches.map((branch) => (
+                  <TableRow key={branch.id}>
+                    <TableCell className="font-medium">
+                      {branch.name}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button asChild>
+                        <BranchSignInButton branchId={branch.id} />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))
+              : tableUtils.tableRowEmpty(2)}
           </TableBody>
         </Table>
       </CardContent>

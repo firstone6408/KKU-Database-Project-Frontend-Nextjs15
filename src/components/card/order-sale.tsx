@@ -9,6 +9,7 @@ import { Button } from "../ui/button";
 import { Pen, Trash2 } from "lucide-react";
 import { RemoveOrderStore } from "../button/order-store";
 import SelectProductDialog from "../dialog/sale/select-product";
+import { productUtils } from "@/utils/product.utils";
 
 type OrderSaleCardProps = {
   orderItem: OrderListType["orderItems"][number];
@@ -68,7 +69,7 @@ export default function OrderSaleCard({
               <p className="justify-self-start">จำนวน:</p>
               <p className="justify-self-end">
                 {orderItem.quantity.toLocaleString()}{" "}
-                {saleUtils.productUnitFormatter(orderItem.product.unit)}
+                {productUtils.productUnitFormatter(orderItem.product.unit)}
               </p>
 
               <p className="justify-self-start">ราคาขาย:</p>

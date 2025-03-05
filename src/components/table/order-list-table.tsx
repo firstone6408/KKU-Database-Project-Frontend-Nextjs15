@@ -16,6 +16,7 @@ import Link from "next/link";
 import { Eye, Trash2 } from "lucide-react";
 import { saleUtils } from "@/utils/sale.util";
 import { RemoveOrderButton } from "../button/order";
+import { tableUtils } from "@/utils/table.utils";
 
 export default async function OrderListTable(props: {
   orders: OrderType[];
@@ -42,45 +43,43 @@ export default async function OrderListTable(props: {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {orders.length > 0 ? (
-              orders.map((order, index) => {
-                if (order.status === "PENDING") {
-                  return (
-                    <TableRow key={order.id}>
-                      <TableCell className="text-end">
-                        {index + 1}
-                      </TableCell>
-                      <TableCell>{order.orderCode}</TableCell>
-                      <TableCell>{order.customer.name}</TableCell>
-                      <TableCell>
-                        {dayjsUtils.autoFormat(order.createdAt)}
-                      </TableCell>
-                      <TableCell>{order.status}</TableCell>
-                      <TableCell className="text-center flex justify-center items-center gap-2">
-                        <Button asChild>
-                          <Link
-                            href={saleUtils.orderSaleSearchParamsFormat({
-                              orderId: order.id,
-                              orderCode: order.orderCode,
-                              customerId: order.customer.id,
-                            })}
-                          >
-                            <Eye />
-                          </Link>
-                        </Button>
-                        <RemoveOrderButton
-                          orderId={order.id}
-                          btn={<Trash2 />}
-                          name="orderId"
-                        />
-                      </TableCell>
-                    </TableRow>
-                  );
-                }
-              })
-            ) : (
-              <p>** ไม่มีรายการที่เปิดค้าง **</p>
-            )}
+            {orders.length > 0
+              ? orders.map((order, index) => {
+                  if (order.status === "PENDING") {
+                    return (
+                      <TableRow key={order.id}>
+                        <TableCell className="text-end">
+                          {index + 1}
+                        </TableCell>
+                        <TableCell>{order.orderCode}</TableCell>
+                        <TableCell>{order.customer.name}</TableCell>
+                        <TableCell>
+                          {dayjsUtils.autoFormat(order.createdAt)}
+                        </TableCell>
+                        <TableCell>{order.status}</TableCell>
+                        <TableCell className="text-center flex justify-center items-center gap-2">
+                          <Button asChild>
+                            <Link
+                              href={saleUtils.orderSaleSearchParamsFormat({
+                                orderId: order.id,
+                                orderCode: order.orderCode,
+                                customerId: order.customer.id,
+                              })}
+                            >
+                              <Eye />
+                            </Link>
+                          </Button>
+                          <RemoveOrderButton
+                            orderId={order.id}
+                            btn={<Trash2 />}
+                            name="orderId"
+                          />
+                        </TableCell>
+                      </TableRow>
+                    );
+                  }
+                })
+              : tableUtils.tableRowEmpty(6)}
           </TableBody>
         </Table>
       </CardContent>

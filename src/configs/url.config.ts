@@ -1,23 +1,17 @@
 /** @format */
 
 export const urlConfig = {
+  KKU_FRONTEND_URL: "http://localhost:3000",
   KKU_API_URL: "http://localhost:5000/api",
-  showImage: function (path: string | undefined | null)
-  {
-    if (path)
-    {
-      if (path.startsWith("/public"))
-      {
+  showImage: function (path: string | undefined | null) {
+    if (path) {
+      if (path.startsWith("/public")) {
         return "http://localhost:5000" + path;
-      }
-      else
-      {
+      } else {
         return path;
       }
+    } else {
+      return "";
     }
-    else
-    {
-      return ""
-    }
-  }
+  },
 };

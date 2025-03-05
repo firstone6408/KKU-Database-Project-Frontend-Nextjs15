@@ -7,18 +7,10 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuGroup,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import {
-  ChevronsUpDown,
-  Sparkles,
-  BadgeCheck,
-  CreditCard,
-  Bell,
-  LogOut,
-} from "lucide-react";
+import { ChevronsUpDown, LogOut, CircleUserRound } from "lucide-react";
 import { Session } from "next-auth";
 import {
   SidebarMenu,
@@ -29,6 +21,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { SignOutButton } from "../auth/sign-out-button";
 import { urlConfig } from "@/configs/url.config";
+import Link from "next/link";
 
 export default function Footer(props: { session: Session }) {
   const { session } = props;
@@ -85,7 +78,7 @@ export default function Footer(props: { session: Session }) {
                 </div>
               </div>
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
+            {/* <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <Sparkles />
@@ -107,7 +100,15 @@ export default function Footer(props: { session: Session }) {
                 Notifications
               </DropdownMenuItem>
             </DropdownMenuGroup>
-            <DropdownMenuSeparator />
+            <DropdownMenuSeparator /> */}
+            <DropdownMenuGroup>
+              <DropdownMenuItem asChild>
+                <Link href={`/user-account/${session.user.id}`}>
+                  <CircleUserRound />
+                  บัญชีผู้ใช้
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
             <DropdownMenuItem>
               <SignOutButton
                 btnText={

@@ -87,6 +87,14 @@
 }
 
 @layer utilities {
+  .sidebar-icon {
+    @apply text-gray-500;
+  }
+
+  .sidebar-text {
+    @apply font-semibold;
+  }
+
   .container-custom {
     @apply px-1 md:px-2;
   }

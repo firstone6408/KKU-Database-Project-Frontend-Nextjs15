@@ -6,6 +6,8 @@ import { fetchProducts, ProductType } from "@/server-actions/product";
 import { useEffect, useState } from "react";
 import FormSelect from "../form/form-select";
 import { FormInputType } from "@/schemas/component/form";
+import { saleUtils } from "@/utils/sale.util";
+import { productUtils } from "@/utils/product.utils";
 
 export default function ProductsDropdown({
   valuesProducts,
@@ -31,7 +33,7 @@ export default function ProductsDropdown({
     } else {
       fetchData();
     }
-  }, []);
+  }, [valuesProducts]);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -59,6 +61,7 @@ export default function ProductsDropdown({
       type={type}
       label={label}
       defaultValue={defaultValue}
+      value={defaultValue}
       placeholder={placeholder}
       required={required}
       className={className}
@@ -67,9 +70,16 @@ export default function ProductsDropdown({
       setKeyValue={(item) => ({
         key: item.id,
         value: item.id,
-        label: `${item.productCode} | ${item.category.name} ${item.name} ${
-          item.model
-        } (${item.unit === "METER" ? "เมตร" : "ชิ้น"})`,
+        label: productUtils.productNameFormatter(
+          {
+            categoryName: item.category.name,
+            name: item.name,
+            model: item.model,
+            size: item.size,
+            unit: item.unit,
+          },
+          { isDash: true }
+        ),
       })}
       onChange={(id) => onChange?.(id)}
     />

@@ -11,6 +11,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { DeliveryDriverType } from "@/server-actions/delivery";
 import { Input } from "../ui/input";
+import { tableUtils } from "@/utils/table.utils";
 
 export default function DeliveryDriverAvailableListTable(props: {
   deliveryDriver: DeliveryDriverType[];
@@ -47,29 +48,25 @@ export default function DeliveryDriverAvailableListTable(props: {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {deliveryDriver.length > 0 ? (
-                deliveryDriver.map((driver, index) => (
-                  <TableRow key={index}>
-                    <TableCell className="text-end">{index + 1}</TableCell>
-                    <TableCell>{driver.name}</TableCell>
-                    <TableCell>{driver.phoneNumber}</TableCell>
-                    <TableCell className="flex justify-center">
-                      <Input
-                        type="checkbox"
-                        checked={driverIds.includes(driver.id)}
-                        onChange={() => handleSelectDriver(driver.id)}
-                        className="w-4 h-4 cursor-pointer"
-                      />
-                    </TableCell>
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={6} className="text-center">
-                    -- ไม่มีพนักงานขนส่งที่ว่าง --
-                  </TableCell>
-                </TableRow>
-              )}
+              {deliveryDriver.length > 0
+                ? deliveryDriver.map((driver, index) => (
+                    <TableRow key={index}>
+                      <TableCell className="text-end">
+                        {index + 1}
+                      </TableCell>
+                      <TableCell>{driver.name}</TableCell>
+                      <TableCell>{driver.phoneNumber}</TableCell>
+                      <TableCell className="flex justify-center">
+                        <Input
+                          type="checkbox"
+                          checked={driverIds.includes(driver.id)}
+                          onChange={() => handleSelectDriver(driver.id)}
+                          className="w-4 h-4 cursor-pointer"
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))
+                : tableUtils.tableRowEmpty(4)}
             </TableBody>
           </Table>
         </CardContent>

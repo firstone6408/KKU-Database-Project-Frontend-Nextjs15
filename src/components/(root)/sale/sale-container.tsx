@@ -17,7 +17,7 @@ export default async function SaleContainer({
 }: SaleContainerProps) {
   const { orderCode, customerId, orderId } = params;
   const user = (await getSession()).user;
-  console.log(params);
+  // console.log(params);
 
   const stockProducts = await fetchStockProductsAvailable();
   const customer = await fetchCustomerByCustomerId(customerId);

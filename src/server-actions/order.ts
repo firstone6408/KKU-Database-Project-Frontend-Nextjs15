@@ -5,7 +5,10 @@
 import { ReportPageSearchParams } from "@/app/(root)/report/page";
 import { OrderStatusType, OrderTypeType } from "@/configs/enum.config";
 import { urlConfig } from "@/configs/url.config";
-import { OrdersSchemaResSchema } from "@/schemas/api/order";
+import {
+  OrderSchemaResSchema,
+  OrdersSchemaResSchema,
+} from "@/schemas/api/order";
 import {
   CreateOrderFormDataSchema,
   OrderConfirmFormDataSchema,
@@ -24,12 +27,22 @@ import {
 import axios from "axios";
 import { redirect } from "next/navigation";
 
-export async function fetchOrderByUser() {
+export async function fetchOrderByBranchIdAndUserId(options?: {
+  status: OrderStatusType;
+}) {
   const user = (await getSession()).user;
+
+  let urlApi: string = `${urlConfig.KKU_API_URL}/orders/branch/${user.branchId}/user/${user.id}`;
+
+  if (options) {
+    if (options.status) {
+      urlApi += "/pending";
+    }
+  }
 
   const { result, error } = await withApiHandling(
     async () =>
-      axios.get(`${urlConfig.KKU_API_URL}/orders/user/${user.id}`, {
+      axios.get(urlApi, {
         headers: buildHeaders({ token: user.token }),
       }),
     {
@@ -47,7 +60,7 @@ export async function fetchOrderByUser() {
 }
 
 export type OrderType = Awaited<
-  ReturnType<typeof fetchOrderByUser>
+  ReturnType<typeof fetchOrderByBranchIdAndUserId>
 >[number];
 
 export async function fetchOrdersByBranchId(data?: {
@@ -70,6 +83,31 @@ export async function fetchOrdersByBranchId(data?: {
     {
       option: {
         validateResponse: OrdersSchemaResSchema,
+      },
+    }
+  );
+
+  if (error.status === "error") {
+    throw new Error(error.errorMessage);
+  }
+
+  return result.payload.data;
+}
+
+export async function fetchOrdersByBranchIdAndOrderId(orderId: string) {
+  const user = (await getSession()).user;
+
+  const { result, error } = await withApiHandling(
+    async () =>
+      axios.get(
+        `${urlConfig.KKU_API_URL}/orders/branch/${user.branchId}/order/${orderId}`,
+        {
+          headers: buildHeaders({ token: user.token }),
+        }
+      ),
+    {
+      option: {
+        validateResponse: OrderSchemaResSchema,
       },
     }
   );

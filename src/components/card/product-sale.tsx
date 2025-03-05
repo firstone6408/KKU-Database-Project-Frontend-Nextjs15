@@ -13,6 +13,7 @@ import Image from "next/image";
 import { urlConfig } from "@/configs/url.config";
 import { saleUtils } from "@/utils/sale.util";
 import SelectProductDialog from "../dialog/sale/select-product";
+import { productUtils } from "@/utils/product.utils";
 
 type ProductSaleCardProp = {
   product: StockProductType;
@@ -48,7 +49,7 @@ export default function ProductSaleCard({
           <CardHeader className="text-center space-y-2">
             <CardDescription>{product.category.name}</CardDescription>
             <CardTitle>
-              {saleUtils.productNameFormatter({
+              {productUtils.productNameFormatter({
                 categoryName: product.category.name,
                 name: product.name,
                 model: product.model,

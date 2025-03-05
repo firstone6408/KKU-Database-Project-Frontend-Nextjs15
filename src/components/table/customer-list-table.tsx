@@ -1,7 +1,7 @@
 /** @format */
 
 import { CustomerType } from "@/server-actions/customer";
-import { Eye, UserPen } from "lucide-react";
+import { Eye } from "lucide-react";
 import {
   TableHeader,
   TableRow,
@@ -13,6 +13,7 @@ import {
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { CustomerDetailsDialog } from "../dialog/customer/customer-details";
+import { tableUtils } from "@/utils/table.utils";
 
 export default function CustomersListTable(props: {
   customers: CustomerType[];
@@ -40,30 +41,31 @@ export default function CustomersListTable(props: {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {customers.length > 0 &&
-                customers.map((customer) => (
-                  <TableRow key={customer.id}>
-                    <TableCell>{customer.customerCode}</TableCell>
-                    <TableCell>{customer.customerGroup?.name}</TableCell>
-                    <TableCell className="font-medium">
-                      {customer.name}
-                    </TableCell>
-                    <TableCell>{customer.phoneNumber}</TableCell>
-                    <TableCell>{customer.user?.name}</TableCell>
-                    <TableCell className="text-center">
-                      <Button size={"default"} asChild>
-                        <CustomerDetailsDialog
-                          btn={
-                            <Button>
-                              <Eye />
-                            </Button>
-                          }
-                          customer={customer}
-                        />
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
+              {customers.length > 0
+                ? customers.map((customer) => (
+                    <TableRow key={customer.id}>
+                      <TableCell>{customer.customerCode}</TableCell>
+                      <TableCell>{customer.customerGroup?.name}</TableCell>
+                      <TableCell className="font-medium">
+                        {customer.name}
+                      </TableCell>
+                      <TableCell>{customer.phoneNumber}</TableCell>
+                      <TableCell>{customer.user?.name}</TableCell>
+                      <TableCell className="text-center">
+                        <Button size={"default"} asChild>
+                          <CustomerDetailsDialog
+                            btn={
+                              <Button>
+                                <Eye />
+                              </Button>
+                            }
+                            customer={customer}
+                          />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                : tableUtils.tableRowEmpty(6)}
             </TableBody>
           </Table>
         </CardContent>

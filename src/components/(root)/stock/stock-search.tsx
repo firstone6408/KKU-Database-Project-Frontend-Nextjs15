@@ -14,7 +14,7 @@ export default function StockSearch() {
         <Input name="productCode" />
       </div>
       <div className="flex justify-center items-center gap-2">
-        <Label className="w-full">ค้นหากลุ่มลูกค้า</Label>
+        <Label className="w-full">ค้นหาหมวดหมู่</Label>
         <CategoryDropDown className="w-full" name="categoryId" />
       </div>
       <Button type="submit">

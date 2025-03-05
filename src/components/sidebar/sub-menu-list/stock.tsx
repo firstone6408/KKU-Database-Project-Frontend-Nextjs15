@@ -30,8 +30,8 @@ export default function StockMenuList({ navLink }: StockMenuListProps) {
         <SidebarMenuItem>
           <CollapsibleTrigger asChild>
             <SidebarMenuButton>
-              {navLink.icon}
-              <span>{navLink.title}</span>
+              <span className="sidebar-icon">{navLink.icon}</span>
+              <span className="sidebar-text">{navLink.title}</span>
               <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
             </SidebarMenuButton>
           </CollapsibleTrigger>
@@ -46,8 +46,10 @@ export default function StockMenuList({ navLink }: StockMenuListProps) {
                     <SidebarMenuSubItem key={index}>
                       <SidebarMenuSubButton asChild>
                         <Link href={item.href}>
-                          {item.icon}
-                          <span>{item.title}</span>
+                          <span className="sidebar-icon">{item.icon}</span>
+                          <span className="sidebar-text">
+                            {item.title}
+                          </span>
                         </Link>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>

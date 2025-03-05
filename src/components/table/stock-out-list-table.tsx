@@ -15,6 +15,7 @@ import { Button } from "../ui/button";
 import { Eye } from "lucide-react";
 import { OrderReportDialog } from "../dialog/report/order-report";
 import { OrderStatusType } from "@/configs/enum.config";
+import { tableUtils } from "@/utils/table.utils";
 
 export default function StockOutHistoriesListTable({
   stockOutHistories,
@@ -42,33 +43,34 @@ export default function StockOutHistoriesListTable({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {stockOutHistories.length > 0 &&
-              stockOutHistories.map((stockOut) => {
-                if (stockOut.status !== OrderStatusType.PENDING)
-                  return (
-                    <TableRow key={stockOut.id}>
-                      <TableCell>{stockOut.orderCode}</TableCell>
-                      <TableCell>{stockOut.user.username}</TableCell>
-                      <TableCell>
-                        {dayjsUtils.autoFormat(stockOut.createdAt)}
-                      </TableCell>
-                      <TableCell className="text-end">
-                        {stockOut.totalPrice?.toLocaleString()}
-                      </TableCell>
-                      <TableCell className="text-center">
-                        <OrderReportDialog
-                          btn={
-                            <Button>
-                              <Eye />
-                            </Button>
-                          }
-                          order={stockOut}
-                          title="รายละเอียดประวัตินำออก"
-                        />
-                      </TableCell>
-                    </TableRow>
-                  );
-              })}
+            {stockOutHistories.length > 0
+              ? stockOutHistories.map((stockOut) => {
+                  if (stockOut.status !== OrderStatusType.PENDING)
+                    return (
+                      <TableRow key={stockOut.id}>
+                        <TableCell>{stockOut.orderCode}</TableCell>
+                        <TableCell>{stockOut.user.username}</TableCell>
+                        <TableCell>
+                          {dayjsUtils.autoFormat(stockOut.createdAt)}
+                        </TableCell>
+                        <TableCell className="text-end">
+                          {stockOut.totalPrice?.toLocaleString()}
+                        </TableCell>
+                        <TableCell className="text-center">
+                          <OrderReportDialog
+                            btn={
+                              <Button>
+                                <Eye />
+                              </Button>
+                            }
+                            order={stockOut}
+                            title="รายละเอียดประวัตินำออก"
+                          />
+                        </TableCell>
+                      </TableRow>
+                    );
+                })
+              : tableUtils.tableRowEmpty(5)}
           </TableBody>
         </Table>
       </CardContent>

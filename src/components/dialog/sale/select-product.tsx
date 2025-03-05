@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { StockProductType } from "@/server-actions/stock";
 import useOrderStore from "@/stores/order.store";
+import { productUtils } from "@/utils/product.utils";
 import { saleUtils } from "@/utils/sale.util";
 import { useEffect, useState } from "react";
 
@@ -104,7 +105,7 @@ export default function SelectProductDialog(props: {
           <DialogTitle className="flex justify-between items-center">
             <p>
               เลือก "
-              {saleUtils.productNameFormatter({
+              {productUtils.productNameFormatter({
                 categoryName: product.category.name,
                 name: product.name,
                 model: product.model,

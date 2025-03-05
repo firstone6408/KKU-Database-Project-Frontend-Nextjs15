@@ -1,0 +1,40 @@
+/** @format */
+
+import ReceiptsAndDeliveryNotes from "@/components/documents/receipt";
+import { getBranchById } from "@/server-actions/branch";
+import { fetchOrdersByBranchIdAndOrderId } from "@/server-actions/order";
+import { Suspense } from "react";
+
+type Params = {
+  orderId: string;
+};
+
+type DeliveryNotePageProps = {
+  params: Promise<Params>;
+};
+
+export default async function DeliveryNotePage({
+  params,
+}: DeliveryNotePageProps) {
+  const { orderId } = await params;
+  const order = await fetchOrdersByBranchIdAndOrderId(orderId);
+  const branch = await getBranchById();
+
+  if (!order) {
+    return (
+      <p className="text-red-600 text-xl font-semibold">
+        -- ไม่พบรายการ --
+      </p>
+    );
+  }
+
+  return (
+    <Suspense fallback={<p>รอสักครู่ ...</p>}>
+      <ReceiptsAndDeliveryNotes
+        order={order}
+        branch={branch}
+        type="DeliveryNote"
+      />
+    </Suspense>
+  );
+}

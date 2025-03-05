@@ -12,7 +12,8 @@ export default async function UserContainer() {
   return (
     <div>
       <div className="flex justify-between items-center p-2">
-        <UserSearch />
+        {/* <UserSearch /> */}
+        <div></div>
         <UserAddDialog
           btn={
             <Button>

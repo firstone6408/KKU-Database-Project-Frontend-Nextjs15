@@ -13,6 +13,7 @@ import {
 } from "../ui/table";
 import { CategoryDetailsDialog } from "../dialog/category/category-details";
 import { Eye } from "lucide-react";
+import { tableUtils } from "@/utils/table.utils";
 
 export default function CategoriesListTable(props: {
   categories: CategoryType[];
@@ -36,23 +37,24 @@ export default function CategoriesListTable(props: {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {categories.length > 0 &&
-              categories.map((category) => (
-                <TableRow key={category.id}>
-                  <TableCell>{category.categoryCode}</TableCell>
-                  <TableCell>{category.name}</TableCell>
-                  <TableCell className="text-center">
-                    <CategoryDetailsDialog
-                      category={category}
-                      btn={
-                        <Button>
-                          <Eye />
-                        </Button>
-                      }
-                    />
-                  </TableCell>
-                </TableRow>
-              ))}
+            {categories.length > 0
+              ? categories.map((category) => (
+                  <TableRow key={category.id}>
+                    <TableCell>{category.categoryCode}</TableCell>
+                    <TableCell>{category.name}</TableCell>
+                    <TableCell className="text-center">
+                      <CategoryDetailsDialog
+                        category={category}
+                        btn={
+                          <Button>
+                            <Eye />
+                          </Button>
+                        }
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))
+              : tableUtils.tableRowEmpty(3)}
           </TableBody>
         </Table>
       </CardContent>

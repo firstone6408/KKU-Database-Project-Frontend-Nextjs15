@@ -12,6 +12,7 @@ import {
 } from "../ui/table";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { tableUtils } from "@/utils/table.utils";
 
 export default function CustomersListSetTable(props: {
   customers: CustomerType[];
@@ -74,41 +75,42 @@ export default function CustomersListSetTable(props: {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {customers.length > 0 &&
-                customers.map((customer) => (
-                  <TableRow
-                    key={customer.id}
-                    className={`${
-                      customerId && customerId === customer.id
-                        ? "bg-green-600 hover:bg-green-600 rounded-lg overflow-hidden"
-                        : ""
-                    }`}
-                  >
-                    <TableCell>{customer.customerCode}</TableCell>
-                    <TableCell>{customer.customerGroup?.name}</TableCell>
-                    <TableCell className="font-medium">
-                      {customer.name}
-                    </TableCell>
-                    <TableCell>{customer.phoneNumber}</TableCell>
-                    <TableCell>{customer.user?.name}</TableCell>
-                    <TableCell className="text-center">
-                      <Button
-                        size={"default"}
-                        type="button"
-                        onClick={() => handleClick(customer)}
-                        disabled={
-                          customerId ? customerId === customer.id : false
-                        }
-                      >
-                        {customerId && customerId === customer.id ? (
-                          <Check />
-                        ) : (
-                          <Plus />
-                        )}
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
+              {customers.length > 0
+                ? customers.map((customer) => (
+                    <TableRow
+                      key={customer.id}
+                      className={`${
+                        customerId && customerId === customer.id
+                          ? "bg-green-600 hover:bg-green-600 rounded-lg overflow-hidden"
+                          : ""
+                      }`}
+                    >
+                      <TableCell>{customer.customerCode}</TableCell>
+                      <TableCell>{customer.customerGroup?.name}</TableCell>
+                      <TableCell className="font-medium">
+                        {customer.name}
+                      </TableCell>
+                      <TableCell>{customer.phoneNumber}</TableCell>
+                      <TableCell>{customer.user?.name}</TableCell>
+                      <TableCell className="text-center">
+                        <Button
+                          size={"default"}
+                          type="button"
+                          onClick={() => handleClick(customer)}
+                          disabled={
+                            customerId ? customerId === customer.id : false
+                          }
+                        >
+                          {customerId && customerId === customer.id ? (
+                            <Check />
+                          ) : (
+                            <Plus />
+                          )}
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                : tableUtils.tableRowEmpty(6)}
             </TableBody>
           </Table>
         </CardContent>

@@ -56,27 +56,56 @@ export default function SaleOrderDetails({
   );
 
   const [formData, setFormData] = useState<SaleOrderDetailsFormDataType>({
-    paymentMethodId: orderData?.paymentMethodId ?? "",
-    amountRecevied: orderData?.amountRecevied ?? 0,
-    change: orderData?.change ?? 0,
-    slipImage: orderData?.slipImage ?? undefined,
-    credit: orderData?.credit ?? 0,
-    deposit: orderData?.deposit ?? 0,
-    discount: orderData?.discount ?? 0,
-    note: orderData?.note ?? "",
-    orderType: orderData?.orderType ?? OrderTypeType.FULL_PAYMENT,
+    paymentMethodId: "",
+    amountRecevied: 0,
+    change: 0,
+    slipImage: undefined,
+    credit: 0,
+    deposit: 0,
+    discount: 0,
+    note: "",
+    orderType: OrderTypeType.FULL_PAYMENT,
   });
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      // console.log(formData);
+    if (orderData) {
+      setFormData({
+        paymentMethodId: orderData.paymentMethodId ?? "",
+        amountRecevied: orderData.amountRecevied ?? 0,
+        change: orderData.change ?? 0,
+        slipImage: orderData.slipImage ?? undefined,
+        credit: orderData.credit ?? 0,
+        deposit: orderData.deposit ?? 0,
+        discount: orderData.discount ?? 0,
+        note: orderData.note ?? "",
+        orderType: orderData.orderType ?? OrderTypeType.FULL_PAYMENT,
+      });
+      setOrderType(orderData.orderType ?? OrderTypeType.FULL_PAYMENT);
+    }
+  }, [orderData]);
+
+  useEffect(() => {
+    // ตั้งค่า timeout ที่จะทำงานหลังจาก 2 วินาที
+    const timeout = setTimeout(() => {
       updateOrderListDetailsByOrderId(
         { userId, orderId },
         { ...formData }
       );
-    }, 1000); // อัปเดตทุกๆ 3 วินาที
+    }, 2000); // 2000ms = 2 วินาที
 
-    return () => clearInterval(interval); // clear เมื่อ component unmount
+    // ตั้ง interval ที่จะทำงานทุกๆ 1 วินาที
+    const interval = setInterval(() => {
+      updateOrderListDetailsByOrderId(
+        { userId, orderId },
+        { ...formData }
+      );
+    }, 1000); // ทุกๆ 1 วินาที
+
+    // คืนค่าฟังก์ชันที่ clear ทั้ง timeout และ interval เมื่อ component unmount
+    return () => {
+      clearTimeout(timeout);
+      clearInterval(interval);
+    };
   }, [formData, orderId, userId, updateOrderListDetailsByOrderId]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -99,7 +128,7 @@ export default function SaleOrderDetails({
 
   useEffect(() => {
     setTotalPrice(calculateTotalPrice({ isCalculateBalance: true }));
-  }, [orderData, formData]);
+  }, [orderData, formData, orderType]);
 
   const calculateTotalPrice = (params?: {
     isCalculateBalance: boolean;
@@ -115,12 +144,27 @@ export default function SaleOrderDetails({
       const { isCalculateBalance } = params;
 
       if (isCalculateBalance) {
-        total -= formData.deposit ?? 0;
         total -= formData.discount ?? 0;
         total -= formData.change ?? 0;
-        total -= formData.amountRecevied ?? 0;
+
+        switch (orderType) {
+          case OrderTypeType.FULL_PAYMENT:
+            total -= formData.amountRecevied ?? 0;
+            console.log("do");
+            break;
+          case OrderTypeType.CREDIT_USED:
+            break;
+          case OrderTypeType.DEPOSITED:
+          case OrderTypeType.DEPOSITED_CREDIT_USED:
+            total -= formData.deposit ?? 0;
+          default:
+            break;
+        }
       }
     }
+    // console.log("formData:", formData);
+    // console.log("TotoalPrice:", total);
+    // console.log("orderType:", formData.orderType);
 
     return total >= 0 ? total : 0;
   };
@@ -215,18 +259,20 @@ export default function SaleOrderDetails({
                   totalPrice={totalPrice}
                   setFormData={setFormData}
                 />
-                <FormButton className="w-full" btnText={<>บันทึก</>} />
+                <div className="flex gap-2">
+                  <DeliveryCreateDialog
+                    order={{ orderId: orderId, orderCode: orderCode }}
+                    customer={customer}
+                    btn={
+                      <Button className="w-full" variant={"outline"}>
+                        <Car />
+                        <p>ขนส่ง</p>
+                      </Button>
+                    }
+                  />
+                  <FormButton className="w-full" btnText={<>บันทึก</>} />
+                </div>
               </FormContainer>
-              <DeliveryCreateDialog
-                order={{ orderId: orderId, orderCode: orderCode }}
-                customer={customer}
-                btn={
-                  <Button className="w-full" variant={"outline"}>
-                    <Car />
-                    <p>ขนส่ง</p>
-                  </Button>
-                }
-              />
             </div>
           </div>
           {/* end status */}

@@ -15,7 +15,8 @@ export default async function ProductContainer() {
   return (
     <>
       <div className="flex justify-between items-center p-2">
-        <ProductSearch />
+        {/* <ProductSearch /> */}
+        <div></div>
         <ProductAddDialog
           btn={
             <Button>

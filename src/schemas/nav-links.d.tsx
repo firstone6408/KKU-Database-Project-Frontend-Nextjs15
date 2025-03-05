@@ -4,7 +4,6 @@ import { UserRole } from "@/configs/enum.config";
 import {
   BadgeDollarSign,
   CarFront,
-  ChartArea,
   ChartBarStacked,
   FileSliders,
   GitBranch,

@@ -132,3 +132,7 @@ export const OrderSchema = z.object({
 export const OrdersSchemaResSchema = templateResponse(
   z.array(OrderSchema)
 );
+
+export const OrderSchemaResSchema = templateResponse(
+  OrderSchema.nullable()
+);

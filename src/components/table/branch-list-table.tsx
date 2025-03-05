@@ -1,13 +1,7 @@
 /** @format */
 
 import { Button } from "../ui/button";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardFooter,
-} from "../ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
 import {
   TableHeader,
   TableRow,
@@ -16,13 +10,10 @@ import {
   TableCell,
   Table,
 } from "../ui/table";
-import { SignOutButton } from "../auth/sign-out-button";
 import { BranchType } from "@/server-actions/branch";
-import Link from "next/link";
-import { Session } from "next-auth";
-import { BranchSignInButton } from "../button/branch";
 import { Eye } from "lucide-react";
 import { BranchDetailsDialog } from "../dialog/branch/branch-details";
+import { tableUtils } from "@/utils/table.utils";
 
 export default async function BranchListTable(props: {
   branches: BranchType[];
@@ -47,24 +38,25 @@ export default async function BranchListTable(props: {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {branches.length > 0 &&
-              branches.map((branch) => (
-                <TableRow key={branch.id}>
-                  <TableCell>{branch.branchCode}</TableCell>
-                  <TableCell>{branch.name}</TableCell>
-                  <TableCell>{branch.phoneNumber}</TableCell>
-                  <TableCell className="text-center">
-                    <BranchDetailsDialog
-                      branch={branch}
-                      btn={
-                        <Button>
-                          <Eye />
-                        </Button>
-                      }
-                    />
-                  </TableCell>
-                </TableRow>
-              ))}
+            {branches.length > 0
+              ? branches.map((branch) => (
+                  <TableRow key={branch.id}>
+                    <TableCell>{branch.branchCode}</TableCell>
+                    <TableCell>{branch.name}</TableCell>
+                    <TableCell>{branch.phoneNumber}</TableCell>
+                    <TableCell className="text-center">
+                      <BranchDetailsDialog
+                        branch={branch}
+                        btn={
+                          <Button>
+                            <Eye />
+                          </Button>
+                        }
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))
+              : tableUtils.tableRowEmpty(4)}
           </TableBody>
         </Table>
       </CardContent>

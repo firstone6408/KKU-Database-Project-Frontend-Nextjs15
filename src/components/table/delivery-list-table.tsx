@@ -16,7 +16,7 @@ import {
 import { dayjsUtils } from "@/utils/date.utils";
 import { deliveryUtils } from "@/utils/delivery.utils";
 import { Button } from "../ui/button";
-import { Check, Eye, UserPlus } from "lucide-react";
+import { Check, Eye, ScrollText, UserPlus } from "lucide-react";
 import { DeliveryDetailsDialog } from "../dialog/delivery/delivery-details";
 import { DeliveryAddDriverDialog } from "../dialog/delivery/delivery-add-driver";
 import { Session } from "next-auth";
@@ -26,6 +26,8 @@ import {
   UserRole,
 } from "@/configs/enum.config";
 import { DeliveryDoneDialog } from "../dialog/delivery/delivery-done";
+import { DocumentDialog } from "../dialog/report/document";
+import { tableUtils } from "@/utils/table.utils";
 
 export default function DeliveryListTable(props: {
   deliveries: DeliveryType[];
@@ -76,70 +78,83 @@ export default function DeliveryListTable(props: {
                 <TableHead className="w-[30px] text-end">
                   จำนวนคนส่ง
                 </TableHead>
-                <TableHead className="w-[120px] text-center">
+                <TableHead className="w-[180px] text-center">
                   จัดการ
                 </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {deliveries.length > 0 ? (
-                deliveries.map((delivery, index) => (
-                  <TableRow key={delivery.trackNumber}>
-                    <TableCell className="text-end">{index + 1}</TableCell>
-                    <TableCell>{delivery.trackNumber}</TableCell>
-                    <TableCell className="text-center">
-                      {deliveryUtils.deliveryTypeFormatter(delivery.type)}
-                    </TableCell>
-                    <TableCell>
-                      {dayjsUtils.autoFormat(delivery.sendDate)}
-                    </TableCell>
-                    <TableCell>
-                      {deliveryUtils.deliveryStatusFormatter(
-                        delivery.status
-                      )}
-                    </TableCell>
-                    <TableCell className="text-end">
-                      {delivery.DeliveryDriver.length}
-                    </TableCell>
-                    <TableCell className="text-center space-x-2">
-                      {delivery.status === DeliveryStatusType.PENDING &&
-                        isPermission && (
-                          <DeliveryAddDriverDialog
-                            driversAvailable={driversAvailable}
+              {deliveries.length > 0
+                ? deliveries.map((delivery, index) => (
+                    <TableRow key={delivery.trackNumber}>
+                      <TableCell className="text-end">
+                        {index + 1}
+                      </TableCell>
+                      <TableCell>{delivery.trackNumber}</TableCell>
+                      <TableCell className="text-center">
+                        {deliveryUtils.deliveryTypeFormatter(
+                          delivery.type
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        {dayjsUtils.autoFormat(delivery.sendDate)}
+                      </TableCell>
+                      <TableCell>
+                        {deliveryUtils.deliveryStatusFormatter(
+                          delivery.status
+                        )}
+                      </TableCell>
+                      <TableCell className="text-end">
+                        {delivery.DeliveryDriver.length}
+                      </TableCell>
+                      <TableCell className="text-center space-x-2">
+                        {delivery.status === DeliveryStatusType.PENDING &&
+                          isPermission && (
+                            <DeliveryAddDriverDialog
+                              driversAvailable={driversAvailable}
+                              delivery={delivery}
+                              btn={
+                                <Button variant={"outline"}>
+                                  <UserPlus />
+                                </Button>
+                              }
+                            />
+                          )}
+                        {delivery.status ===
+                          DeliveryStatusType.PENDING && (
+                          <DeliveryDoneDialog
                             delivery={delivery}
+                            calculatePriceFromOrder={
+                              calculatePriceFromOrder
+                            }
                             btn={
                               <Button variant={"outline"}>
-                                <UserPlus />
+                                <Check />
                               </Button>
                             }
                           />
                         )}
-                      {delivery.status === DeliveryStatusType.PENDING && (
-                        <DeliveryDoneDialog
-                          delivery={delivery}
-                          calculatePriceFromOrder={calculatePriceFromOrder}
+                        <DocumentDialog
+                          orderId={delivery.order.id}
                           btn={
                             <Button variant={"outline"}>
-                              <Check />
+                              <ScrollText />
                             </Button>
                           }
                         />
-                      )}
-                      <DeliveryDetailsDialog
-                        btn={
-                          <Button>
-                            <Eye />
-                          </Button>
-                        }
-                        delivery={delivery}
-                        calculatePriceFromOrder={calculatePriceFromOrder}
-                      />
-                    </TableCell>
-                  </TableRow>
-                ))
-              ) : (
-                <p>-- ไม่มีรายการ --</p>
-              )}
+                        <DeliveryDetailsDialog
+                          btn={
+                            <Button>
+                              <Eye />
+                            </Button>
+                          }
+                          delivery={delivery}
+                          calculatePriceFromOrder={calculatePriceFromOrder}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))
+                : tableUtils.tableRowEmpty(7)}
             </TableBody>
           </Table>
         </CardContent>

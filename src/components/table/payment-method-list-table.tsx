@@ -13,6 +13,7 @@ import {
 } from "../ui/table";
 import { PaymentMethodAddDialog } from "../dialog/payment-method/payment-method-add";
 import { Pen } from "lucide-react";
+import { tableUtils } from "@/utils/table.utils";
 
 export default function PaymentMethodsListTable({
   paymentMethods,
@@ -36,23 +37,24 @@ export default function PaymentMethodsListTable({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {paymentMethods.length > 0 &&
-              paymentMethods.map((paymentMethod, index) => (
-                <TableRow key={paymentMethod.id}>
-                  <TableCell className="text-end">{index + 1}</TableCell>
-                  <TableCell>{paymentMethod.name}</TableCell>
-                  <TableCell className="text-center">
-                    <PaymentMethodAddDialog
-                      btn={
-                        <Button>
-                          <Pen />
-                        </Button>
-                      }
-                      paymentMethod={paymentMethod}
-                    />
-                  </TableCell>
-                </TableRow>
-              ))}
+            {paymentMethods.length > 0
+              ? paymentMethods.map((paymentMethod, index) => (
+                  <TableRow key={paymentMethod.id}>
+                    <TableCell className="text-end">{index + 1}</TableCell>
+                    <TableCell>{paymentMethod.name}</TableCell>
+                    <TableCell className="text-center">
+                      <PaymentMethodAddDialog
+                        btn={
+                          <Button>
+                            <Pen />
+                          </Button>
+                        }
+                        paymentMethod={paymentMethod}
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))
+              : tableUtils.tableRowEmpty(3)}
           </TableBody>
         </Table>
       </CardContent>

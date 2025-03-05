@@ -1,7 +1,5 @@
 /** @format */
 
-"use client";
-
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -12,34 +10,21 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  CustomerType,
-  updateCustomerAction,
-} from "@/server-actions/customer";
 import FormContainer from "../../form/form-container";
 import FormInput from "../../form/form-input";
-import { dayjsUtils } from "@/utils/date.utils";
-import FormTextArea from "../../form/form-textarea";
-import { useState } from "react";
-import CustomerGroupsDropdown from "../../dropdown/customer-group";
-import FormButton from "../../form/form-button";
-import { usePathname } from "next/navigation";
-import { addUserAction, UserType } from "@/server-actions/user";
+import { addUserAction } from "@/server-actions/user";
 import FormFile from "@/components/form/form-file";
 import UserRoleDropDown from "@/components/dropdown/user-role";
 
 export function UserAddDialog(props: { btn: React.JSX.Element }) {
   const { btn } = props;
-  const pathname = usePathname();
-
-  const [isEdit, setIsEdit] = useState<boolean>(true);
 
   return (
     <Dialog>
       <DialogTrigger asChild>{btn}</DialogTrigger>
       <DialogContent className="">
         <DialogHeader>
-          <DialogTitle>รายละเอียดพนักงาน</DialogTitle>
+          <DialogTitle>เพิ่มผู้ใช้</DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>
         {/* content */}

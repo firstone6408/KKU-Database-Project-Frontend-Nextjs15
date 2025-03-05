@@ -11,7 +11,8 @@ export default async function CategoryContainer() {
   return (
     <>
       <div className="flex justify-between items-center p-2">
-        <CategorySearch />
+        {/* <CategorySearch /> */}
+        <div></div>
         <CategoryAddDialog btn={<Button>เพิ่ม</Button>} />
       </div>
       <CategoriesListTable categories={categories} />

@@ -1,8 +1,11 @@
 /** @format */
 
+"use client";
+
 import { FormInputType } from "@/schemas/component/form";
 import FormSelect from "../form/form-select";
 import { UserRole } from "@/configs/enum.config";
+import { userUtils } from "@/utils/user.utils";
 
 export default function UserRoleDropDown({
   name,
@@ -14,11 +17,7 @@ export default function UserRoleDropDown({
   className,
   disabled,
 }: FormInputType) {
-  const userRolesArray = Object.values(UserRole)
-    .filter((role) => role !== UserRole.ADMIN)
-    .map((role) => ({
-      name: role,
-    }));
+  const userRolesArray = Object.values(UserRole);
 
   return (
     <FormSelect
@@ -32,9 +31,9 @@ export default function UserRoleDropDown({
       disabled={disabled}
       items={userRolesArray || []}
       setKeyValue={(item) => ({
-        key: item.name,
-        value: item.name,
-        label: item.name,
+        key: item,
+        value: item,
+        label: userUtils.userRoleFormatter(item),
       })}
     />
   );

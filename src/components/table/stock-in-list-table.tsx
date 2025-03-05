@@ -17,6 +17,7 @@ import { Button } from "../ui/button";
 import { getSession } from "@/utils/session.utils";
 import { UserRole } from "@/configs/enum.config";
 import { StockInHistoryCancelDialog } from "../dialog/stock-in/stock-in-cancel";
+import { tableUtils } from "@/utils/table.utils";
 
 export default async function StockInHistoriesListTable({
   stockInHistories,
@@ -72,54 +73,54 @@ export default async function StockInHistoriesListTable({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {stockInHistories.length > 0 ? (
-              stockInHistories.map((stockIn, index) => {
-                const canceledText = isCanceledText(stockIn.isCanceled);
-                return (
-                  <TableRow key={stockIn.id}>
-                    <TableCell className="text-end">{index + 1}</TableCell>
-                    <TableCell>{stockIn.refCode}</TableCell>
-                    <TableCell>{stockIn.distributor}</TableCell>
-                    <TableCell>{stockIn.type}</TableCell>
-                    <TableCell className="text-end">
-                      {stockIn.StockInItem.length.toLocaleString()}
-                    </TableCell>
-                    <TableCell className="text-end">
-                      {stockIn.totalPrice.toLocaleString()}
-                    </TableCell>
-                    <TableCell>{stockIn.user.name}</TableCell>
-                    <TableCell>
-                      {dayjsUtils.autoFormat(stockIn.createdAt)}
-                    </TableCell>
-                    <TableCell className="text-center">
-                      {canceledText}
-                    </TableCell>
-                    <TableCell className="flex justify-center gap-2">
-                      <StockInHistoryDetailsDialog
-                        btn={
-                          <Button>
-                            <Eye />
-                          </Button>
-                        }
-                        stockIn={stockIn}
-                      />
-                      {isAdminOrManager && !stockIn.isCanceled && (
-                        <StockInHistoryCancelDialog
+            {stockInHistories.length > 0
+              ? stockInHistories.map((stockIn, index) => {
+                  const canceledText = isCanceledText(stockIn.isCanceled);
+                  return (
+                    <TableRow key={stockIn.id}>
+                      <TableCell className="text-end">
+                        {index + 1}
+                      </TableCell>
+                      <TableCell>{stockIn.refCode}</TableCell>
+                      <TableCell>{stockIn.distributor}</TableCell>
+                      <TableCell>{stockIn.type}</TableCell>
+                      <TableCell className="text-end">
+                        {stockIn.StockInItem.length.toLocaleString()}
+                      </TableCell>
+                      <TableCell className="text-end">
+                        {stockIn.totalPrice.toLocaleString()}
+                      </TableCell>
+                      <TableCell>{stockIn.user.name}</TableCell>
+                      <TableCell>
+                        {dayjsUtils.autoFormat(stockIn.createdAt)}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {canceledText}
+                      </TableCell>
+                      <TableCell className="flex justify-center gap-2">
+                        <StockInHistoryDetailsDialog
                           btn={
-                            <Button variant={"destructive"}>
-                              <Trash />
+                            <Button>
+                              <Eye />
                             </Button>
                           }
                           stockIn={stockIn}
                         />
-                      )}
-                    </TableCell>
-                  </TableRow>
-                );
-              })
-            ) : (
-              <p className="text-red-700">** ไม่มีการนำเข้า **</p>
-            )}
+                        {isAdminOrManager && !stockIn.isCanceled && (
+                          <StockInHistoryCancelDialog
+                            btn={
+                              <Button variant={"destructive"}>
+                                <Trash />
+                              </Button>
+                            }
+                            stockIn={stockIn}
+                          />
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+              : tableUtils.tableRowEmpty(10)}
           </TableBody>
         </Table>
       </CardContent>

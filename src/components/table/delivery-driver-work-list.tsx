@@ -12,6 +12,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { DeliveryType } from "@/server-actions/delivery";
 import { dayjsUtils } from "@/utils/date.utils";
+import { tableUtils } from "@/utils/table.utils";
 
 export default function DeliveryDriverWorkListTable(props: {
   deliveryDriver: DeliveryType["DeliveryDriver"];
@@ -35,24 +36,20 @@ export default function DeliveryDriverWorkListTable(props: {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {deliveryDriver.length > 0 ? (
-                deliveryDriver.map((driver, index) => (
-                  <TableRow key={index}>
-                    <TableCell className="text-end">{index + 1}</TableCell>
-                    <TableCell>{driver.user.name}</TableCell>
-                    <TableCell>{driver.user.phoneNumber}</TableCell>
-                    <TableCell>
-                      {dayjsUtils.autoFormat(driver.assignedAt)}
-                    </TableCell>
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={6} className="text-center">
-                    -- ยังไม่ได้มอบหมาย --
-                  </TableCell>
-                </TableRow>
-              )}
+              {deliveryDriver.length > 0
+                ? deliveryDriver.map((driver, index) => (
+                    <TableRow key={index}>
+                      <TableCell className="text-end">
+                        {index + 1}
+                      </TableCell>
+                      <TableCell>{driver.user.name}</TableCell>
+                      <TableCell>{driver.user.phoneNumber}</TableCell>
+                      <TableCell>
+                        {dayjsUtils.autoFormat(driver.assignedAt)}
+                      </TableCell>
+                    </TableRow>
+                  ))
+                : tableUtils.tableRowEmpty(4)}
             </TableBody>
           </Table>
         </CardContent>

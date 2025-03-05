@@ -14,6 +14,14 @@ const baiJamjuree = Bai_Jamjuree({
 export const metadata: Metadata = {
   title: "Point of sale",
   description: "Point of sale for everythings",
+  icons: {
+    icon: [
+      {
+        url: "/images/sinchai/sinchaiLogo.png",
+        href: "/images/sinchai/sinchaiLogo.png",
+      },
+    ],
+  },
 };
 
 export default function GlobalLayout({

@@ -28,7 +28,7 @@ export default function StockAddContainer() {
             defaultValue={JSON.stringify(stockInItems)}
           />
           <FormInput
-            label="รหัสนำเข้า"
+            label="เลขอ้างอิง"
             name="refCode"
             type="text"
             required

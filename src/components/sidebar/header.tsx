@@ -12,7 +12,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
   DropdownMenuItem,
 } from "../ui/dropdown-menu";
@@ -26,6 +25,10 @@ export default function Header({ branches }: { branches: BranchType[] }) {
   const { isMobile } = useSidebar();
 
   const { data: session } = useSession();
+
+  // console.log("Session:", session);
+
+  // console.log("ok");
 
   const branchUser = session
     ? branches.find((branch) => session.user.branchId === branch.id) ||
@@ -77,7 +80,7 @@ export default function Header({ branches }: { branches: BranchType[] }) {
             ))}
 
           {/* bottom */}
-          <DropdownMenuSeparator />
+          {/* <DropdownMenuSeparator />
           <DropdownMenuItem className="gap-2 p-2">
             <div className="flex size-6 items-center justify-center rounded-md border bg-background">
               <Plus className="size-4" />
@@ -85,7 +88,7 @@ export default function Header({ branches }: { branches: BranchType[] }) {
             <div className="font-medium text-muted-foreground">
               เพิ่มสาขา
             </div>
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
           {/* end bottom */}
         </DropdownMenuContent>
       </DropdownMenu>
