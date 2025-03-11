@@ -99,6 +99,7 @@ export default function UsersListTable(props: { users: UserType[] }) {
                           </Button>
                         }
                       />
+
                       <UserDetailsDialog
                         user={user}
                         btn={

@@ -14,7 +14,7 @@ import { Suspense } from "react";
 export default async function BranchSignInPage() {
   const session = await getServerSession(authOptions);
 
-  console.log(session);
+  // console.log(session);
 
   if (!session) {
     redirect("/auth/login");
@@ -24,16 +24,7 @@ export default async function BranchSignInPage() {
 
   return (
     <Suspense fallback={<TableLoadingSkeleton />}>
-      <div className="w-full flex flex-col justify-center items-center">
-        <BranchAddDialog
-          btn={
-            <Button>
-              <Plus /> เพิ่มสาขา
-            </Button>
-          }
-        />
-        <BranchListSignInTable branches={branches} />
-      </div>
+      <BranchListSignInTable branches={branches} session={session} />
     </Suspense>
   );
 }

@@ -51,6 +51,9 @@ export default function SaleOrderDetails({
   const updateOrderListDetailsByOrderId = useOrderStore(
     (state) => state.updateOrderListDetailsByOrderId
   );
+  const updateSomeByOrderId = useOrderStore(
+    (state) => state.updateSomeByOrderId
+  );
   const [orderType, setOrderType] = useState<OrderTypeType>(
     orderData?.orderType ?? OrderTypeType.FULL_PAYMENT
   );
@@ -68,6 +71,10 @@ export default function SaleOrderDetails({
   });
 
   useEffect(() => {
+    updateSomeByOrderId({ userId, orderId }, { orderType: orderType });
+  }, [orderType]);
+
+  useEffect(() => {
     if (orderData) {
       setFormData({
         paymentMethodId: orderData.paymentMethodId ?? "",
@@ -80,7 +87,6 @@ export default function SaleOrderDetails({
         note: orderData.note ?? "",
         orderType: orderData.orderType ?? OrderTypeType.FULL_PAYMENT,
       });
-      setOrderType(orderData.orderType ?? OrderTypeType.FULL_PAYMENT);
     }
   }, [orderData]);
 
@@ -128,6 +134,7 @@ export default function SaleOrderDetails({
 
   useEffect(() => {
     setTotalPrice(calculateTotalPrice({ isCalculateBalance: true }));
+    console.log("OrderType:", orderType);
   }, [orderData, formData, orderType]);
 
   const calculateTotalPrice = (params?: {
@@ -150,7 +157,7 @@ export default function SaleOrderDetails({
         switch (orderType) {
           case OrderTypeType.FULL_PAYMENT:
             total -= formData.amountRecevied ?? 0;
-            console.log("do");
+            // console.log("do");
             break;
           case OrderTypeType.CREDIT_USED:
             break;
@@ -206,7 +213,7 @@ export default function SaleOrderDetails({
             {orderData.orderItems.length > 0 ? (
               orderData.orderItems.map((item, index) => {
                 return (
-                  <div key={index}>
+                  <div key={index} className="my-2">
                     <OrderSaleCard
                       orderItem={item}
                       userId={userId}

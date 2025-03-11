@@ -1,6 +1,6 @@
 /** @format */
 
-import { UserDetailsDialog } from "@/components/dialog/user/user-details";
+import { UserUpdateDialog } from "@/components/dialog/user/user-update";
 import FormInput from "@/components/form/form-input";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,7 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
 import { urlConfig } from "@/configs/url.config";
 import { fetchUserByUserId } from "@/server-actions/user";
 import { userUtils } from "@/utils/user.utils";
@@ -55,7 +54,7 @@ export default async function UserAccountContainer({
               )}
             </div>
 
-            <UserDetailsDialog
+            <UserUpdateDialog
               user={user}
               btn={
                 <Button className="w-full" variant={"ghost"}>

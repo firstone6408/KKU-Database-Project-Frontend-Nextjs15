@@ -16,6 +16,7 @@ export const AddUserFormDataSchema = z.object({
       message: "เบอร์โทรต้องมีความยาวมากกว่า 10 ตัว",
     }),
   role: z.nativeEnum(UserRole),
+  branchId: z.string().uuid(),
 });
 
 export const UpdateUserFormDataSchema = z.object({

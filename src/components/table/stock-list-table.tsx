@@ -27,6 +27,9 @@ export default function StocksListTable({
   stockProducts: StockProductType[];
   session: Session;
 }) {
+  const isPermission =
+    session.user.role === UserRole.ADMIN ||
+    session.user.role === UserRole.MANAGER;
   return (
     <Card>
       <CardHeader>
@@ -97,7 +100,7 @@ export default function StocksListTable({
                           </Button>
                         }
                       />
-                      {session.user.role === UserRole.ADMIN && (
+                      {isPermission && (
                         <AdjustPriceDialog
                           stockProduct={product}
                           btn={

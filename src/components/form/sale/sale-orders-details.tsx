@@ -137,6 +137,8 @@ export function SaleOrdersDetailsForm({
         onWheel={(event) => event.target.blur()}
       />
 
+      <FormInput label="ยอดค้างชำระ" value={totalPrice} disabled />
+
       <PaymentMethodDropdown
         name="paymentMethodId"
         label="การจ่ายเงิน"
@@ -144,8 +146,6 @@ export function SaleOrdersDetailsForm({
         defaultValue={orderData.paymentMethodId}
         required
       />
-
-      <FormInput label="ยอดค้างชำระ" value={totalPrice} disabled />
 
       <FormFile
         name="slipImage"

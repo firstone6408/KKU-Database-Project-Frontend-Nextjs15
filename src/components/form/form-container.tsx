@@ -24,6 +24,7 @@ export default function FormContainer({
     const error = searchParams.get("error");
     if (error) {
       const errorMessga = error;
+      console.log("paramserr", searchParams);
       toast({
         variant: "destructive",
         title: errorMessga,

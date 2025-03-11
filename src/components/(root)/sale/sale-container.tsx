@@ -21,6 +21,8 @@ export default async function SaleContainer({
 
   const stockProducts = await fetchStockProductsAvailable();
   const customer = await fetchCustomerByCustomerId(customerId);
+
+  //console.log(stockProducts);
   return (
     <>
       {/* <h2 className="py-3 font-bold text-xl">หน้าสำหรับการขาย</h2> */}
@@ -30,7 +32,7 @@ export default async function SaleContainer({
           <h2 className="font-bold text-xl py-3 text-center">
             รายการสินค้า
           </h2>
-          <SaleProductsSearch />
+          {/* <SaleProductsSearch /> */}
           <div className="overflow-y-auto">
             <SaleProductsList
               orderId={orderId}

@@ -11,7 +11,6 @@ import {
 } from "../ui/card";
 import Image from "next/image";
 import { urlConfig } from "@/configs/url.config";
-import { saleUtils } from "@/utils/sale.util";
 import SelectProductDialog from "../dialog/sale/select-product";
 import { productUtils } from "@/utils/product.utils";
 

@@ -72,23 +72,24 @@ export async function addUserAction(prevState: any, formData: FormData) {
 
     const data = validateFormDataWithZod(formData, AddUserFormDataSchema);
 
-    const { phoneNumber, profileImage, ...restData } = data;
+    const formDataPayload = new FormData();
+    formDataPayload.append("username", data.username);
+    formDataPayload.append("email", data.email);
+    formDataPayload.append("password", data.password);
+    formDataPayload.append("name", data.name);
+    formDataPayload.append("role", data.role);
+    formDataPayload.append("branchId", data.branchId);
 
-    let payload: any = {
-      ...restData,
-    };
-
-    if (profileImage && profileImage.size > 0) {
-      payload.profileImage = profileImage;
-      //  console.log("file", payload.profileImage);
+    if (data.phoneNumber) {
+      formDataPayload.append("phoneNumber", data.phoneNumber);
     }
 
-    if (phoneNumber || phoneNumber !== "") {
-      payload.phoneNumber = phoneNumber;
+    if (data.profileImage && data.profileImage.size > 0) {
+      formDataPayload.append("profileImage", data.profileImage);
     }
 
     const { error } = await withApiHandling(() =>
-      axios.post(`${urlConfig.KKU_API_URL}/users`, payload, {
+      axios.post(`${urlConfig.KKU_API_URL}/users`, formDataPayload, {
         headers: buildHeaders({ token: user.token, uploadHeaders: true }),
       })
     );

@@ -81,7 +81,7 @@ export default function CustomersListSetTable(props: {
                       key={customer.id}
                       className={`${
                         customerId && customerId === customer.id
-                          ? "bg-green-600 hover:bg-green-600 rounded-lg overflow-hidden"
+                          ? "bg-green-400 dark:bg-green-600 hover:bg-green-400 rounded-lg overflow-hidden"
                           : ""
                       }`}
                     >

@@ -77,7 +77,7 @@ export function BillCreateDialog(props: { btn: any }) {
           />
 
           <FormInput
-            label="รหัสบืล"
+            label="รหัสบิล"
             value={orderName === "" ? "-- เลือกลูกค้า --" : orderName}
             disabled
           />

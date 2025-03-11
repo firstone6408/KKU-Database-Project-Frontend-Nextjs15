@@ -21,6 +21,10 @@ export default async function StockContainer({
   const stockProducts = await fetchStockProducts({ searchParams });
   const session = await getSession();
   //console.log(stockProducts);
+
+  const isPermission =
+    session.user.role === UserRole.ADMIN ||
+    session.user.role === UserRole.MANAGER;
   return (
     <div className="space-y-2">
       <Card>
@@ -29,7 +33,7 @@ export default async function StockContainer({
         </CardHeader>
         <CardContent className="flex justify-between items-center">
           <StockSearch />
-          {session.user.role === UserRole.ADMIN && (
+          {isPermission && (
             <Button>
               <Plus />
               <Link href={"/stock/add"}>เพิ่มสินค้าเข้า Stock</Link>

@@ -11,7 +11,7 @@ export default async function BillContainer() {
   const orders = await fetchOrderByBranchIdAndUserId({
     status: OrderStatusType.PENDING,
   });
-  console.log("Orders:", orders);
+  //console.log("Orders:", orders);
   return (
     <>
       <div className="flex justify-end p-2">

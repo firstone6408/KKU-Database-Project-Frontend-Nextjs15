@@ -35,6 +35,8 @@ export default function ProductsListTable({
               <TableHead className="w-[100px]">หมวดหมู่</TableHead>
               <TableHead className="w-[100px]">รูป</TableHead>
               <TableHead className="w-[100px]">ชื่อ</TableHead>
+              <TableHead className="w-[100px]">รุ่น</TableHead>
+              <TableHead className="w-[100px]">ขนาด</TableHead>
               <TableHead className="w-[100px]">สถาณะ</TableHead>
               <TableHead className="w-[100px] text-center">
                 จัดการ
@@ -59,6 +61,8 @@ export default function ProductsListTable({
                       )}
                     </TableCell>
                     <TableCell>{product.name}</TableCell>
+                    <TableCell>{product.model}</TableCell>
+                    <TableCell>{product.size}</TableCell>
                     <TableCell
                       className={`${
                         product.isDeleted

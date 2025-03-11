@@ -59,15 +59,9 @@ export function ProductAddDialog(props: { btn: React.JSX.Element }) {
             <FormInput
               label="รุ่น"
               name="model"
-              required
               className="col-span-full"
             />
-            <FormInput
-              label="ขนาด"
-              name="size"
-              required
-              className="col-span-1"
-            />
+            <FormInput label="ขนาด" name="size" className="col-span-1" />
             <ProductUnitDropdown
               label="หน่วย"
               name="unit"

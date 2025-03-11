@@ -20,11 +20,16 @@ import { SignOutButton } from "../auth/sign-out-button";
 import { BranchType } from "@/server-actions/branch";
 import { BranchSignInButton } from "../button/branch";
 import { tableUtils } from "@/utils/table.utils";
+import { BranchAddDialog } from "../dialog/branch/branch-add";
+import { Plus } from "lucide-react";
+import { Session } from "next-auth";
+import { UserRole } from "@/configs/enum.config";
 
 export default async function BranchListSignInTable(props: {
   branches: BranchType[];
+  session: Session;
 }) {
-  const { branches } = props;
+  const { branches, session } = props;
 
   return (
     <Card className="w-full max-w-[800px]">
@@ -59,7 +64,16 @@ export default async function BranchListSignInTable(props: {
           </TableBody>
         </Table>
       </CardContent>
-      <CardFooter className="flex">
+      <CardFooter className="flex gap-2">
+        {session.user.role === UserRole.ADMIN && (
+          <BranchAddDialog
+            btn={
+              <Button>
+                <Plus /> เพิ่มสาขา
+              </Button>
+            }
+          />
+        )}
         <SignOutButton />
       </CardFooter>
     </Card>

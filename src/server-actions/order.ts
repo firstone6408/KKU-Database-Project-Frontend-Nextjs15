@@ -210,56 +210,68 @@ export async function orderConfirmAction(
 
     // console.log("data:", data);
 
-    let payload: any = {
-      orderId: data.orderId,
-      orderItems: JSON.stringify(data.orderItems),
-      note: data.note,
-      paymentMethodId: data.paymentMethodId,
-      discount: data.discount,
-    };
+    const formDataPayload = new FormData();
+    formDataPayload.append("orderId", data.orderId);
+    formDataPayload.append("orderItems", JSON.stringify(data.orderItems));
+    if (data.note) formDataPayload.append("note", data.note);
+    formDataPayload.append("paymentMethodId", data.paymentMethodId);
+    if (data.discount)
+      formDataPayload.append("discount", String(data.discount));
 
     if (data.orderType === OrderTypeType.CREDIT_USED && data.credit) {
-      //payload.orderStatus = OrderStatusType.PENDING;
-      payload.orderType = OrderTypeType.CREDIT_USED;
-      payload.credit = data.credit;
+      formDataPayload.append("orderType", OrderTypeType.CREDIT_USED);
+      formDataPayload.append("credit", data.credit.toString());
     } else if (
       data.orderType === OrderTypeType.DEPOSITED &&
       data.deposit
     ) {
-      //payload.orderStatus = OrderStatusType.PENDING;
-      payload.orderType = OrderTypeType.DEPOSITED;
-      payload.deposit = data.deposit;
+      formDataPayload.append("orderType", OrderTypeType.DEPOSITED);
+      formDataPayload.append("deposit", data.deposit.toString());
     } else if (
       data.orderType === OrderTypeType.DEPOSITED_CREDIT_USED &&
       data.credit &&
       data.deposit
     ) {
-      //payload.orderStatus = OrderStatusType.PENDING;
-      payload.orderType = OrderTypeType.DEPOSITED_CREDIT_USED;
-      payload.credit = data.credit;
-      payload.deposit = data.deposit;
-    } else if (data.orderType === OrderTypeType.FULL_PAYMENT) {
-      // payload.orderStatus = OrderStatusType.COMPLETED;
-      payload.orderType = OrderTypeType.FULL_PAYMENT;
-      payload.amountRecevied = data.amountRecevied;
-      payload.change = data.change;
+      formDataPayload.append(
+        "orderType",
+        OrderTypeType.DEPOSITED_CREDIT_USED
+      );
+      formDataPayload.append("credit", data.credit.toString());
+      formDataPayload.append("deposit", data.deposit.toString());
+    } else if (
+      data.orderType === OrderTypeType.FULL_PAYMENT &&
+      data.amountRecevied
+    ) {
+      formDataPayload.append("orderType", OrderTypeType.FULL_PAYMENT);
+      formDataPayload.append(
+        "amountRecevied",
+        data.amountRecevied.toString()
+      );
+      if (data.change)
+        formDataPayload.append("change", data.change.toString());
     } else {
       throw new Error("เกิดข้อผิดพลาดบางอย่าง");
     }
 
     if (data.slipImage && data.slipImage.size > 0) {
-      payload.slipImage = data.slipImage;
+      formDataPayload.append("slipImage", data.slipImage);
     }
 
-    console.log("Payload:", payload);
-
     const { error } = await withApiHandling(async () =>
-      axios.put(`${urlConfig.KKU_API_URL}/orders/confirm`, payload, {
-        headers: buildHeaders({ token: user.token, uploadHeaders: true }),
-      })
+      axios.put(
+        `${urlConfig.KKU_API_URL}/orders/confirm`,
+        formDataPayload,
+        {
+          headers: buildHeaders({
+            token: user.token,
+            uploadHeaders: true,
+          }),
+        }
+      )
     );
 
     if (error.status === "error") {
+      console.log(error);
       throw new Error(error.errorMessage);
     }
   } catch (error) {

@@ -15,9 +15,11 @@ import FormInput from "../../form/form-input";
 import { addUserAction } from "@/server-actions/user";
 import FormFile from "@/components/form/form-file";
 import UserRoleDropDown from "@/components/dropdown/user-role";
+import { getSession } from "@/utils/session.utils";
 
-export function UserAddDialog(props: { btn: React.JSX.Element }) {
+export async function UserAddDialog(props: { btn: React.JSX.Element }) {
   const { btn } = props;
+  const user = (await getSession()).user;
 
   return (
     <Dialog>
@@ -30,6 +32,11 @@ export function UserAddDialog(props: { btn: React.JSX.Element }) {
         {/* content */}
         <FormContainer action={addUserAction} className="space-y-2">
           <div className="grid grid-cols-2 gap-2">
+            <input
+              type="hidden"
+              name="branchId"
+              defaultValue={user.branchId}
+            />
             <FormInput
               label="Username"
               name="username"

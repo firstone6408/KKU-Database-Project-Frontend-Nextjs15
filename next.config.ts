@@ -1,3 +1,5 @@
+/** @format */
+
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -9,6 +11,11 @@ const nextConfig: NextConfig = {
         port: "5000",
       },
     ],
+  },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "10mb",
+    },
   },
 };
 

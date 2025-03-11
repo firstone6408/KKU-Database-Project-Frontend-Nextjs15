@@ -13,7 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { OrderTypeType } from "@/configs/enum.config";
+import { OrderStatusType, OrderTypeType } from "@/configs/enum.config";
 import {
   deliveryDoneAction,
   DeliveryType,
@@ -27,7 +27,9 @@ export function DeliveryDoneDialog(props: {
 }) {
   const { btn, delivery, calculatePriceFromOrder } = props;
 
-  const isPayment = delivery.order.type === OrderTypeType.DEPOSITED;
+  const isPayment =
+    delivery.order.type === OrderTypeType.DEPOSITED &&
+    delivery.order.status === OrderStatusType.UNPAID;
 
   return (
     <Dialog>

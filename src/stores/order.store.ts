@@ -53,6 +53,13 @@ type orderState = {
     identity: IdentityOrderType,
     data: Omit<OrderListType, "orderId" | "orderItems" | "orderStatus">
   ) => void;
+
+  updateSomeByOrderId: (
+    identity: IdentityOrderType,
+    data: Partial<
+      Omit<OrderListType, "orderId" | "orderItems" | "orderStatus">
+    >
+  ) => void;
 };
 
 const orderStore = (
@@ -261,6 +268,52 @@ const orderStore = (
         set({ orderList });
       }
     }
+  },
+
+  updateSomeByOrderId(
+    identity,
+    data: Partial<
+      Omit<OrderListType, "orderId" | "orderItems" | "orderStatus">
+    >
+  ) {
+    const { userId, orderId } = identity;
+    const owner = storeUtils.ownerFormatter(userId);
+    const orderList = get().orderList;
+
+    const orderListByOwnerIndex = orderList.findIndex(
+      (order) => order.owner === owner
+    );
+
+    if (orderListByOwnerIndex === -1) {
+      console.warn(`Owner ${owner} not found.`);
+      return;
+    }
+
+    const dataCopy = [...orderList[orderListByOwnerIndex].data];
+    const orderIndex = dataCopy.findIndex(
+      (order) => order.orderId === orderId
+    );
+
+    if (orderIndex === -1) {
+      console.warn(`Order ID ${orderId} not found.`);
+      return;
+    }
+
+    // ใช้ Object.assign() และกรองค่าที่เป็น undefined
+    Object.assign(
+      dataCopy[orderIndex],
+      Object.fromEntries(
+        Object.entries(data).filter(([_, v]) => v !== undefined)
+      )
+    );
+
+    const updatedOrderList = [...orderList];
+    updatedOrderList[orderListByOwnerIndex] = {
+      ...orderList[orderListByOwnerIndex],
+      data: dataCopy,
+    };
+
+    set({ orderList: updatedOrderList });
   },
 });
 

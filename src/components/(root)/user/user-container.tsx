@@ -9,6 +9,7 @@ import { UserPlus } from "lucide-react";
 
 export default async function UserContainer() {
   const users = await fetchUsers();
+  console.log(users);
   return (
     <div>
       <div className="flex justify-between items-center p-2">

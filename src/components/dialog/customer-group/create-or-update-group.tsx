@@ -28,7 +28,7 @@ export function CreateOrUpdateCustomerGroupDialog(props: {
       <DialogTrigger asChild>{btn}</DialogTrigger>
       <DialogContent className="">
         <DialogHeader>
-          <DialogTitle>เพิ่มหมวดหมู่</DialogTitle>
+          <DialogTitle>เพิ่มกลุ่มลูกค้า</DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>
         {/* content */}

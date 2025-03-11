@@ -33,6 +33,10 @@ export function UserUpdateDialog(props: {
   const pathname = usePathname();
   const { data: session } = useSession();
 
+  const isPermission =
+    (session && session.user.role === UserRole.ADMIN) ||
+    (session && session.user.role === UserRole.MANAGER);
+
   return (
     <Dialog>
       <DialogTrigger asChild>{btn}</DialogTrigger>
@@ -62,21 +66,20 @@ export function UserUpdateDialog(props: {
               name="phoneNumber"
               defaultValue={user.phoneNumber}
             />
-            {(session && session.user.role === UserRole.ADMIN) ||
-              (session?.user.role === UserRole.MANAGER && (
-                <>
-                  <UserRoleDropDown
-                    label="ตำแหน่ง"
-                    name="role"
-                    defaultValue={user.role}
-                  />
-                  <UserStatusDropdown
-                    label="สถานะ"
-                    name="status"
-                    defaultValue={user.status}
-                  />
-                </>
-              ))}
+            {isPermission && (
+              <>
+                <UserRoleDropDown
+                  label="ตำแหน่ง"
+                  name="role"
+                  defaultValue={user.role}
+                />
+                <UserStatusDropdown
+                  label="สถานะ"
+                  name="status"
+                  defaultValue={user.status}
+                />
+              </>
+            )}
 
             <FormInput
               className="col-span-full"

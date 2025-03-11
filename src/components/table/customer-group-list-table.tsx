@@ -1,6 +1,5 @@
 /** @format */
 
-import { CategoryType } from "@/server-actions/category";
 import { Button } from "../ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
 import {
@@ -11,8 +10,7 @@ import {
   TableCell,
   Table,
 } from "../ui/table";
-import { CategoryDetailsDialog } from "../dialog/category/category-details";
-import { Eye, Pen } from "lucide-react";
+import { Pen } from "lucide-react";
 import { CustomerGroupType } from "@/server-actions/customer";
 import { dayjsUtils } from "@/utils/date.utils";
 import { CreateOrUpdateCustomerGroupDialog } from "../dialog/customer-group/create-or-update-group";
@@ -26,7 +24,7 @@ export default function CustomerGroupListTable(props: {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>หมวดหมู่ทั้งหมด</CardTitle>
+        <CardTitle>กลุ่มลูกค้าทั้งหมด</CardTitle>
       </CardHeader>
       <CardContent>
         <Table>
