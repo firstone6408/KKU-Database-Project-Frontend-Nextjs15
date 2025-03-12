@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { ProductUnitType } from "@/configs/enum.config";
 import { StockProductType } from "@/server-actions/stock";
 import useOrderStore from "@/stores/order.store";
 import { productUtils } from "@/utils/product.utils";
@@ -24,6 +25,7 @@ import { useEffect, useState } from "react";
 type ErrorsType = {
   quantity?: string;
   sellPrice?: string;
+  length?: string;
 };
 
 export default function SelectProductDialog(props: {
@@ -33,6 +35,7 @@ export default function SelectProductDialog(props: {
   userId: string;
   quantity?: number;
   sellPrice?: number;
+  length?: number;
 }) {
   const {
     product,
@@ -41,6 +44,7 @@ export default function SelectProductDialog(props: {
     orderId,
     quantity: _quantity,
     sellPrice: _sellPrice,
+    length: _length,
   } = props;
   const [quantity, setQuantity] = useState<number>(
     _quantity ? _quantity : 0
@@ -48,6 +52,7 @@ export default function SelectProductDialog(props: {
   const [sellPrice, setSellPrice] = useState<number>(
     _sellPrice ? _sellPrice : product.ProductSaleBranch[0].sellPrice
   );
+  const [length, setLength] = useState<number>(_length ? _length : 0);
   const [errors, setErrors] = useState<ErrorsType>({});
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const createOrderIfNotExist = useOrderStore(
@@ -68,6 +73,12 @@ export default function SelectProductDialog(props: {
     }
     if (!sellPrice || sellPrice <= 0) {
       newErrors.sellPrice = "กรุณากรอกราคาขายที่มากกว่า 0";
+    }
+    if (product.unit === ProductUnitType.METER) {
+      const q = quantity * length;
+      if (q > product.Stock[0].quantity) {
+        newErrors.sellPrice = "จำนวนมตรรวมมากกว่าที่มีใน Stock";
+      }
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -91,6 +102,7 @@ export default function SelectProductDialog(props: {
         sellPrice: sellPrice,
         quantity: quantity,
         productId: product.id,
+        length: length,
       }
     );
 
@@ -118,10 +130,22 @@ export default function SelectProductDialog(props: {
           <DialogDescription></DialogDescription>
         </DialogHeader>
         {/* content */}
+        {product.unit === ProductUnitType.METER && (
+          <div>
+            <Label>{`จำนวนเมตรต่อแผ่น`}</Label>
+            <Input
+              type="number"
+              value={length}
+              onChange={(event) => setLength(Number(event.target.value))}
+              required
+            />
+            {errors.quantity && (
+              <p className="text-red-500 text-sm">{errors.length}</p>
+            )}
+          </div>
+        )}
         <div>
-          <Label>{`จำนวนสินค้า (${
-            product.unit === "METER" ? "เมตร" : "ชิ้น"
-          })`}</Label>
+          <Label>{`จำนวนสินค้า`}</Label>
           <Input
             type="number"
             value={quantity}

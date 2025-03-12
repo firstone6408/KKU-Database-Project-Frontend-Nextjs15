@@ -44,7 +44,17 @@ export default function ReportTotalCard({
     report.StockOutHistory.forEach((history) => {
       const { id, name, size, model, image, category, unit } =
         history.product;
-      const totalRevenue = history.sellPrice * history.quantity;
+      let totalRevenue = 0;
+      let totalSold = 0;
+
+      if (unit === ProductUnitType.METER) {
+        totalRevenue =
+          history.sellPrice * (history.quantity * (history.length ?? 0));
+        totalSold = history.quantity * (history.length ?? 0);
+      } else {
+        totalRevenue = history.sellPrice * history.quantity;
+        totalSold = history.quantity;
+      }
 
       if (!salesSummary[id]) {
         salesSummary[id] = {
@@ -60,7 +70,7 @@ export default function ReportTotalCard({
         };
       }
 
-      salesSummary[id].totalSold += history.quantity;
+      salesSummary[id].totalSold += totalSold;
       salesSummary[id].totalRevenue += totalRevenue;
     });
   });
@@ -105,13 +115,14 @@ export default function ReportTotalCard({
                     alt=""
                   />
                   <p>
-                    {productUtils.productNameFormatter({
+                    {/* {productUtils.productNameFormatter({
                       categoryName: item.categoryName,
                       name: item.productName,
                       size: item.size,
                       model: item.model,
                       unit: item.unit,
-                    })}
+                    })} */}
+                    {`${item.categoryName} ${item.productName} ${item.size} ${item.model}`}
                   </p>
                 </CardContent>
               </Card>

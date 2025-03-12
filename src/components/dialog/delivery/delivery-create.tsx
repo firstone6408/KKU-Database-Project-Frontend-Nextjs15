@@ -39,8 +39,9 @@ export function DeliveryCreateDialog(props: {
     orderCode: string;
   };
   customer: CustomerType;
+  setFee: (any: any) => void;
 }) {
-  const { btn, order, customer } = props;
+  const { btn, order, customer, setFee } = props;
   const { orderCode, orderId } = order;
   const [formData, setFormData] = useState<FormDataType>({
     trackNumber: "",
@@ -65,6 +66,8 @@ export function DeliveryCreateDialog(props: {
       ...prev,
       [name]: type === "number" ? Number(value) : value,
     }));
+
+    setFee(Number(value));
 
     //console.log(name, value);
   };

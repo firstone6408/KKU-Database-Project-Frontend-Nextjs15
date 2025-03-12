@@ -51,9 +51,9 @@ export default function HomePage() {
         <section className="space-y-2">
           <CardTitle className="text-center">สมาชิกในกลุ่ม</CardTitle>
           <ul>
-            {members.map((member) => (
+            {members.map((member, index) => (
               <li key={member.id}>
-                {member.name} Section {member.section}
+                {index + 1}.{member.name} Section {member.section}
               </li>
             ))}
           </ul>

@@ -22,6 +22,7 @@ import { DeliveryAddDriverDialog } from "../dialog/delivery/delivery-add-driver"
 import { Session } from "next-auth";
 import {
   DeliveryStatusType,
+  OrderStatusType,
   OrderTypeType,
   UserRole,
 } from "@/configs/enum.config";
@@ -120,28 +121,31 @@ export default function DeliveryListTable(props: {
                               }
                             />
                           )}
-                        {delivery.status ===
-                          DeliveryStatusType.PENDING && (
-                          <DeliveryDoneDialog
-                            delivery={delivery}
-                            calculatePriceFromOrder={
-                              calculatePriceFromOrder
-                            }
+                        {delivery.status === DeliveryStatusType.PENDING &&
+                          delivery.DeliveryDriver.length > 0 && (
+                            <DeliveryDoneDialog
+                              delivery={delivery}
+                              calculatePriceFromOrder={
+                                calculatePriceFromOrder
+                              }
+                              btn={
+                                <Button variant={"outline"}>
+                                  <Check />
+                                </Button>
+                              }
+                            />
+                          )}
+                        {delivery.order.status ===
+                          OrderStatusType.COMPLETED && (
+                          <DocumentDialog
+                            orderId={delivery.order.id}
                             btn={
                               <Button variant={"outline"}>
-                                <Check />
+                                <ScrollText />
                               </Button>
                             }
                           />
                         )}
-                        <DocumentDialog
-                          orderId={delivery.order.id}
-                          btn={
-                            <Button variant={"outline"}>
-                              <ScrollText />
-                            </Button>
-                          }
-                        />
                         <DeliveryDetailsDialog
                           btn={
                             <Button>

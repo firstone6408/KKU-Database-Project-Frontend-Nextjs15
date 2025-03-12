@@ -14,6 +14,7 @@ export type OrderListType = {
     sellPrice: number;
     quantity: number;
     productId: string;
+    length?: number;
   }[];
   orderStatus: OrderStatusType;
   orderType?: OrderTypeType;
@@ -143,8 +144,7 @@ const orderStore = (
 
     if (existingItemIndex !== -1) {
       // ถ้ามีอยู่แล้ว → อัปเดตจำนวนสินค้า (quantity) และราคา
-      order.orderItems[existingItemIndex].quantity = orderItem.quantity;
-      order.orderItems[existingItemIndex].sellPrice = orderItem.sellPrice;
+      order.orderItems[existingItemIndex] = { ...orderItem };
     } else {
       // ถ้ายังไม่มี → เพิ่มสินค้าเข้าไป
       order.orderItems.push(orderItem);

@@ -14,7 +14,7 @@ import { storeUtils } from "@/utils/store.utils";
 import useOrderStore from "@/stores/order.store";
 import { SaleOrdersDetailsForm } from "@/components/form/sale/sale-orders-details";
 import { OrderTypeDropdown } from "@/components/dropdown/order";
-import { OrderTypeType } from "@/configs/enum.config";
+import { OrderTypeType, ProductUnitType } from "@/configs/enum.config";
 import { DeliveryCreateDialog } from "@/components/dialog/delivery/delivery-create";
 import { Button } from "@/components/ui/button";
 import { Car } from "lucide-react";
@@ -69,6 +69,8 @@ export default function SaleOrderDetails({
     note: "",
     orderType: OrderTypeType.FULL_PAYMENT,
   });
+
+  const [fee, setFee] = useState(0);
 
   useEffect(() => {
     updateSomeByOrderId({ userId, orderId }, { orderType: orderType });
@@ -142,10 +144,15 @@ export default function SaleOrderDetails({
   }) => {
     if (!orderData) return 0;
 
-    let total = orderData.orderItems.reduce(
-      (acc, item) => acc + item.sellPrice * item.quantity,
-      0
-    );
+    let total = orderData.orderItems.reduce((acc, item) => {
+      if (item.product.unit === ProductUnitType.METER) {
+        return acc + item.sellPrice * ((item.length ?? 0) * item.quantity);
+      } else {
+        return acc + item.sellPrice * item.quantity;
+      }
+    }, 0);
+
+    total += fee;
 
     if (params) {
       const { isCalculateBalance } = params;
@@ -220,6 +227,7 @@ export default function SaleOrderDetails({
                       orderId={orderId}
                       quantity={item.quantity}
                       sellPrice={item.sellPrice}
+                      length={item.length}
                     />
                   </div>
                 );
@@ -247,7 +255,7 @@ export default function SaleOrderDetails({
               />
 
               <FormInput
-                value={totalAmount}
+                value={totalAmount.toFixed(2)}
                 type="number"
                 label="จำนวนเงินทั้งหมด"
                 disabled
@@ -276,6 +284,7 @@ export default function SaleOrderDetails({
                         <p>ขนส่ง</p>
                       </Button>
                     }
+                    setFee={setFee}
                   />
                   <FormButton className="w-full" btnText={<>บันทึก</>} />
                 </div>

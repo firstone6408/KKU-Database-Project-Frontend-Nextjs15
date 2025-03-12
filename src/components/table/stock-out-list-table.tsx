@@ -49,7 +49,7 @@ export default function StockOutHistoriesListTable({
                     return (
                       <TableRow key={stockOut.id}>
                         <TableCell>{stockOut.orderCode}</TableCell>
-                        <TableCell>{stockOut.user.username}</TableCell>
+                        <TableCell>{stockOut.user.name}</TableCell>
                         <TableCell>
                           {dayjsUtils.autoFormat(stockOut.createdAt)}
                         </TableCell>

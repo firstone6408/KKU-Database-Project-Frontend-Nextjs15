@@ -21,6 +21,7 @@ export const OrderConfirmFormDataSchema = z.object({
         productId: z.string().uuid(),
         quantity: z.number(),
         sellPrice: z.number(),
+        length: z.number().optional(),
       })
     )
     .refine((items) => items.length > 0, {

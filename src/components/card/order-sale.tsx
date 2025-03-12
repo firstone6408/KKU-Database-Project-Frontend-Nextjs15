@@ -10,6 +10,7 @@ import { Pen, Trash2 } from "lucide-react";
 import { RemoveOrderStore } from "../button/order-store";
 import SelectProductDialog from "../dialog/sale/select-product";
 import { productUtils } from "@/utils/product.utils";
+import { ProductUnitType } from "@/configs/enum.config";
 
 type OrderSaleCardProps = {
   orderItem: OrderListType["orderItems"][number];
@@ -17,6 +18,7 @@ type OrderSaleCardProps = {
   orderId: string;
   quantity: number;
   sellPrice: number;
+  length?: number;
 };
 
 export default function OrderSaleCard({
@@ -25,7 +27,12 @@ export default function OrderSaleCard({
   userId,
   quantity,
   sellPrice,
+  length,
 }: OrderSaleCardProps) {
+  const price =
+    orderItem.product.unit === ProductUnitType.METER
+      ? sellPrice * (quantity * (length ?? 0))
+      : sellPrice * quantity;
   return (
     <Card>
       <CardHeader>
@@ -38,6 +45,7 @@ export default function OrderSaleCard({
               userId={userId}
               quantity={quantity}
               sellPrice={sellPrice}
+              length={length}
               btn={
                 <Button size={"icon"}>
                   <Pen />
@@ -66,10 +74,17 @@ export default function OrderSaleCard({
           </div>
           <div className="col-span-4 flex flex-col">
             <div className="grid grid-cols-2">
+              {orderItem.product.unit === ProductUnitType.METER && (
+                <>
+                  <p className="justify-self-start">จำนวนเมตร:</p>
+                  <p className="justify-self-end">
+                    {orderItem.length?.toLocaleString()}
+                  </p>
+                </>
+              )}
               <p className="justify-self-start">จำนวน:</p>
               <p className="justify-self-end">
-                {orderItem.quantity.toLocaleString()}{" "}
-                {productUtils.productUnitFormatter(orderItem.product.unit)}
+                {orderItem.quantity.toLocaleString()}
               </p>
 
               <p className="justify-self-start">ราคาขาย:</p>
@@ -79,10 +94,7 @@ export default function OrderSaleCard({
 
               <p className="justify-self-start font-semibold">ราคารวม:</p>
               <p className="justify-self-end font-semibold">
-                {(
-                  orderItem.sellPrice * orderItem.quantity
-                ).toLocaleString()}{" "}
-                บาท
+                {price.toLocaleString()} บาท
               </p>
             </div>
           </div>

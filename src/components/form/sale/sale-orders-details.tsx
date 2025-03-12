@@ -137,7 +137,11 @@ export function SaleOrdersDetailsForm({
         onWheel={(event) => event.target.blur()}
       />
 
-      <FormInput label="ยอดค้างชำระ" value={totalPrice} disabled />
+      <FormInput
+        label="ยอดค้างชำระ"
+        value={totalPrice.toFixed(2)}
+        disabled
+      />
 
       <PaymentMethodDropdown
         name="paymentMethodId"

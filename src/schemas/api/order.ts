@@ -79,6 +79,7 @@ export const OrderSchema = z.object({
         categoryId: z.string(),
       }),
       sellPrice: z.number(),
+      length: z.number().nullable(),
       type: z.nativeEnum(StockOutType),
     })
   ),

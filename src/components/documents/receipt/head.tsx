@@ -5,6 +5,7 @@ import { OrderType } from "@/server-actions/order";
 import { dayjsUtils } from "@/utils/date.utils";
 import Image from "next/image";
 import { ReceiptsAndDeliveryNotesType } from ".";
+import dayjs from "dayjs";
 
 type DocumentReceiptHeadProps = {
   branch: BranchType;
@@ -47,6 +48,7 @@ export default function DocumentReceiptHead({
           <p>ที่อยู่: {order.customer.address}</p>
         </div>
         <div className="text-end">
+          <p>วันที่ออกบิล: {dayjsUtils.autoFormat(new Date())}</p>
           <p>วันที่สั่ง: {dayjsUtils.autoFormat(order.createdAt)}</p>
           <p>รหัสใบสั่งซื้อ: {order.orderCode}</p>
           <p>พนังงานขาย: {order.user.name}</p>
@@ -56,6 +58,12 @@ export default function DocumentReceiptHead({
               {order.PaymentOrder?.credit ? (
                 <>
                   เครดิต {order.PaymentOrder?.credit?.toLocaleString()} วัน
+                  <p>
+                    ครบกำหนด:{" "}
+                    {dayjsUtils
+                      .autoFormat(dayjs(order.createdAt).add(5, "day"))
+                      .toString()}
+                  </p>
                 </>
               ) : (
                 <>เงินสด</>

@@ -76,7 +76,7 @@ export default function ReportListTable({
                         >
                           {orderUtils.orderStatusFormatter(report.status)}
                         </TableCell>
-                        <TableCell>{report.user.username}</TableCell>
+                        <TableCell>{report.user.name}</TableCell>
                         <TableCell>
                           {dayjsUtils.autoFormat(report.createdAt)}
                         </TableCell>
@@ -92,14 +92,16 @@ export default function ReportListTable({
                               </Button>
                             }
                           />
-                          <DocumentDialog
-                            orderId={report.id}
-                            btn={
-                              <Button variant={"outline"}>
-                                <ScrollText />
-                              </Button>
-                            }
-                          />
+                          {report.status === OrderStatusType.COMPLETED && (
+                            <DocumentDialog
+                              orderId={report.id}
+                              btn={
+                                <Button variant={"outline"}>
+                                  <ScrollText />
+                                </Button>
+                              }
+                            />
+                          )}
                           <OrderReportDialog
                             btn={
                               <Button>

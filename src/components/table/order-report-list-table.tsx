@@ -14,12 +14,24 @@ import Image from "next/image";
 import { urlConfig } from "@/configs/url.config";
 import { productUtils } from "@/utils/product.utils";
 import { tableUtils } from "@/utils/table.utils";
+import { saleUtils } from "@/utils/sale.util";
 
 export default function OrderReportListTable({
   orderItems,
 }: {
   orderItems: OrderType["StockOutHistory"];
 }) {
+  const totalPrice = orderItems.reduce(
+    (sum, item) =>
+      sum +
+      saleUtils.calculatePriceOrder({
+        sellPrice: item.sellPrice,
+        quantity: item.quantity,
+        length: item.length,
+        unit: item.product.unit,
+      }),
+    0
+  );
   return (
     <Card>
       <CardHeader>
@@ -40,6 +52,7 @@ export default function OrderReportListTable({
               <TableHead className="w-[100px] text-end">
                 ราคาขาย (บาท)
               </TableHead>
+              <TableHead className="w-[100px] text-end">เมตร</TableHead>
               <TableHead className="w-[100px] text-end">จำนวน</TableHead>
               <TableHead className="w-[100px] text-end">
                 ราคา (บาท)
@@ -72,20 +85,31 @@ export default function OrderReportListTable({
                       {orderItem.sellPrice.toLocaleString()}
                     </TableCell>
                     <TableCell className="text-end">
-                      {`${orderItem.quantity.toLocaleString()} ${productUtils.productUnitFormatter(
-                        orderItem.product.unit
-                      )}`}
+                      {orderItem.length && orderItem.length > 0
+                        ? orderItem.length
+                        : ""}
                     </TableCell>
                     <TableCell className="text-end">
-                      {(
-                        orderItem.quantity * orderItem.sellPrice
-                      ).toLocaleString()}
+                      {`${orderItem.quantity.toLocaleString()}`}
+                    </TableCell>
+                    <TableCell className="text-end">
+                      {saleUtils
+                        .calculatePriceOrder({
+                          sellPrice: orderItem.sellPrice,
+                          quantity: orderItem.quantity,
+                          length: orderItem.length,
+                          unit: orderItem.product.unit,
+                        })
+                        .toLocaleString()}
                     </TableCell>
                   </TableRow>
                 ))
               : tableUtils.tableRowEmpty(11)}
           </TableBody>
         </Table>
+        <div className="flex justify-end font-semibold">
+          ยอดรวม: {totalPrice.toLocaleString()} บาท
+        </div>
       </CardContent>
     </Card>
   );
